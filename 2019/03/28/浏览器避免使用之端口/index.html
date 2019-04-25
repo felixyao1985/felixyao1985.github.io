@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>坑爹的端口集 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="昨天被6000端口折腾了一天 查了端口占用情况没问题 通过后端程序调用没问题 但是用grpc-web调用端口就一直报错 一直以为是Enovy 和 docker配置有问题 尝试改成restful API还是不行，但是发现浏览器报的错是安全问题 原来6000 被视为非安全端口直接被拦截了。端口随手改成12000，通了 记录一下引以为戒 Firfox / Chrome 默认非安全端口列表 1234567">
+<meta name="keywords" content="端口">
+<meta property="og:type" content="article">
+<meta property="og:title" content="坑爹的端口集">
+<meta property="og:url" content="http://yoursite.com/2019/03/28/浏览器避免使用之端口/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="昨天被6000端口折腾了一天 查了端口占用情况没问题 通过后端程序调用没问题 但是用grpc-web调用端口就一直报错 一直以为是Enovy 和 docker配置有问题 尝试改成restful API还是不行，但是发现浏览器报的错是安全问题 原来6000 被视为非安全端口直接被拦截了。端口随手改成12000，通了 记录一下引以为戒 Firfox / Chrome 默认非安全端口列表 1234567">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-03-28T03:08:51.744Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="坑爹的端口集">
+<meta name="twitter:description" content="昨天被6000端口折腾了一天 查了端口占用情况没问题 通过后端程序调用没问题 但是用grpc-web调用端口就一直报错 一直以为是Enovy 和 docker配置有问题 尝试改成restful API还是不行，但是发现浏览器报的错是安全问题 原来6000 被视为非安全端口直接被拦截了。端口随手改成12000，通了 记录一下引以为戒 Firfox / Chrome 默认非安全端口列表 1234567">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-浏览器避免使用之端口" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/28/浏览器避免使用之端口/" class="article-date">
+  <time datetime="2019-03-27T16:00:00.000Z" itemprop="datePublished">2019-03-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      坑爹的端口集
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>昨天被6000端口折腾了一天</p>
+<p>查了端口占用情况没问题</p>
+<p>通过后端程序调用没问题</p>
+<p>但是用grpc-web调用端口就一直报错</p>
+<p>一直以为是Enovy 和 docker配置有问题</p>
+<p>尝试改成restful API还是不行，但是发现浏览器报的错是安全问题</p>
+<p>原来6000 被视为非安全端口直接被拦截了。端口随手改成12000，通了</p>
+<p>记录一下引以为戒</p>
+<p>Firfox / Chrome 默认非安全端口列表</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">1,    // tcpmux</span><br><span class="line">7,    // echo</span><br><span class="line">9,    // discard</span><br><span class="line">11,   // systat</span><br><span class="line">13,   // daytime</span><br><span class="line">15,   // netstat</span><br><span class="line">17,   // qotd</span><br><span class="line">19,   // chargen</span><br><span class="line">20,   // ftp data</span><br><span class="line">21,   // ftp access</span><br><span class="line">22,   // ssh</span><br><span class="line">23,   // telnet</span><br><span class="line">25,   // smtp</span><br><span class="line">37,   // time</span><br><span class="line">42,   // name</span><br><span class="line">43,   // nicname</span><br><span class="line">53,   // domain</span><br><span class="line">77,   // priv-rjs</span><br><span class="line">79,   // finger</span><br><span class="line">87,   // ttylink</span><br><span class="line">95,   // supdup</span><br><span class="line">101,  // hostriame</span><br><span class="line">102,  // iso-tsap</span><br><span class="line">103,  // gppitnp</span><br><span class="line">104,  // acr-nema</span><br><span class="line">109,  // pop2</span><br><span class="line">110,  // pop3</span><br><span class="line">111,  // sunrpc</span><br><span class="line">113,  // auth</span><br><span class="line">115,  // sftp</span><br><span class="line">117,  // uucp-path</span><br><span class="line">119,  // nntp</span><br><span class="line">123,  // NTP</span><br><span class="line">135,  // loc-srv /epmap</span><br><span class="line">139,  // netbios</span><br><span class="line">143,  // imap2</span><br><span class="line">179,  // BGP</span><br><span class="line">389,  // ldap</span><br><span class="line">465,  // smtp+ssl</span><br><span class="line">512,  // print / exec</span><br><span class="line">513,  // login</span><br><span class="line">514,  // shell</span><br><span class="line">515,  // printer</span><br><span class="line">526,  // tempo</span><br><span class="line">530,  // courier</span><br><span class="line">531,  // chat</span><br><span class="line">532,  // netnews</span><br><span class="line">540,  // uucp</span><br><span class="line">556,  // remotefs</span><br><span class="line">563,  // nntp+ssl</span><br><span class="line">587,  // stmp?</span><br><span class="line">601,  // ??</span><br><span class="line">636,  // ldap+ssl</span><br><span class="line">993,  // ldap+ssl</span><br><span class="line">995,  // pop3+ssl</span><br><span class="line">2049, // nfs</span><br><span class="line">3659, // apple-sasl / PasswordServer</span><br><span class="line">4045, // lockd</span><br><span class="line">6000, // X11</span><br><span class="line">6665, // Alternate IRC [Apple addition]</span><br><span class="line">6666, // Alternate IRC [Apple addition]</span><br><span class="line">6667, // Standard IRC [Apple addition]</span><br><span class="line">6668, // Alternate IRC [Apple addition]</span><br><span class="line">6669, // Alternate IRC [Apple addition]</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/03/28/浏览器避免使用之端口/" data-id="cjuwblb8s000lo4f51kd9f5b5" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/端口/">端口</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/04/02/GO-json/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          GO json的操作
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/03/16/GO-NSQ/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">NSQ(有赞版)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Envoy-grpc-restful/">Envoy grpc restful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-NSQ/">GO Grpc NSQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-tracing/">GO Grpc tracing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-interceptor-JWT/">GO interceptor JWT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-json/">GO json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-权限管理/">GO 权限管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git-fork、pr/">Git fork、pr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Protocol-Buffer/">Protocol Buffer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gRPC/">gRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protoful/">protoful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务/">微服务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务-GRPC/">微服务 GRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/端口/">端口</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Envoy-grpc-restful/" style="font-size: 10px;">Envoy grpc restful</a> <a href="/tags/GO-Grpc-NSQ/" style="font-size: 10px;">GO Grpc NSQ</a> <a href="/tags/GO-Grpc-tracing/" style="font-size: 10px;">GO Grpc tracing</a> <a href="/tags/GO-interceptor-JWT/" style="font-size: 10px;">GO interceptor JWT</a> <a href="/tags/GO-json/" style="font-size: 10px;">GO json</a> <a href="/tags/GO-权限管理/" style="font-size: 10px;">GO 权限管理</a> <a href="/tags/Git-fork、pr/" style="font-size: 10px;">Git fork、pr</a> <a href="/tags/Protocol-Buffer/" style="font-size: 10px;">Protocol Buffer</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/Redux/" style="font-size: 10px;">Redux</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/gRPC/" style="font-size: 10px;">gRPC</a> <a href="/tags/protoful/" style="font-size: 10px;">protoful</a> <a href="/tags/微服务/" style="font-size: 20px;">微服务</a> <a href="/tags/微服务-GRPC/" style="font-size: 15px;">微服务 GRPC</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/04/25/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/25/Git fork、pr的开发模式/">Git fork、pr的开发模式</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/02/GO-json/">GO json的操作</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/28/浏览器避免使用之端口/">坑爹的端口集</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/16/GO-NSQ/">NSQ(有赞版)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

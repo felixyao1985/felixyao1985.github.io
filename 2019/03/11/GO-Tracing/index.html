@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>基于jaeger和tracing实现 grpc调用链跟踪模块 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="#基于jaeger和tracing实现 grpc调用链跟踪模块 #####Jaeger 参考 Jaeger部署 Jaeger是Uber推出的一款调用链追踪系统，类似于Zipkin和Dapper。 其主要用于多个服务调用过程追踪分析，图形化服务调用轨迹，便于快速准确定位问题。Jaeger组成  前端界面展示UI 数据存储Cassandra 数据查询Query 数据收集处理Collector 客户端代">
+<meta name="keywords" content="GO Grpc tracing">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于jaeger和tracing实现 grpc调用链跟踪模块">
+<meta property="og:url" content="http://yoursite.com/2019/03/11/GO-Tracing/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="#基于jaeger和tracing实现 grpc调用链跟踪模块 #####Jaeger 参考 Jaeger部署 Jaeger是Uber推出的一款调用链追踪系统，类似于Zipkin和Dapper。 其主要用于多个服务调用过程追踪分析，图形化服务调用轨迹，便于快速准确定位问题。Jaeger组成  前端界面展示UI 数据存储Cassandra 数据查询Query 数据收集处理Collector 客户端代">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-03-20T08:34:21.164Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基于jaeger和tracing实现 grpc调用链跟踪模块">
+<meta name="twitter:description" content="#基于jaeger和tracing实现 grpc调用链跟踪模块 #####Jaeger 参考 Jaeger部署 Jaeger是Uber推出的一款调用链追踪系统，类似于Zipkin和Dapper。 其主要用于多个服务调用过程追踪分析，图形化服务调用轨迹，便于快速准确定位问题。Jaeger组成  前端界面展示UI 数据存储Cassandra 数据查询Query 数据收集处理Collector 客户端代">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-GO-Tracing" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/11/GO-Tracing/" class="article-date">
+  <time datetime="2019-03-10T16:00:00.000Z" itemprop="datePublished">2019-03-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      基于jaeger和tracing实现 grpc调用链跟踪模块
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#基于jaeger和tracing实现 grpc调用链跟踪模块</p>
+<p>#####Jaeger</p>
+<p><a href="&quot;https://blog.csdn.net/moxiaomomo/article/details/80723758&quot;">参考 Jaeger部署</a></p>
+<p>Jaeger是Uber推出的一款调用链追踪系统，类似于Zipkin和Dapper。 其主要用于多个服务调用过程追踪分析，图形化服务调用轨迹，便于快速准确定位问题。<br>Jaeger组成</p>
+<ul>
+<li>前端界面展示UI</li>
+<li>数据存储Cassandra</li>
+<li>数据查询Query</li>
+<li>数据收集处理Collector</li>
+<li>客户端代理Agent</li>
+<li>客户端库jaeger-client-*</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">    </span><br><span class="line">  <span class="string">仅为测试，该方式数据会存入内存，不能用于生产</span></span><br><span class="line">  </span><br><span class="line"><span class="string">docker</span> <span class="string">run</span> <span class="bullet">-d</span> <span class="bullet">--name</span> <span class="string">jaeger</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">  -</span><span class="string">e</span> <span class="string">COLLECTOR_ZIPKIN_HTTP_PORT=9411</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">  -</span><span class="string">p</span> <span class="number">5775</span><span class="string">:5775/udp</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">  -</span><span class="string">p</span> <span class="number">6831</span><span class="string">:6831/udp</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">  -</span><span class="string">p</span> <span class="number">6832</span><span class="string">:6832/udp</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">  -</span><span class="string">p</span> <span class="number">5778</span><span class="string">:5778</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">  -</span><span class="string">p</span> <span class="number">16686</span><span class="string">:16686</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">  -</span><span class="string">p</span> <span class="number">14268</span><span class="string">:14268</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">  -</span><span class="string">p</span> <span class="number">9411</span><span class="string">:9411</span> <span class="string">\</span></span><br><span class="line">  <span class="string">jaegertracing/all-in-one:1.9</span></span><br></pre></td></tr></table></figure>
+<p>#####grpc-jaeger源依赖</p>
+<pre><code>google.golang.org/grpc
+github.com/opentracing/opentracing-go
+github.com/uber/jaeger-client-go
+github.com/pkg/errors
+</code></pre><p>请参阅 <a href="https://github.com/felixyao1985/go-study/tree/master/grpc-tracing-example" title="Title" target="_blank" rel="noopener">案例分享</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/03/11/GO-Tracing/" data-id="cjuwblb700001o4f5w8m6yxeb" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GO-Grpc-tracing/">GO Grpc tracing</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/03/16/protoful - 各种文件生成（手记）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          protoful 集中记录
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/03/02/GO-GRPC-GATEWAY/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">GO-grpc-Gateway 的安装与编译(WIN环境)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Envoy-grpc-restful/">Envoy grpc restful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-NSQ/">GO Grpc NSQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-tracing/">GO Grpc tracing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-interceptor-JWT/">GO interceptor JWT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-json/">GO json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-权限管理/">GO 权限管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git-fork、pr/">Git fork、pr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Protocol-Buffer/">Protocol Buffer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gRPC/">gRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protoful/">protoful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务/">微服务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务-GRPC/">微服务 GRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/端口/">端口</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Envoy-grpc-restful/" style="font-size: 10px;">Envoy grpc restful</a> <a href="/tags/GO-Grpc-NSQ/" style="font-size: 10px;">GO Grpc NSQ</a> <a href="/tags/GO-Grpc-tracing/" style="font-size: 10px;">GO Grpc tracing</a> <a href="/tags/GO-interceptor-JWT/" style="font-size: 10px;">GO interceptor JWT</a> <a href="/tags/GO-json/" style="font-size: 10px;">GO json</a> <a href="/tags/GO-权限管理/" style="font-size: 10px;">GO 权限管理</a> <a href="/tags/Git-fork、pr/" style="font-size: 10px;">Git fork、pr</a> <a href="/tags/Protocol-Buffer/" style="font-size: 10px;">Protocol Buffer</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/Redux/" style="font-size: 10px;">Redux</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/gRPC/" style="font-size: 10px;">gRPC</a> <a href="/tags/protoful/" style="font-size: 10px;">protoful</a> <a href="/tags/微服务/" style="font-size: 20px;">微服务</a> <a href="/tags/微服务-GRPC/" style="font-size: 15px;">微服务 GRPC</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/04/25/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/25/Git fork、pr的开发模式/">Git fork、pr的开发模式</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/02/GO-json/">GO json的操作</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/28/浏览器避免使用之端口/">坑爹的端口集</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/16/GO-NSQ/">NSQ(有赞版)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

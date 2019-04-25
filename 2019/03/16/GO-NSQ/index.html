@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>NSQ(有赞版) | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="NSQ参数说明 请参阅 NSQ参数 ####核心概念  Topic ——一个topic就是程序发布消息的一个逻辑键，当程序第一次发布消息时就会创建topic。  Channels ——channel组与消费者相关，是消费者之间的负载均衡，channel在某种意义上来说是一个“队列”。每当一个发布者发送一条消息到一个topic，消息会被复制到所有消费者连接的channel上，消费者通过这个特殊的ch">
+<meta name="keywords" content="GO Grpc NSQ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NSQ(有赞版)">
+<meta property="og:url" content="http://yoursite.com/2019/03/16/GO-NSQ/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="NSQ参数说明 请参阅 NSQ参数 ####核心概念  Topic ——一个topic就是程序发布消息的一个逻辑键，当程序第一次发布消息时就会创建topic。  Channels ——channel组与消费者相关，是消费者之间的负载均衡，channel在某种意义上来说是一个“队列”。每当一个发布者发送一条消息到一个topic，消息会被复制到所有消费者连接的channel上，消费者通过这个特殊的ch">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-03-20T08:34:21.168Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NSQ(有赞版)">
+<meta name="twitter:description" content="NSQ参数说明 请参阅 NSQ参数 ####核心概念  Topic ——一个topic就是程序发布消息的一个逻辑键，当程序第一次发布消息时就会创建topic。  Channels ——channel组与消费者相关，是消费者之间的负载均衡，channel在某种意义上来说是一个“队列”。每当一个发布者发送一条消息到一个topic，消息会被复制到所有消费者连接的channel上，消费者通过这个特殊的ch">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-GO-NSQ" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/16/GO-NSQ/" class="article-date">
+  <time datetime="2019-03-15T16:00:00.000Z" itemprop="datePublished">2019-03-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      NSQ(有赞版)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>NSQ参数说明 请参阅 <a href="wiki.jikexueyuan.com/project/nsq-guide/nsqd.html" title="Title">NSQ参数</a></p>
+<p>####核心概念</p>
+<ul>
+<li><p>Topic ——一个topic就是程序发布消息的一个逻辑键，当程序第一次发布消息时就会创建topic。</p>
+</li>
+<li><p>Channels ——channel组与消费者相关，是消费者之间的负载均衡，channel在某种意义上来说是一个“队列”。每当一个发布者发送一条消息到一个topic，消息会被复制到所有消费者连接的channel上，消费者通过这个特殊的channel读取消息，实际上，在消费者第一次订阅时就会创建channel。</p>
+</li>
+<li><p>Channel会将消息进行排列，如果没有消费者读取消息，消息首先会在内存中排队，当量太大时就会被保存到磁盘中。</p>
+</li>
+<li><p>Message s——消息构成了我们数据流的中坚力量，消费者可以选择结束消息，表明它们正在被正常处理，或者重新将他们排队待到后面再进行处理。每个消息包含传递尝试的次数，当消息传递超过一定的阀值次数时，我们应该放弃这些消息，或者作为额外消息进行处理。</p>
+</li>
+<li><p>NSQ在操作期间同样运行着两个程序：</p>
+<ul>
+<li><p>Nsqd ——nsqd守护进程是NSQ的核心部分，它是一个单独的监听某个端口进来的消息的二进制程序。每个nsqd节点都独立运行，不共享任何状态。当一个节点启动时，它向一组nsqlookupd节点进行注册操作，并将保存在此节点上的topic和channel进行广播。</p>
+<p>   客户端可以发布消息到nsqd守护进程上，或者从nsqd守护进程上读取消息。通常，消息发布者会向一个单一的local nsqd发布消息，消费者从连接了的一组nsqd节点的topic上远程读取消息。如果你不关心动态添加节点功能，你可以直接运行standalone模式。</p>
+</li>
+<li><p>Nsqlookupd ——nsqlookupd服务器像consul或etcd那样工作，只是它被设计得没有协调和强一致性能力。每个nsqlookupd都作为nsqd节点注册信息的短暂数据存储区。消费者连接这些节点去检测需要从哪个nsqd节点上读取消息。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>####NSQ  组件</p>
+<ul>
+<li><p>nsqd 是一个守护进程，负责接收，排队，投递消息给客户端。</p>
+</li>
+<li><p>nsqlookupd 是守护进程负责管理拓扑信息。</p>
+<p>  客户端通过查询 nsqlookupd 来发现指定话题（topic）的生产者，并且 nsqd 节点广播话题（topic）和通道（channel）信息。</p>
+<p>  有两个接口：TCP 接口，nsqd 用它来广播。HTTP 接口，客户端用它来发现和管理。</p>
+</li>
+<li><p>nsqadmin 是一套 WEB UI，用来汇集集群的实时统计，并执行不同的管理任务。</p>
+</li>
+</ul>
+<p>Linux 下安装</p>
+<ul>
+<li>安装使用  nsq环境<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">1、获取docker 镜像</span><br><span class="line">docker pull nsqio/nsq</span><br><span class="line"></span><br><span class="line">2、运行 nsqlookupd</span><br><span class="line">docker run -d --name nsqlookupd -p 4160:4160 -p 4161:4161 nsqio/nsq /nsqlookupd</span><br><span class="line"></span><br><span class="line">- -http-address=&quot;0.0.0.0:4161&quot;: &lt;addr&gt;:&lt;port&gt; 监听 HTTP 客户端</span><br><span class="line"></span><br><span class="line">- -tcp-address=&quot;0.0.0.0:4160&quot;: TCP 客户端监听的 &lt;addr&gt;:&lt;port&gt; </span><br><span class="line"></span><br><span class="line">3 docker 运行 nsqd</span><br><span class="line">docker run --name nsqd -p 4150:4150 -p 4151:4151 nsqio/nsq /nsqd --broadcast-address=127.0.0.1 --lookupd-tcp-address=127.0.0.1:4160</span><br><span class="line"></span><br><span class="line">- -broadcast-address=&quot;&quot;: 通过 lookupd  注册的地址（默认名是 OS）</span><br><span class="line"></span><br><span class="line">- -lookupd-tcp-address=: 解析 TCP 地址名字 (可能会给多次)</span><br><span class="line"></span><br><span class="line">4 docker 运行 nsqadmin</span><br><span class="line">docker run --name nsqadmin -p 4171:4171 nsqio/nsq /nsqadmin --lookupd-http-address=127.0.0.1:4161</span><br><span class="line"></span><br><span class="line">- -graphite-url=&quot;&quot;: URL to graphite HTTP 地址</span><br><span class="line"></span><br><span class="line">- -http-address=&quot;0.0.0.0:4171&quot;: &lt;addr&gt;:&lt;port&gt; HTTP clients 监听的地址和端口</span><br><span class="line"></span><br><span class="line">- -lookupd-http-address=[]: lookupd HTTP 地址 (可能会提供多次)</span><br><span class="line"></span><br><span class="line">- -notification-http-endpoint=&quot;&quot;: HTTP 端点 (完全限定) ，管理动作将会发送到</span><br><span class="line"></span><br><span class="line">- -nsqd-http-address=[]: nsqd HTTP 地址 (可能会提供多次)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="一些认识"><a href="#一些认识" class="headerlink" title="一些认识"></a>一些认识</h3><ul>
+<li><p>发布者：消息发布，只能面向具体的nsqd服务进行</p>
+<ul>
+<li>一个topic的发布者只对应一个具体的NSQD，但可以多个发布者同时向一个NSQD发送消息，他们是N:1的关系。<br>NSQD与topic是1：N的关系。</li>
+</ul>
+</li>
+<li><p>消费者：</p>
+<ul>
+<li><p>consumer要接收消息，是要连接到具体的nsqd服务的。通常我们能通过封装好的方法，基于lookupd服务来获取所有的nsqd服务地址并连接。</p>
+</li>
+<li><p>一个消费者订阅的topic分布在哪些nsqd服务中，则会直接连接。nsqd之间是绝对不会互传topic的具体数据的。下图描绘了consumer与nsqd的关系： </p>
+</li>
+<li><p>当多个nsqd服务都有相同的topic的时候，consumer要修改默认设置config.MaxInFlight才能连接。</p>
+</li>
+<li><p>consumer与topic没有直接联系，而是通过具体的channel接受数据。如果consumer退出，channel不会自动删除。 如果不再需要，需要通过http端口删除channel，否则很可能会导致磁盘空间不足。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>TEST</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">curl -d &apos;Hello Linux localhost Msg&apos; &apos;http://127.0.0.1:4151/pub?topic=test&apos;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/03/16/GO-NSQ/" data-id="cjuwblb7k0005o4f5xizmwvsp" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GO-Grpc-NSQ/">GO Grpc NSQ</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/03/28/浏览器避免使用之端口/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          坑爹的端口集
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/03/16/Envoy - 初探 /" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Envoy - 初探</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Envoy-grpc-restful/">Envoy grpc restful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-NSQ/">GO Grpc NSQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-tracing/">GO Grpc tracing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-interceptor-JWT/">GO interceptor JWT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-json/">GO json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-权限管理/">GO 权限管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git-fork、pr/">Git fork、pr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Protocol-Buffer/">Protocol Buffer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gRPC/">gRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protoful/">protoful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务/">微服务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务-GRPC/">微服务 GRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/端口/">端口</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Envoy-grpc-restful/" style="font-size: 10px;">Envoy grpc restful</a> <a href="/tags/GO-Grpc-NSQ/" style="font-size: 10px;">GO Grpc NSQ</a> <a href="/tags/GO-Grpc-tracing/" style="font-size: 10px;">GO Grpc tracing</a> <a href="/tags/GO-interceptor-JWT/" style="font-size: 10px;">GO interceptor JWT</a> <a href="/tags/GO-json/" style="font-size: 10px;">GO json</a> <a href="/tags/GO-权限管理/" style="font-size: 10px;">GO 权限管理</a> <a href="/tags/Git-fork、pr/" style="font-size: 10px;">Git fork、pr</a> <a href="/tags/Protocol-Buffer/" style="font-size: 10px;">Protocol Buffer</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/Redux/" style="font-size: 10px;">Redux</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/gRPC/" style="font-size: 10px;">gRPC</a> <a href="/tags/protoful/" style="font-size: 10px;">protoful</a> <a href="/tags/微服务/" style="font-size: 20px;">微服务</a> <a href="/tags/微服务-GRPC/" style="font-size: 15px;">微服务 GRPC</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/04/25/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/25/Git fork、pr的开发模式/">Git fork、pr的开发模式</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/02/GO-json/">GO json的操作</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/28/浏览器避免使用之端口/">坑爹的端口集</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/16/GO-NSQ/">NSQ(有赞版)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

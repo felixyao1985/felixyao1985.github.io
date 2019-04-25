@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>MobX 状态管理 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Github 项目 一直以来Vue的状态管理就一直让人很混乱，多人合作开发的大项目对状态管理会让人很烦躁。无意间发现了Mobx这个项目，他能很好的解决此部分问题。使Vue变成单纯的视图层工具，将数据状态剥离出框架，以便更好的管理与切换前端技术栈。 建议使用Mobx 前需要对 vue-class-component 和 装饰器 有所了解。（虽然也支持传统写法）有同事吐槽过 这样结合把VUE变成了re">
+<meta name="keywords" content="Redux,React,Vue">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MobX 状态管理">
+<meta property="og:url" content="http://yoursite.com/2018/03/28/MobX/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Github 项目 一直以来Vue的状态管理就一直让人很混乱，多人合作开发的大项目对状态管理会让人很烦躁。无意间发现了Mobx这个项目，他能很好的解决此部分问题。使Vue变成单纯的视图层工具，将数据状态剥离出框架，以便更好的管理与切换前端技术栈。 建议使用Mobx 前需要对 vue-class-component 和 装饰器 有所了解。（虽然也支持传统写法）有同事吐槽过 这样结合把VUE变成了re">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-04-15T03:03:22.409Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MobX 状态管理">
+<meta name="twitter:description" content="Github 项目 一直以来Vue的状态管理就一直让人很混乱，多人合作开发的大项目对状态管理会让人很烦躁。无意间发现了Mobx这个项目，他能很好的解决此部分问题。使Vue变成单纯的视图层工具，将数据状态剥离出框架，以便更好的管理与切换前端技术栈。 建议使用Mobx 前需要对 vue-class-component 和 装饰器 有所了解。（虽然也支持传统写法）有同事吐槽过 这样结合把VUE变成了re">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-MobX" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/03/28/MobX/" class="article-date">
+  <time datetime="2018-03-27T16:00:00.000Z" itemprop="datePublished">2018-03-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      MobX 状态管理
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="&quot;https://github.com/mobxjs&quot;">Github 项目</a></p>
+<p>一直以来Vue的状态管理就一直让人很混乱，多人合作开发的大项目对状态管理会让人很烦躁。<br>无意间发现了Mobx这个项目，他能很好的解决此部分问题。<br>使Vue变成单纯的视图层工具，将数据状态剥离出框架，以便更好的管理与切换前端技术栈。</p>
+<p>建议使用Mobx 前需要对 vue-class-component 和 装饰器 有所了解。（虽然也支持传统写法）<br>有同事吐槽过 这样结合把VUE变成了react，但是本人倾向于各部分只专注做一件事，把数据层完全和UI层玻璃出来，会大大降低维护成本与代码可读性<br>这样 vue 就只是一个单纯的动态模板渲染引擎，就像 react 一样。</p>
+<p>安装</p>
+<p>npm i mobx-vue -S</p>
+<p>定义ViewModel</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">import &#123; action, computed, observable &#125; from &quot;mobx&quot;;</span><br><span class="line">export default class ViewModel &#123;</span><br><span class="line">    @observable age = 10;</span><br><span class="line">    @observable users = [];</span><br><span class="line"></span><br><span class="line">    @computed get computedAge() &#123;</span><br><span class="line">        return this.age + 1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @action.bound setAge() &#123;</span><br><span class="line">        this.age++;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @action.bound async fetchUsers() &#123;</span><br><span class="line">    	this.users = await http.get(&apos;/users&apos;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;section&gt;</span><br><span class="line">        &lt;p v-text=&quot;state.age&quot;&gt;&lt;/p&gt;</span><br><span class="line">        &lt;p v-text=&quot;state.computedAge&quot;&gt;&lt;/p&gt;</span><br><span class="line">        &lt;p v-for=&quot;user in state.users&quot; :key=&quot;user.name&quot;&gt;&#123;&#123;user.name&#125;&#125;&lt;/p&gt;</span><br><span class="line">        &lt;button @click=&quot;state.setAge&quot;&gt;&lt;/button&gt;</span><br><span class="line">    &lt;/section&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script lang=&quot;ts&quot;&gt;</span><br><span class="line">	import Vue from &quot;vue&quot;;</span><br><span class="line">	import Component from &quot;vue-class-component&quot;;</span><br><span class="line">	import &#123; Observer &#125; from &quot;mobx-vue&quot;;</span><br><span class="line">	import ViewModel from &quot;./ViewModel&quot;;</span><br><span class="line"></span><br><span class="line">	@Observer</span><br><span class="line">	@Component</span><br><span class="line">	export default class App extends Vue &#123;</span><br><span class="line">		state = new ViewModel()</span><br><span class="line">		mounted() &#123; </span><br><span class="line">		    this.state.fetchUsers();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">或者</span><br><span class="line">&lt;script lang=&quot;ts&quot;&gt;</span><br><span class="line">	@Connect(new ViewModel())</span><br><span class="line">	@Component()</span><br><span class="line">	export default class App extends Vue &#123;</span><br><span class="line"></span><br><span class="line">		mounted() &#123; </span><br><span class="line">			this.fetchUsers();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/03/28/MobX/" data-id="cjuwblb8i000ho4f5bzye61or" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redux/">Redux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Vue/">Vue</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/02/11/GO-casbin 随手记/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          GO-casbin 随手记
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/03/28/微服务框架技术栈之Protocol Buffer/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">微服务框架技术栈之Protocol Buffer</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Envoy-grpc-restful/">Envoy grpc restful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-NSQ/">GO Grpc NSQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-tracing/">GO Grpc tracing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-interceptor-JWT/">GO interceptor JWT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-json/">GO json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-权限管理/">GO 权限管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git-fork、pr/">Git fork、pr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Protocol-Buffer/">Protocol Buffer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gRPC/">gRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protoful/">protoful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务/">微服务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务-GRPC/">微服务 GRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/端口/">端口</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Envoy-grpc-restful/" style="font-size: 10px;">Envoy grpc restful</a> <a href="/tags/GO-Grpc-NSQ/" style="font-size: 10px;">GO Grpc NSQ</a> <a href="/tags/GO-Grpc-tracing/" style="font-size: 10px;">GO Grpc tracing</a> <a href="/tags/GO-interceptor-JWT/" style="font-size: 10px;">GO interceptor JWT</a> <a href="/tags/GO-json/" style="font-size: 10px;">GO json</a> <a href="/tags/GO-权限管理/" style="font-size: 10px;">GO 权限管理</a> <a href="/tags/Git-fork、pr/" style="font-size: 10px;">Git fork、pr</a> <a href="/tags/Protocol-Buffer/" style="font-size: 10px;">Protocol Buffer</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/Redux/" style="font-size: 10px;">Redux</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/gRPC/" style="font-size: 10px;">gRPC</a> <a href="/tags/protoful/" style="font-size: 10px;">protoful</a> <a href="/tags/微服务/" style="font-size: 20px;">微服务</a> <a href="/tags/微服务-GRPC/" style="font-size: 15px;">微服务 GRPC</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/04/25/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/25/Git fork、pr的开发模式/">Git fork、pr的开发模式</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/02/GO-json/">GO json的操作</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/28/浏览器避免使用之端口/">坑爹的端口集</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/16/GO-NSQ/">NSQ(有赞版)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

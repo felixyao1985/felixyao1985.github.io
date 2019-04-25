@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>微服务架构(选型方案) | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="微服务选型方案微服务架构的定义：1、一些列的独立的服务共同组成系统2、单独部署，跑在自己的进程中3、每个服务为独立的业务开发4、分布式管理5、非常强调隔离性 其标准是：1、分布式服务组成的系统2、按照业务，而不是技术来划分组织3、做有生命的产品而不是项目4、强服务个体和弱通信（ Smart endpoints and dumb pipes ）5、自动化运维（ DevOps ）6、高度容错性7、快速">
+<meta name="keywords" content="微服务">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微服务架构(选型方案)">
+<meta property="og:url" content="http://yoursite.com/2018/03/28/微服务架构(选型方案）/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="微服务选型方案微服务架构的定义：1、一些列的独立的服务共同组成系统2、单独部署，跑在自己的进程中3、每个服务为独立的业务开发4、分布式管理5、非常强调隔离性 其标准是：1、分布式服务组成的系统2、按照业务，而不是技术来划分组织3、做有生命的产品而不是项目4、强服务个体和弱通信（ Smart endpoints and dumb pipes ）5、自动化运维（ DevOps ）6、高度容错性7、快速">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-03-29T09:01:56.757Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="微服务架构(选型方案)">
+<meta name="twitter:description" content="微服务选型方案微服务架构的定义：1、一些列的独立的服务共同组成系统2、单独部署，跑在自己的进程中3、每个服务为独立的业务开发4、分布式管理5、非常强调隔离性 其标准是：1、分布式服务组成的系统2、按照业务，而不是技术来划分组织3、做有生命的产品而不是项目4、强服务个体和弱通信（ Smart endpoints and dumb pipes ）5、自动化运维（ DevOps ）6、高度容错性7、快速">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-微服务架构(选型方案）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/03/28/微服务架构(选型方案）/" class="article-date">
+  <time datetime="2018-03-27T16:00:00.000Z" itemprop="datePublished">2018-03-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      微服务架构(选型方案)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="微服务选型方案"><a href="#微服务选型方案" class="headerlink" title="微服务选型方案"></a>微服务选型方案</h1><h3 id="微服务架构的定义："><a href="#微服务架构的定义：" class="headerlink" title="微服务架构的定义："></a>微服务架构的定义：</h3><p>1、一些列的独立的服务共同组成系统<br>2、单独部署，跑在自己的进程中<br>3、每个服务为独立的业务开发<br>4、分布式管理<br>5、非常强调隔离性</p>
+<h3 id="其标准是："><a href="#其标准是：" class="headerlink" title="其标准是："></a>其标准是：</h3><p>1、分布式服务组成的系统<br>2、按照业务，而不是技术来划分组织<br>3、做有生命的产品而不是项目<br>4、强服务个体和弱通信（ Smart endpoints and dumb pipes ）<br>5、自动化运维（ DevOps ）<br>6、高度容错性<br>7、快速演化和迭代</p>
+<p>我们现在的业务很复杂，系统项目也很多。而微服务的学习和落地拥有一定的成本，所以我这边将实施分为三个阶段</p>
+<h6 id="1、准备："><a href="#1、准备：" class="headerlink" title="1、准备："></a>1、准备：</h6><p>①选择切入点<br>②技术选型</p>
+<h6 id="2、开始："><a href="#2、开始：" class="headerlink" title="2、开始："></a>2、开始：</h6><p>①解决客户端如何访问这些服务<br>②每个服务之间的通信<br>③解决服务的容器管理，水平部署，负载均衡等</p>
+<h6 id="3、管理："><a href="#3、管理：" class="headerlink" title="3、管理："></a>3、管理：</h6><p>①优化填坑<br>②自动部署、自动发布、自动注册、自动发现<br>③监控服务<br>④应急机制</p>
+<h3 id="准备："><a href="#准备：" class="headerlink" title="准备："></a>准备：</h3><p>微服务架构有七个关键点：<br>服务框架<br>运行时支撑服务<br>服务安全<br>后台服务<br>服务容错<br>服务监控<br>服务部署平台<br>我们需要选择几个关键点进行研究，以“最小可用”为目标开始，逐步优化架构已完成所有微服务架构指标。</p>
+<h4 id="服务框架"><a href="#服务框架" class="headerlink" title="服务框架"></a>服务框架</h4><p>gRPC：是谷歌近年新推的一套 RPC 框架，基于 protobuf 的强契约编程模型，能自动生成各种语言客户端，且保证互操作。支持 HTTP2 是 gRPC 的一大亮点，通讯层性能比 HTTP 有很大改进。</p>
+<p>Protobuf： 是 Google 的一种数据交换的格式，是一套结构数据序列化机制。用户通过编写 proto 文件来定义 protobuf 的数据结构，一个简单的 proto 文件是由一个 message 结构体和一个 service 结构体组成。</p>
+<h5 id="运行时支撑服务"><a href="#运行时支撑服务" class="headerlink" title="运行时支撑服务"></a>运行时支撑服务</h5><p>服务注册中心:在Docker技术的基础上，为容器化的应用提供部署运行、资源调度、服务发现和动态伸缩等一系列完整功能，提高了大规模容器集群管理的便捷性。<br>Etcd：一个高可用，分布式，一致的key-value存储，用来共享配置和服务发现（把缓存服务器和数据库从docker分离出去）<br>k8s：具有完备的集群管理能力，多扩多层次的安全防护和准入机制、多租户应用支撑能力、透明的服务注册和发现机制、內建智能负载均衡器、强大的故障发现和自我修复能力、服务滚动升级和在线扩容能力、可扩展的资源自动调度机制以及多粒度的资源配额管理能力。（做微服务的管理）</p>
+<h5 id="服务路由网管"><a href="#服务路由网管" class="headerlink" title="服务路由网管"></a>服务路由网管</h5><h6 id="建立服务网关"><a href="#建立服务网关" class="headerlink" title="建立服务网关"></a>建立服务网关</h6><pre><code>服务网关 = 路由转发 + 过滤器
+</code></pre><p>1、路由转发：接收一切外界请求，转发到后端的微服务上去；<br>2、过滤器：在服务网关中可以完成一系列的横切功能，例如权限校验、限流以及监控等，这些都可以通过过滤器完成（其实路由转发也是通过过滤器实现的）</p>
+<h6 id="集中式配置中心"><a href="#集中式配置中心" class="headerlink" title="集中式配置中心"></a>集中式配置中心</h6><p>选型一个合格的配置中心，至少需要满足如下4个核心需求：<br>1.非开发环境下应用配置的保密性，避免将关键配置写入源代码<br>2.不同部署环境下应用配置的隔离性，比如非生产环境的配置不能用于生产环境<br>3.同一部署环境下的服务器应用配置的一致性，即所有服务器使用同一份配置<br>4.分布式环境下应用配置的可管理性，即提供远程管理配置的能力<br>该部分有很多方法达成，比如jenkins的环境部署，docker配置文件等等，所以在一开始不需要考虑这部分</p>
+<h6 id="服务监控"><a href="#服务监控" class="headerlink" title="服务监控"></a>服务监控</h6><p>主要包括日志监控，调用链监控，Metrics 监控，健康检查和告警通知等。<br>服务容错<br>①重试机制<br>②限流<br>③熔断机制<br>④负载均衡<br>⑤降级（本地缓存）<br>后台服务<br>后台服务主要包括消息系统，分布式缓存，分布式数据访问层和任务调度系统。<br>服务安全选型<br>1．使用支持 OAuth 2.0 和 OpenID Connect 标准协议的授权服务器（个人建议定制自研）；<br>2．使用 API 网关作为单一访问入口，统一实现安全治理；<br>3．客户在访问微服务之前，先通过授权服务器登录获取 access token，然后将 access token 和请求一起发送到网关；<br>4．网关获取 access token，通过授权服务器校验 token，同时做 token 转换获取 JWT token。<br>5．网关将 JWT Token 和请求一起转发到后台微服务；<br>6．JWT 中可以存储用户会话信息，该信息可以传递给后台的微服务，也可以在微服务之间传递，用作认证授权等用途；<br>7．每个微服务包含 JWT 客户端，能够解密 JWT 并获取其中的用户会话信息。<br>8．整个方案中，access token 是一种 by reference token，不包含用户信息可以直接暴露在公网上；JWT token 是一种 by value token，可以包含用户信息但不暴露在公网上。</p>
+<h5 id="服务部署平台选型"><a href="#服务部署平台选型" class="headerlink" title="### 服务部署平台选型"></a>### 服务部署平台选型</h5><p>容器已经被社区接受为交付微服务的一种理想手段，可以实现不可变（immutable）发布模式。<br>一个轻量级的基于容器的服务部署平台主要包括容器资源调度，发布系统，镜像治理，资源治理和 IAM 等模块。<br>1.简化发布流程如下：<br>2.应用通过 CI 集成后生成镜像，用户将镜像推到镜像治理中心；<br>3.用户在资产治理中心申请发布，填报应用，发布和配额相关信息，然后等待审批通过；<br>4.发布审批通过，开发人员通过发布控制台发布应用；<br>5.发布系统通过查询资产治理中心获取发布规格信息；<br>6.发布系统向容器云发出启动容器实例指令；<br>7.容器云从镜像治理中心拉取镜像并启动容器；<br>8.容器内服务启动后自注册到服务注册中心，并保持定期心跳；<br>9.用户通过发布系统调用服务注册中心调拨流量，实现蓝绿，金丝雀或灰度发布等机制；<br>10.网关和内部微服务客户端定期同步服务注册中心上的服务路由表，将流量按负载均衡策略分发到新的服务实例上。</p>
+<p>另外，持续交付流水线（CD Pipeline）也是微服务发布重要环节，这块主要和研发流程相关，一般需要企业定制，下面是一个可供参考的流水线模型，在镜像治理中心上封装一些轻量级的治理流程，例如只有通过测试环境测试的镜像才能升级发布到 UAT 环境，只有通过 UAT 环境测试的镜像才能升级发布到生产环境，通过在流水线上设置一些质量门，保障应用高质量交付到生产。</p>
+<h3 id="开始："><a href="#开始：" class="headerlink" title="开始："></a>开始：</h3><p>使用 Kubernetes来管理 Docker 集群，当 Kubernetes 满足不了需求时，可在部署平台开发相应的功能来满足开发查看日志、监控和报警等需求，尽量避免登录主机和容器。<br>实现了基于Docker集群的部署系统，便于开发者便捷地部署自己的应用程序。最终达到部署环境干净一致，可重复部署、迅速扩容和回滚。<br>容器管理平台构架图<br>容器管理平台主要功能有集群管理和状态展示、灰度发布和代码回退、组件模板、应用管理、镜像仓库和权限管理等。它采用前后端分离的架构，前端使用 JS 渲染，后端使用 Python 提供 API。这样开发者可以快速的进行发布和回退操作。<br>容器管理平台在应用发布流程，集群调度策略，k8s节点网络架构，阿里云支持，基础监控指标等方面进行了优化改进。</p>
+<p>应用发布流程<br>新的发布系统是用户提交代码后，在发布系统选择要部署的commit，点击构建以后，系统会自动编译，打包成镜像，推送镜像仓库。如果构建成功，用户点击发布新版本的实例，灰度没有问题，全量，下线老版本的实例。回退时代码不需要构建，直接发布老版本实例。在某段时间内，新老版本是同时存在的。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/03/28/微服务架构(选型方案）/" data-id="cjuwblbao001co4f5x0me1950" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/微服务/">微服务</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/03/28/微服务框架技术栈之Protocol Buffer/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          微服务框架技术栈之Protocol Buffer
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/03/28/微服务架构(初探)/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">微服务架构(初探)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Envoy-grpc-restful/">Envoy grpc restful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-NSQ/">GO Grpc NSQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-tracing/">GO Grpc tracing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-interceptor-JWT/">GO interceptor JWT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-json/">GO json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-权限管理/">GO 权限管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git-fork、pr/">Git fork、pr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Protocol-Buffer/">Protocol Buffer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gRPC/">gRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protoful/">protoful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务/">微服务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务-GRPC/">微服务 GRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/端口/">端口</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Envoy-grpc-restful/" style="font-size: 10px;">Envoy grpc restful</a> <a href="/tags/GO-Grpc-NSQ/" style="font-size: 10px;">GO Grpc NSQ</a> <a href="/tags/GO-Grpc-tracing/" style="font-size: 10px;">GO Grpc tracing</a> <a href="/tags/GO-interceptor-JWT/" style="font-size: 10px;">GO interceptor JWT</a> <a href="/tags/GO-json/" style="font-size: 10px;">GO json</a> <a href="/tags/GO-权限管理/" style="font-size: 10px;">GO 权限管理</a> <a href="/tags/Git-fork、pr/" style="font-size: 10px;">Git fork、pr</a> <a href="/tags/Protocol-Buffer/" style="font-size: 10px;">Protocol Buffer</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/Redux/" style="font-size: 10px;">Redux</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/gRPC/" style="font-size: 10px;">gRPC</a> <a href="/tags/protoful/" style="font-size: 10px;">protoful</a> <a href="/tags/微服务/" style="font-size: 20px;">微服务</a> <a href="/tags/微服务-GRPC/" style="font-size: 15px;">微服务 GRPC</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/04/25/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/25/Git fork、pr的开发模式/">Git fork、pr的开发模式</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/02/GO-json/">GO json的操作</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/28/浏览器避免使用之端口/">坑爹的端口集</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/16/GO-NSQ/">NSQ(有赞版)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
