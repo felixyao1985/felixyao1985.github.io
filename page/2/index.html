@@ -5,17 +5,17 @@
   
 
   
-  <title>Hexo</title>
+  <title>Felix Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
+<meta property="og:title" content="Felix Blog">
 <meta property="og:url" content="http://yoursite.com/page/2/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="Felix Blog">
 <meta property="og:locale" content="default">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="Felix Blog">
   
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="Felix Blog" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -34,7 +34,7 @@
   <div id="header-outer" class="outer">
     <div id="header-title" class="inner">
       <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
+        <a href="/" id="logo">Felix Blog</a>
       </h1>
       
     </div>
@@ -61,6 +61,62 @@
 </header>
       <div class="outer">
         <section id="main">
+  
+    <article id="post-GO-interceptor" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/02/16/GO-interceptor/" class="article-date">
+  <time datetime="2019-02-15T16:00:00.000Z" itemprop="datePublished">2019-02-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/02/16/GO-interceptor/">GO-interceptor</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>引用  <a href="https://studygolang.com/articles/15389?fr=sidebar&quot;With a Title&quot;" target="_blank" rel="noopener">带入gRPC：Unary and Stream interceptor</a>. </p>
+<h2 id="interceptor-（拦截器）"><a href="#interceptor-（拦截器）" class="headerlink" title="interceptor （拦截器）"></a>interceptor （拦截器）</h2><p>在 grpc 中进行通信前 与 后的逻辑处理</p>
+<p>在 gRPC 中，大类可分为两种 RPC 方法，与拦截器的对应关系是：</p>
+<ul>
+<li><p>普通方法：一元拦截器（grpc.UnaryInterceptor）</p>
+</li>
+<li><p>流方法：流拦截器（grpc.StreamInterceptor）</p>
+</li>
+</ul>
+<p>常规实现方式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">var opts []grpc.ServerOption</span><br><span class="line">// 注册interceptor</span><br><span class="line">var interceptor grpc.UnaryServerInterceptor</span><br><span class="line">interceptor = func(ctx context.Context, req interface&#123;&#125;, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface&#123;&#125;, err error) &#123;</span><br><span class="line"></span><br><span class="line">    /*</span><br><span class="line">        一些中间逻辑代码</span><br><span class="line">    */</span><br><span class="line">    return handler(ctx, req)</span><br><span class="line">&#125;</span><br><span class="line">opts = append(opts, grpc.UnaryInterceptor(interceptor))</span><br></pre></td></tr></table></figure></p>
+<p>grpc 本身只能设置一个拦截器，为了避免所有逻辑都写在可以 可以使用(go-grpc-middleware)来处理</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">import &quot;github.com/grpc-ecosystem/go-grpc-middleware&quot;</span><br><span class="line"></span><br><span class="line">//RPC 方法的入参出参的日志输出</span><br><span class="line">func LoggingInterceptor(ctx context.Context, req interface&#123;&#125;, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface&#123;&#125;, error) &#123;</span><br><span class="line">    log.Printf(&quot;gRPC method: %s, %v&quot;, info.FullMethod, req)</span><br><span class="line">    resp, err := handler(ctx, req)</span><br><span class="line">    log.Printf(&quot;gRPC method: %s, %v&quot;, info.FullMethod, resp)</span><br><span class="line">    return resp, err</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//RPC 方法的异常保护和日志输出</span><br><span class="line">func RecoveryInterceptor(ctx context.Context, req interface&#123;&#125;, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface&#123;&#125;, err error) &#123;</span><br><span class="line">    defer func() &#123;</span><br><span class="line">        if e := recover(); e != nil &#123;</span><br><span class="line">            debug.PrintStack()</span><br><span class="line">            err = status.Errorf(codes.Internal, &quot;Panic err: %v&quot;, e)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;()</span><br><span class="line"></span><br><span class="line">    return handler(ctx, req)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">myServer := grpc.NewServer(</span><br><span class="line">    grpc.Creds(c), //安全通信,处理证书认证相关</span><br><span class="line">    grpc.StreamInterceptor(grpc_middleware.ChainStreamServer(</span><br><span class="line">        ...</span><br><span class="line">    )),</span><br><span class="line">    grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(</span><br><span class="line">       ...</span><br><span class="line">    )),</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">or </span><br><span class="line"></span><br><span class="line">opts := []grpc.ServerOption&#123;</span><br><span class="line">    grpc.Creds(c),</span><br><span class="line">    grpc_middleware.WithUnaryServerChain(</span><br><span class="line">        RecoveryInterceptor,</span><br><span class="line">        LoggingInterceptor,</span><br><span class="line">    ),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>请参阅 <a href="https://github.com/felixyao1985/rbac-grpc-interceptor" title="Title" target="_blank" rel="noopener">案例分享</a></p>
+<p>##JWT - GO</p>
+<p>现成的库，不是官方，但是星高！有很多方法可以使用</p>
+<p>github.com/dgrijalva/jwt-go </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line">测试Token</span><br><span class="line">*/</span><br><span class="line">Token,_ := jwt.GenerateToken(&quot;felix&quot;,&quot;123456&quot;)</span><br><span class="line">fmt.Println(Token)</span><br><span class="line">jwt.ParseToken(Token.Token)</span><br></pre></td></tr></table></figure>
+<p>请参阅 <a href="https://github.com/felixyao1985/go-grpc-gateway-examples/blob/master/jwt/middleware.go" title="Title" target="_blank" rel="noopener">JWT中间件</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/02/16/GO-interceptor/" data-id="cjuwcasbk0009esf52kebjzya" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GO-interceptor-JWT/">GO interceptor JWT</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
   
     <article id="post-同一主机下的Docker 部署" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
@@ -124,66 +180,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/02/16/同一主机下的Docker 部署/" data-id="cjuwblb88000fo4f5l1x77wut" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/02/16/同一主机下的Docker 部署/" data-id="cjuwcasce000lesf5lr136m96" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/">Docker</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-GO-interceptor" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/02/16/GO-interceptor/" class="article-date">
-  <time datetime="2019-02-15T16:00:00.000Z" itemprop="datePublished">2019-02-16</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/02/16/GO-interceptor/">GO-interceptor</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>引用  <a href="https://studygolang.com/articles/15389?fr=sidebar&quot;With a Title&quot;" target="_blank" rel="noopener">带入gRPC：Unary and Stream interceptor</a>. </p>
-<h2 id="interceptor-（拦截器）"><a href="#interceptor-（拦截器）" class="headerlink" title="interceptor （拦截器）"></a>interceptor （拦截器）</h2><p>在 grpc 中进行通信前 与 后的逻辑处理</p>
-<p>在 gRPC 中，大类可分为两种 RPC 方法，与拦截器的对应关系是：</p>
-<ul>
-<li><p>普通方法：一元拦截器（grpc.UnaryInterceptor）</p>
-</li>
-<li><p>流方法：流拦截器（grpc.StreamInterceptor）</p>
-</li>
-</ul>
-<p>常规实现方式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">var opts []grpc.ServerOption</span><br><span class="line">// 注册interceptor</span><br><span class="line">var interceptor grpc.UnaryServerInterceptor</span><br><span class="line">interceptor = func(ctx context.Context, req interface&#123;&#125;, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface&#123;&#125;, err error) &#123;</span><br><span class="line"></span><br><span class="line">    /*</span><br><span class="line">        一些中间逻辑代码</span><br><span class="line">    */</span><br><span class="line">    return handler(ctx, req)</span><br><span class="line">&#125;</span><br><span class="line">opts = append(opts, grpc.UnaryInterceptor(interceptor))</span><br></pre></td></tr></table></figure></p>
-<p>grpc 本身只能设置一个拦截器，为了避免所有逻辑都写在可以 可以使用(go-grpc-middleware)来处理</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">import &quot;github.com/grpc-ecosystem/go-grpc-middleware&quot;</span><br><span class="line"></span><br><span class="line">//RPC 方法的入参出参的日志输出</span><br><span class="line">func LoggingInterceptor(ctx context.Context, req interface&#123;&#125;, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface&#123;&#125;, error) &#123;</span><br><span class="line">    log.Printf(&quot;gRPC method: %s, %v&quot;, info.FullMethod, req)</span><br><span class="line">    resp, err := handler(ctx, req)</span><br><span class="line">    log.Printf(&quot;gRPC method: %s, %v&quot;, info.FullMethod, resp)</span><br><span class="line">    return resp, err</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//RPC 方法的异常保护和日志输出</span><br><span class="line">func RecoveryInterceptor(ctx context.Context, req interface&#123;&#125;, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface&#123;&#125;, err error) &#123;</span><br><span class="line">    defer func() &#123;</span><br><span class="line">        if e := recover(); e != nil &#123;</span><br><span class="line">            debug.PrintStack()</span><br><span class="line">            err = status.Errorf(codes.Internal, &quot;Panic err: %v&quot;, e)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;()</span><br><span class="line"></span><br><span class="line">    return handler(ctx, req)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">myServer := grpc.NewServer(</span><br><span class="line">    grpc.Creds(c), //安全通信,处理证书认证相关</span><br><span class="line">    grpc.StreamInterceptor(grpc_middleware.ChainStreamServer(</span><br><span class="line">        ...</span><br><span class="line">    )),</span><br><span class="line">    grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(</span><br><span class="line">       ...</span><br><span class="line">    )),</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">or </span><br><span class="line"></span><br><span class="line">opts := []grpc.ServerOption&#123;</span><br><span class="line">    grpc.Creds(c),</span><br><span class="line">    grpc_middleware.WithUnaryServerChain(</span><br><span class="line">        RecoveryInterceptor,</span><br><span class="line">        LoggingInterceptor,</span><br><span class="line">    ),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>请参阅 <a href="https://github.com/felixyao1985/rbac-grpc-interceptor" title="Title" target="_blank" rel="noopener">案例分享</a></p>
-<p>##JWT - GO</p>
-<p>现成的库，不是官方，但是星高！有很多方法可以使用</p>
-<p>github.com/dgrijalva/jwt-go </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line">测试Token</span><br><span class="line">*/</span><br><span class="line">Token,_ := jwt.GenerateToken(&quot;felix&quot;,&quot;123456&quot;)</span><br><span class="line">fmt.Println(Token)</span><br><span class="line">jwt.ParseToken(Token.Token)</span><br></pre></td></tr></table></figure>
-<p>请参阅 <a href="https://github.com/felixyao1985/go-grpc-gateway-examples/blob/master/jwt/middleware.go" title="Title" target="_blank" rel="noopener">JWT中间件</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/02/16/GO-interceptor/" data-id="cjuwblb7g0004o4f5fasgaoev" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GO-interceptor-JWT/">GO interceptor JWT</a></li></ul>
 
     </footer>
   </div>
@@ -240,7 +240,7 @@ casbin 实际比这个简单的例子要强大得多，你可以用声明的方�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/02/11/GO-casbin 随手记/" data-id="cjuwblb7w0009o4f5c6z3gzqd" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/02/11/GO-casbin 随手记/" data-id="cjuwcasbe0008esf5bgno5cvq" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GO-权限管理/">GO 权限管理</a></li></ul>
@@ -287,10 +287,125 @@ casbin 实际比这个简单的例子要强大得多，你可以用声明的方�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/28/MobX/" data-id="cjuwblb8i000ho4f5bzye61or" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/03/28/MobX/" data-id="cjuwcasbz000fesf57quzk0jr" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redux/">Redux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Vue/">Vue</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-微服务架构(选型方案）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/03/28/微服务架构(选型方案）/" class="article-date">
+  <time datetime="2018-03-27T16:00:00.000Z" itemprop="datePublished">2018-03-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/03/28/微服务架构(选型方案）/">微服务架构(选型方案)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="微服务选型方案"><a href="#微服务选型方案" class="headerlink" title="微服务选型方案"></a>微服务选型方案</h1><h3 id="微服务架构的定义："><a href="#微服务架构的定义：" class="headerlink" title="微服务架构的定义："></a>微服务架构的定义：</h3><p>1、一些列的独立的服务共同组成系统<br>2、单独部署，跑在自己的进程中<br>3、每个服务为独立的业务开发<br>4、分布式管理<br>5、非常强调隔离性</p>
+<h3 id="其标准是："><a href="#其标准是：" class="headerlink" title="其标准是："></a>其标准是：</h3><p>1、分布式服务组成的系统<br>2、按照业务，而不是技术来划分组织<br>3、做有生命的产品而不是项目<br>4、强服务个体和弱通信（ Smart endpoints and dumb pipes ）<br>5、自动化运维（ DevOps ）<br>6、高度容错性<br>7、快速演化和迭代</p>
+<p>我们现在的业务很复杂，系统项目也很多。而微服务的学习和落地拥有一定的成本，所以我这边将实施分为三个阶段</p>
+<h6 id="1、准备："><a href="#1、准备：" class="headerlink" title="1、准备："></a>1、准备：</h6><p>①选择切入点<br>②技术选型</p>
+<h6 id="2、开始："><a href="#2、开始：" class="headerlink" title="2、开始："></a>2、开始：</h6><p>①解决客户端如何访问这些服务<br>②每个服务之间的通信<br>③解决服务的容器管理，水平部署，负载均衡等</p>
+<h6 id="3、管理："><a href="#3、管理：" class="headerlink" title="3、管理："></a>3、管理：</h6><p>①优化填坑<br>②自动部署、自动发布、自动注册、自动发现<br>③监控服务<br>④应急机制</p>
+<h3 id="准备："><a href="#准备：" class="headerlink" title="准备："></a>准备：</h3><p>微服务架构有七个关键点：<br>服务框架<br>运行时支撑服务<br>服务安全<br>后台服务<br>服务容错<br>服务监控<br>服务部署平台<br>我们需要选择几个关键点进行研究，以“最小可用”为目标开始，逐步优化架构已完成所有微服务架构指标。</p>
+<h4 id="服务框架"><a href="#服务框架" class="headerlink" title="服务框架"></a>服务框架</h4><p>gRPC：是谷歌近年新推的一套 RPC 框架，基于 protobuf 的强契约编程模型，能自动生成各种语言客户端，且保证互操作。支持 HTTP2 是 gRPC 的一大亮点，通讯层性能比 HTTP 有很大改进。</p>
+<p>Protobuf： 是 Google 的一种数据交换的格式，是一套结构数据序列化机制。用户通过编写 proto 文件来定义 protobuf 的数据结构，一个简单的 proto 文件是由一个 message 结构体和一个 service 结构体组成。</p>
+<h5 id="运行时支撑服务"><a href="#运行时支撑服务" class="headerlink" title="运行时支撑服务"></a>运行时支撑服务</h5><p>服务注册中心:在Docker技术的基础上，为容器化的应用提供部署运行、资源调度、服务发现和动态伸缩等一系列完整功能，提高了大规模容器集群管理的便捷性。<br>Etcd：一个高可用，分布式，一致的key-value存储，用来共享配置和服务发现（把缓存服务器和数据库从docker分离出去）<br>k8s：具有完备的集群管理能力，多扩多层次的安全防护和准入机制、多租户应用支撑能力、透明的服务注册和发现机制、內建智能负载均衡器、强大的故障发现和自我修复能力、服务滚动升级和在线扩容能力、可扩展的资源自动调度机制以及多粒度的资源配额管理能力。（做微服务的管理）</p>
+<h5 id="服务路由网管"><a href="#服务路由网管" class="headerlink" title="服务路由网管"></a>服务路由网管</h5><h6 id="建立服务网关"><a href="#建立服务网关" class="headerlink" title="建立服务网关"></a>建立服务网关</h6><pre><code>服务网关 = 路由转发 + 过滤器
+</code></pre><p>1、路由转发：接收一切外界请求，转发到后端的微服务上去；<br>2、过滤器：在服务网关中可以完成一系列的横切功能，例如权限校验、限流以及监控等，这些都可以通过过滤器完成（其实路由转发也是通过过滤器实现的）</p>
+<h6 id="集中式配置中心"><a href="#集中式配置中心" class="headerlink" title="集中式配置中心"></a>集中式配置中心</h6><p>选型一个合格的配置中心，至少需要满足如下4个核心需求：<br>1.非开发环境下应用配置的保密性，避免将关键配置写入源代码<br>2.不同部署环境下应用配置的隔离性，比如非生产环境的配置不能用于生产环境<br>3.同一部署环境下的服务器应用配置的一致性，即所有服务器使用同一份配置<br>4.分布式环境下应用配置的可管理性，即提供远程管理配置的能力<br>该部分有很多方法达成，比如jenkins的环境部署，docker配置文件等等，所以在一开始不需要考虑这部分</p>
+<h6 id="服务监控"><a href="#服务监控" class="headerlink" title="服务监控"></a>服务监控</h6><p>主要包括日志监控，调用链监控，Metrics 监控，健康检查和告警通知等。<br>服务容错<br>①重试机制<br>②限流<br>③熔断机制<br>④负载均衡<br>⑤降级（本地缓存）<br>后台服务<br>后台服务主要包括消息系统，分布式缓存，分布式数据访问层和任务调度系统。<br>服务安全选型<br>1．使用支持 OAuth 2.0 和 OpenID Connect 标准协议的授权服务器（个人建议定制自研）；<br>2．使用 API 网关作为单一访问入口，统一实现安全治理；<br>3．客户在访问微服务之前，先通过授权服务器登录获取 access token，然后将 access token 和请求一起发送到网关；<br>4．网关获取 access token，通过授权服务器校验 token，同时做 token 转换获取 JWT token。<br>5．网关将 JWT Token 和请求一起转发到后台微服务；<br>6．JWT 中可以存储用户会话信息，该信息可以传递给后台的微服务，也可以在微服务之间传递，用作认证授权等用途；<br>7．每个微服务包含 JWT 客户端，能够解密 JWT 并获取其中的用户会话信息。<br>8．整个方案中，access token 是一种 by reference token，不包含用户信息可以直接暴露在公网上；JWT token 是一种 by value token，可以包含用户信息但不暴露在公网上。</p>
+<h5 id="服务部署平台选型"><a href="#服务部署平台选型" class="headerlink" title="### 服务部署平台选型"></a>### 服务部署平台选型</h5><p>容器已经被社区接受为交付微服务的一种理想手段，可以实现不可变（immutable）发布模式。<br>一个轻量级的基于容器的服务部署平台主要包括容器资源调度，发布系统，镜像治理，资源治理和 IAM 等模块。<br>1.简化发布流程如下：<br>2.应用通过 CI 集成后生成镜像，用户将镜像推到镜像治理中心；<br>3.用户在资产治理中心申请发布，填报应用，发布和配额相关信息，然后等待审批通过；<br>4.发布审批通过，开发人员通过发布控制台发布应用；<br>5.发布系统通过查询资产治理中心获取发布规格信息；<br>6.发布系统向容器云发出启动容器实例指令；<br>7.容器云从镜像治理中心拉取镜像并启动容器；<br>8.容器内服务启动后自注册到服务注册中心，并保持定期心跳；<br>9.用户通过发布系统调用服务注册中心调拨流量，实现蓝绿，金丝雀或灰度发布等机制；<br>10.网关和内部微服务客户端定期同步服务注册中心上的服务路由表，将流量按负载均衡策略分发到新的服务实例上。</p>
+<p>另外，持续交付流水线（CD Pipeline）也是微服务发布重要环节，这块主要和研发流程相关，一般需要企业定制，下面是一个可供参考的流水线模型，在镜像治理中心上封装一些轻量级的治理流程，例如只有通过测试环境测试的镜像才能升级发布到 UAT 环境，只有通过 UAT 环境测试的镜像才能升级发布到生产环境，通过在流水线上设置一些质量门，保障应用高质量交付到生产。</p>
+<h3 id="开始："><a href="#开始：" class="headerlink" title="开始："></a>开始：</h3><p>使用 Kubernetes来管理 Docker 集群，当 Kubernetes 满足不了需求时，可在部署平台开发相应的功能来满足开发查看日志、监控和报警等需求，尽量避免登录主机和容器。<br>实现了基于Docker集群的部署系统，便于开发者便捷地部署自己的应用程序。最终达到部署环境干净一致，可重复部署、迅速扩容和回滚。<br>容器管理平台构架图<br>容器管理平台主要功能有集群管理和状态展示、灰度发布和代码回退、组件模板、应用管理、镜像仓库和权限管理等。它采用前后端分离的架构，前端使用 JS 渲染，后端使用 Python 提供 API。这样开发者可以快速的进行发布和回退操作。<br>容器管理平台在应用发布流程，集群调度策略，k8s节点网络架构，阿里云支持，基础监控指标等方面进行了优化改进。</p>
+<p>应用发布流程<br>新的发布系统是用户提交代码后，在发布系统选择要部署的commit，点击构建以后，系统会自动编译，打包成镜像，推送镜像仓库。如果构建成功，用户点击发布新版本的实例，灰度没有问题，全量，下线老版本的实例。回退时代码不需要构建，直接发布老版本实例。在某段时间内，新老版本是同时存在的。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/03/28/微服务架构(选型方案）/" data-id="cjuwcascj000nesf5amjb4xbi" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/微服务/">微服务</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-微服务架构(初探)" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/03/28/微服务架构(初探)/" class="article-date">
+  <time datetime="2018-03-27T16:00:00.000Z" itemprop="datePublished">2018-03-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/03/28/微服务架构(初探)/">微服务架构(初探)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="微服务架构-一"><a href="#微服务架构-一" class="headerlink" title="微服务架构(一)"></a>微服务架构(一)</h1><h3 id="WHY？"><a href="#WHY？" class="headerlink" title="WHY？"></a>WHY？</h3><p>服务拆解，每个服务拆解成之做自己的业务事物，形成高度内聚的自治性。<br>2.0+采用模块化的分层式架构，所有的业务逻辑代码最终会打进一个代码库中统一部署。<br>目前遇到的问题<br>1、全部开发人员会共享一个代码库，不同模块的边界模糊，实现高内聚、松耦合极其困难。（我们现在发版经常遇到要选择部分功能上线 GIT分支合并上传就会很麻烦）<br>2、处理遗留系统，尝试去做重构改进时，会动一发而牵全身。<br>3、模块的边界轻易被穿透。</p>
+<h4 id="微服务的主要特性"><a href="#微服务的主要特性" class="headerlink" title="微服务的主要特性"></a>微服务的主要特性</h4><p>微服务架构强调每个服务一个进程。<br>独立开发与演进,隔离代码库至少让同一应用系统不同层次的开发人员享有自己完全自治的领地，每个微服务都有一个掌控者。<br>通过分解巨大单体式应用为多个服务方法解决了复杂性问题。<br>在功能不变的情况下，应用被分解为多个可管理的分支或服务。<br>微服务架构模式是每个微服务独立的部署。<br>开发者不再需要协调其它服务部署对本服务的影响。<br>这种改变可以加快部署速度。UI 团队可以采用 AB 测试，快速的部署变化。<br>微服务架构模式使得持续化部署成为可能。<br>你可以根据每个服务的规模来部署满足需求的规模。甚至于，你可以使用更适合于服务资源需求的硬件。<br>微服务架构模式使得每个服务独立扩展。</p>
+<h6 id="成本"><a href="#成本" class="headerlink" title="成本"></a>成本</h6><p>把 1 个应用进程部署到 1 台主机，部署复杂度是 1 x 1 = 1，我们有 200 台主机，那么部署复杂度是 1 x 200 = 200。<br>把 1 个应用进程拆分成了 50 个微服务进程，则部署复杂度变成了 50 x 200 = 10000。<br>部署变得复杂和麻烦多了，同时监控的进程数也大幅增加，监控的复杂度也上升了很多。<br>所以实施微服务架构是有很高成本的，只有系统的规模到了一定程度才适合。<br>微服务推崇一切自动化的文化，这也是因为其运维复杂度的乘数级飙升，<br>从开发之后的构建、测试、部署都需要一个高度自动化的环境来支撑才能有效降低边际成本。</p>
+<h6 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h6><p>每个微服务都很小，这样能聚焦一个指定的业务功能或业务需求。<br>微服务能够被小团队单独开发，这个小团队是2到5人的开发人员组成。<br>微服务是松耦合的，是有功能意义的服务，无论是在开发阶段或部署阶段都是独立的。<br>微服务能使用不同的语言开发。<br>微服务允许容易且灵活的方式集成自动部署，通过持续集成工具，如Jenkins, bamboo 。<br>一个团队的新成员能够更快投入生产。<br>微服务易于被一个开发人员理解，修改和维护，这样小团队能够更关注自己的工作成果。无需通过合作才能体现价值。<br>微服务允许你利用融合最新技术。<br>微服务只是业务逻辑的代码，不会和HTML,CSS 或其他界面组件混合。<br>微服务能够即时被要求扩展。<br>微服务能部署中低端配置的服务器上。<br>易于和第三方集成。<br>每个微服务都有自己的存储能力，可以有自己的数据库。也可以有统一数据库。</p>
+<h6 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h6><p>微服务架构可能带来过多的操作。<br>需要DevOps技巧 (<a href="http://en.wikipedia.org/wiki/DevOps)" target="_blank" rel="noopener">http://en.wikipedia.org/wiki/DevOps)</a>.</p>
+<ol>
+<li>开发（软件工程）、技术运营和质量保障（QA）三者的交集。</li>
+<li>是一组过程、方法与系统的统称，用于促进开发（应用程序/软件工程）、技术运营和质量保障（QA）部门之间的沟通、协作与整合。它的出现是由于软件行业日益清晰地认识到：为了按时交付软件产品和服务，开发和运营工作必须紧密合作。[1]</li>
+</ol>
+<p>可能双倍的努力。<br>分布式系统可能复杂难以管理。<br>因为分布部署跟踪问题难。<br>当服务数量增加，管理复杂性增加。</p>
+<h4 id="实施要点"><a href="#实施要点" class="headerlink" title="实施要点"></a>实施要点</h4><p>1.自动化文化与环境：自动构建、自动测试、自动部署。<br>2.围绕业务能力建模服务，松耦合、高内聚、暴露接口而隐藏实现细节。<br>3.服务协作模型：中心化（乐队模型：中心指挥）和去中心化（舞蹈模型：群舞自组织），各自场景不同。<br>4.服务交互方式：RPC/REST/WS 技术很多但考虑统一。<br>5.服务部署的独立性、失败隔离性、可监控性。<br>6.服务流控：降级、限流<br>7.服务恢复：多考虑故障发生如何快速恢复而非如何避免发生故障。<br>8.服务发布：灰度。<br>9.服务部署：一服务一主机模型，需要虚拟化(Hypervisor)、容器化(LXC, Docker)等技术支持，实现硬件资源隔离。<br>10.服务配置：中心化配置服务支持<br>11.康威定律：任何设计系统的组织，最终产生的设计等同于组织之内、之间的沟通结构。系统架构的设计符合组织沟通结构取得的收益最大。<br>12.伯斯塔尔法则：服务健壮性原则 —— 发送时要保守，接收时要开放。</p>
+<h3 id="网关"><a href="#网关" class="headerlink" title="网关"></a>网关</h3><p>实现一个API网关作为所有客户端的唯一入口。API网关有两种方式来处理请求。有些请求被简单地代理/路由到合适的服务上，其他的请求被转给到一组服务。</p>
+<p>相比于提供普适的API，API网关根据不同的客户端开放不同的API。比如，Netflix API网关运行着客户端特定的适配器代码，会向客户端提供最适合其需求的API。<br>API网关也可以实现安全性，比如验证客户端是否被授权进行某请求。</p>
+<h3 id="需要考虑的问题"><a href="#需要考虑的问题" class="headerlink" title="需要考虑的问题"></a>需要考虑的问题</h3><p>单个微服务代码量小，易修改和维护。但是，系统复杂度的总量是不变的，每个服务代码少了，但服务的个数肯定就多了。就跟拼图游戏一样，切的越碎，越难拼出整幅图。一个系统被拆分成零碎的微服务，最后要集成为一个完整的系统，其复杂度肯定比大块的功能集成要高很多。<br>单个微服务数据独立，可独立部署和运行。虽然微服务本身是可以独立部署和运行的，但仍然避免不了业务上的你来我往，这就涉及到要对外通信，当微服务的数量达到一定量级的时候，如何提供一个高效的集群通信机制成为一个问题。<br>单个微服务拥有自己的进程，进程本身就可以动态的启停，为无缝升级的打好了基础，但谁来启动和停止进程，什么时机，选择在哪台设备上做这件事情才是无缝升级的关键。这个能力并不是微服务本身提供的，而是需要背后强大的版本管理和部署能力。<br>多个相同的微服务可以做负载均衡，提高性能和可靠性。正是因为相同微服务可以有多个不同实例，让服务按需动态伸缩成为可能，在高峰期可以启动更多的相同的微服务实例为更多用户服务，以此提高响应速度。同时这种机制也提供了高可靠性，在某个微服务故障后，其他相同的微服务可以接替其工作，对外表现为某个设备故障后业务不中断。同样的道理，微服务本身是不会去关心系统负载的，那么什么时候应该启动更多的微服务，多个微服务的流量应该如何调度和分发，这背后也有一套复杂的负载监控和均衡的系统在起作用。<br>微服务可以独立部署和对外提供服务，微服务的业务上线和下线是动态的，当一个新的微服务上线时，用户是如何访问到这种新的服务？这就需要有一个统一的入口，新的服务可以动态的注册到这个入口上，用户每次访问时可以从这个入口拿到系统所有服务的访问地址。这个统一的系统入口并不是微服务本身的一部分，所以这种能力需要系统单独提供。<br>还有一些企业级关注的系统问题，比如，安全策略如何集中管理？系统故障如何快速审计和跟踪到具体服务？整个系统状态如何监控？服务之间的依赖关系如何管理？等等这些问题都不是单个微服务考虑的范畴，而需要有一个系统性的考虑和设计，让每个微服务都能够按照系统性的要求和约束提供对应的安全性，可靠性，可维护性的能力。<br>服务容错：当企业微服务化以后，服务之间会有错综复杂的依赖关系，例如，一个前端请求一般会依赖于多个后端服务，技术上称为1 -&gt; N扇出. 在实际生产环境中，服务往往不是百分百可靠，服务可能会出错或者产生延迟，如果一个应用不能对其依赖的故障进行容错和隔离，那么该应用本身就处在被拖垮的风险中。在一个高流量的网站中，某个单一后端一旦发生延迟，可能在数秒内导致所有应用资源(线程，队列等)被耗尽，造成所谓的雪崩效应(Cascading Failure)，严重时可致整个网站瘫痪。</p>
+<p>服务依赖</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>微服务的实施是有一定的先决条件：基础的运维能力（如监控、快速配置、快速部署）需提前构建，否则就会陷入如我们般被动的局面。推荐采用基础设施及代码的实践，通过代码来描述计算和网络基础设施的方法，使得图案度i可以快速安全的搭建和处理由新的配置代替的服务器，服务器之间可以拥有更高的一致性，降低了在“我的环境工作，而你的环境不工作”的可能，也是为后续的发布策略和运维提供更好的支撑。<br>其他要点<br>系统支撑</p>
+<h4 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h4><p>日志和审计，主要是日志的汇总，分类和查询<br>监控和告警，主要是监控每个服务的状态，必要时产生告警<br>消息总线，轻量级的MQ或HTTP<br>注册发现<br>负载均衡<br>部署和升级<br>事件调度机制<br>资源管理，如：底层的虚拟机，物理机和网络管理</p>
+<h4 id="画龙点睛"><a href="#画龙点睛" class="headerlink" title="画龙点睛"></a>画龙点睛</h4><p>认证和鉴权<br>微服务统一代码框架，支持多种编程语言<br>统一服务构建和打包<br>统一服务测试<br>微服务CI/CD流水线<br>服务依赖关系管理<br>统一问题跟踪调试框架，俗称调用链<br>灰度发布<br>蓝绿部署</p>
+<h4 id="容器（Docker）与微服务"><a href="#容器（Docker）与微服务" class="headerlink" title="容器（Docker）与微服务"></a>容器（Docker）与微服务</h4><p>•容器够小<br>–解决微服务对机器数量的诉求<br>•容器独立<br>–解决多语言问题<br>•开发环境与生产环境相同<br>–单机开发、提升效率<br>•容器效率高<br>–省钱<br>•代码/image一体化<br>–可复用管理系统<br>•容器的横向与纵向扩容<br>–可复制<br>–可动态调节CPU与内存<br>•Image管理<br>•系统安全管理<br>•授权管理<br>•系统成熟度<br>•社区成熟度<br>由于Docker引入，不同的微服务可以使用不同的技术架构，比如Node.js Java PHP Python等，这些单个的服务都可以独立完成交付生命周期<br>微服务+API + 平台的开发模式，容器化微服务的持续交付概念。 </p>
+<p>首先需要考虑构建DevOps能力，这是保证微服务架构在持续交付和应对复杂运维问题的动力之源；<br>其次保持服务持续演进，使之能够快速、低成本地被拆分和合并，以快速响应业务的变化；<br>同时要保持团队和架构对齐。微服务貌似是技术层面的变革，但它对团队结构和组织文化有很强的要求和影响。识别和构建匹配架构的团队是解决问题的另一大支柱。<br>最后，打造持续改进的自组织文化是实施微服务的关键基石。只有持续改进，持续学习和反馈，持续打造这样一个文化氛围和团队，微服务架构才能持续发展下去，保持新鲜的生命力，从而实现我们的初衷。</p>
+<p>参考资料<br>1、微服务架构下的开发部署实践<br><a href="https://zhuanlan.zhihu.com/p/21563604" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/21563604</a><br>2、微服务与SOA：与其重用+不如抓住敏捷性<a href="http://www.searchsoa.com.cn/showcontent_88178.htm" target="_blank" rel="noopener">http://www.searchsoa.com.cn/showcontent_88178.htm</a><br>3、Red Hat：API层是微服务架构成功的关键<a href="https://searchcloudcomputing.techtarget.com.cn/5-11978/" target="_blank" rel="noopener">https://searchcloudcomputing.techtarget.com.cn/5-11978/</a><br>4、SOA和微服务架构的区别<br><a href="https://www.zhihu.com/question/37808426" target="_blank" rel="noopener">https://www.zhihu.com/question/37808426</a><br>5、解析微服务架构<br><a href="https://kb.cnblogs.com/page/520922/" target="_blank" rel="noopener">https://kb.cnblogs.com/page/520922/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/03/28/微服务架构(初探)/" data-id="cjuwcasdm001besf5y8hwzywg" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/微服务/">微服务</a></li></ul>
 
     </footer>
   </div>
@@ -428,125 +543,10 @@ casbin 实际比这个简单的例子要强大得多，你可以用声明的方�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/28/微服务框架技术栈之Protocol Buffer/" data-id="cjuwblb9n0015o4f523wjs4nr" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/03/28/微服务框架技术栈之Protocol Buffer/" data-id="cjuwcasdp001cesf5v96wiise" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Protocol-Buffer/">Protocol Buffer</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gRPC/">gRPC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/微服务/">微服务</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-微服务架构(选型方案）" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/03/28/微服务架构(选型方案）/" class="article-date">
-  <time datetime="2018-03-27T16:00:00.000Z" itemprop="datePublished">2018-03-28</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/03/28/微服务架构(选型方案）/">微服务架构(选型方案)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="微服务选型方案"><a href="#微服务选型方案" class="headerlink" title="微服务选型方案"></a>微服务选型方案</h1><h3 id="微服务架构的定义："><a href="#微服务架构的定义：" class="headerlink" title="微服务架构的定义："></a>微服务架构的定义：</h3><p>1、一些列的独立的服务共同组成系统<br>2、单独部署，跑在自己的进程中<br>3、每个服务为独立的业务开发<br>4、分布式管理<br>5、非常强调隔离性</p>
-<h3 id="其标准是："><a href="#其标准是：" class="headerlink" title="其标准是："></a>其标准是：</h3><p>1、分布式服务组成的系统<br>2、按照业务，而不是技术来划分组织<br>3、做有生命的产品而不是项目<br>4、强服务个体和弱通信（ Smart endpoints and dumb pipes ）<br>5、自动化运维（ DevOps ）<br>6、高度容错性<br>7、快速演化和迭代</p>
-<p>我们现在的业务很复杂，系统项目也很多。而微服务的学习和落地拥有一定的成本，所以我这边将实施分为三个阶段</p>
-<h6 id="1、准备："><a href="#1、准备：" class="headerlink" title="1、准备："></a>1、准备：</h6><p>①选择切入点<br>②技术选型</p>
-<h6 id="2、开始："><a href="#2、开始：" class="headerlink" title="2、开始："></a>2、开始：</h6><p>①解决客户端如何访问这些服务<br>②每个服务之间的通信<br>③解决服务的容器管理，水平部署，负载均衡等</p>
-<h6 id="3、管理："><a href="#3、管理：" class="headerlink" title="3、管理："></a>3、管理：</h6><p>①优化填坑<br>②自动部署、自动发布、自动注册、自动发现<br>③监控服务<br>④应急机制</p>
-<h3 id="准备："><a href="#准备：" class="headerlink" title="准备："></a>准备：</h3><p>微服务架构有七个关键点：<br>服务框架<br>运行时支撑服务<br>服务安全<br>后台服务<br>服务容错<br>服务监控<br>服务部署平台<br>我们需要选择几个关键点进行研究，以“最小可用”为目标开始，逐步优化架构已完成所有微服务架构指标。</p>
-<h4 id="服务框架"><a href="#服务框架" class="headerlink" title="服务框架"></a>服务框架</h4><p>gRPC：是谷歌近年新推的一套 RPC 框架，基于 protobuf 的强契约编程模型，能自动生成各种语言客户端，且保证互操作。支持 HTTP2 是 gRPC 的一大亮点，通讯层性能比 HTTP 有很大改进。</p>
-<p>Protobuf： 是 Google 的一种数据交换的格式，是一套结构数据序列化机制。用户通过编写 proto 文件来定义 protobuf 的数据结构，一个简单的 proto 文件是由一个 message 结构体和一个 service 结构体组成。</p>
-<h5 id="运行时支撑服务"><a href="#运行时支撑服务" class="headerlink" title="运行时支撑服务"></a>运行时支撑服务</h5><p>服务注册中心:在Docker技术的基础上，为容器化的应用提供部署运行、资源调度、服务发现和动态伸缩等一系列完整功能，提高了大规模容器集群管理的便捷性。<br>Etcd：一个高可用，分布式，一致的key-value存储，用来共享配置和服务发现（把缓存服务器和数据库从docker分离出去）<br>k8s：具有完备的集群管理能力，多扩多层次的安全防护和准入机制、多租户应用支撑能力、透明的服务注册和发现机制、內建智能负载均衡器、强大的故障发现和自我修复能力、服务滚动升级和在线扩容能力、可扩展的资源自动调度机制以及多粒度的资源配额管理能力。（做微服务的管理）</p>
-<h5 id="服务路由网管"><a href="#服务路由网管" class="headerlink" title="服务路由网管"></a>服务路由网管</h5><h6 id="建立服务网关"><a href="#建立服务网关" class="headerlink" title="建立服务网关"></a>建立服务网关</h6><pre><code>服务网关 = 路由转发 + 过滤器
-</code></pre><p>1、路由转发：接收一切外界请求，转发到后端的微服务上去；<br>2、过滤器：在服务网关中可以完成一系列的横切功能，例如权限校验、限流以及监控等，这些都可以通过过滤器完成（其实路由转发也是通过过滤器实现的）</p>
-<h6 id="集中式配置中心"><a href="#集中式配置中心" class="headerlink" title="集中式配置中心"></a>集中式配置中心</h6><p>选型一个合格的配置中心，至少需要满足如下4个核心需求：<br>1.非开发环境下应用配置的保密性，避免将关键配置写入源代码<br>2.不同部署环境下应用配置的隔离性，比如非生产环境的配置不能用于生产环境<br>3.同一部署环境下的服务器应用配置的一致性，即所有服务器使用同一份配置<br>4.分布式环境下应用配置的可管理性，即提供远程管理配置的能力<br>该部分有很多方法达成，比如jenkins的环境部署，docker配置文件等等，所以在一开始不需要考虑这部分</p>
-<h6 id="服务监控"><a href="#服务监控" class="headerlink" title="服务监控"></a>服务监控</h6><p>主要包括日志监控，调用链监控，Metrics 监控，健康检查和告警通知等。<br>服务容错<br>①重试机制<br>②限流<br>③熔断机制<br>④负载均衡<br>⑤降级（本地缓存）<br>后台服务<br>后台服务主要包括消息系统，分布式缓存，分布式数据访问层和任务调度系统。<br>服务安全选型<br>1．使用支持 OAuth 2.0 和 OpenID Connect 标准协议的授权服务器（个人建议定制自研）；<br>2．使用 API 网关作为单一访问入口，统一实现安全治理；<br>3．客户在访问微服务之前，先通过授权服务器登录获取 access token，然后将 access token 和请求一起发送到网关；<br>4．网关获取 access token，通过授权服务器校验 token，同时做 token 转换获取 JWT token。<br>5．网关将 JWT Token 和请求一起转发到后台微服务；<br>6．JWT 中可以存储用户会话信息，该信息可以传递给后台的微服务，也可以在微服务之间传递，用作认证授权等用途；<br>7．每个微服务包含 JWT 客户端，能够解密 JWT 并获取其中的用户会话信息。<br>8．整个方案中，access token 是一种 by reference token，不包含用户信息可以直接暴露在公网上；JWT token 是一种 by value token，可以包含用户信息但不暴露在公网上。</p>
-<h5 id="服务部署平台选型"><a href="#服务部署平台选型" class="headerlink" title="### 服务部署平台选型"></a>### 服务部署平台选型</h5><p>容器已经被社区接受为交付微服务的一种理想手段，可以实现不可变（immutable）发布模式。<br>一个轻量级的基于容器的服务部署平台主要包括容器资源调度，发布系统，镜像治理，资源治理和 IAM 等模块。<br>1.简化发布流程如下：<br>2.应用通过 CI 集成后生成镜像，用户将镜像推到镜像治理中心；<br>3.用户在资产治理中心申请发布，填报应用，发布和配额相关信息，然后等待审批通过；<br>4.发布审批通过，开发人员通过发布控制台发布应用；<br>5.发布系统通过查询资产治理中心获取发布规格信息；<br>6.发布系统向容器云发出启动容器实例指令；<br>7.容器云从镜像治理中心拉取镜像并启动容器；<br>8.容器内服务启动后自注册到服务注册中心，并保持定期心跳；<br>9.用户通过发布系统调用服务注册中心调拨流量，实现蓝绿，金丝雀或灰度发布等机制；<br>10.网关和内部微服务客户端定期同步服务注册中心上的服务路由表，将流量按负载均衡策略分发到新的服务实例上。</p>
-<p>另外，持续交付流水线（CD Pipeline）也是微服务发布重要环节，这块主要和研发流程相关，一般需要企业定制，下面是一个可供参考的流水线模型，在镜像治理中心上封装一些轻量级的治理流程，例如只有通过测试环境测试的镜像才能升级发布到 UAT 环境，只有通过 UAT 环境测试的镜像才能升级发布到生产环境，通过在流水线上设置一些质量门，保障应用高质量交付到生产。</p>
-<h3 id="开始："><a href="#开始：" class="headerlink" title="开始："></a>开始：</h3><p>使用 Kubernetes来管理 Docker 集群，当 Kubernetes 满足不了需求时，可在部署平台开发相应的功能来满足开发查看日志、监控和报警等需求，尽量避免登录主机和容器。<br>实现了基于Docker集群的部署系统，便于开发者便捷地部署自己的应用程序。最终达到部署环境干净一致，可重复部署、迅速扩容和回滚。<br>容器管理平台构架图<br>容器管理平台主要功能有集群管理和状态展示、灰度发布和代码回退、组件模板、应用管理、镜像仓库和权限管理等。它采用前后端分离的架构，前端使用 JS 渲染，后端使用 Python 提供 API。这样开发者可以快速的进行发布和回退操作。<br>容器管理平台在应用发布流程，集群调度策略，k8s节点网络架构，阿里云支持，基础监控指标等方面进行了优化改进。</p>
-<p>应用发布流程<br>新的发布系统是用户提交代码后，在发布系统选择要部署的commit，点击构建以后，系统会自动编译，打包成镜像，推送镜像仓库。如果构建成功，用户点击发布新版本的实例，灰度没有问题，全量，下线老版本的实例。回退时代码不需要构建，直接发布老版本实例。在某段时间内，新老版本是同时存在的。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/28/微服务架构(选型方案）/" data-id="cjuwblbao001co4f5x0me1950" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/微服务/">微服务</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-微服务架构(初探)" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/03/28/微服务架构(初探)/" class="article-date">
-  <time datetime="2018-03-27T16:00:00.000Z" itemprop="datePublished">2018-03-28</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/03/28/微服务架构(初探)/">微服务架构(初探)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="微服务架构-一"><a href="#微服务架构-一" class="headerlink" title="微服务架构(一)"></a>微服务架构(一)</h1><h3 id="WHY？"><a href="#WHY？" class="headerlink" title="WHY？"></a>WHY？</h3><p>服务拆解，每个服务拆解成之做自己的业务事物，形成高度内聚的自治性。<br>2.0+采用模块化的分层式架构，所有的业务逻辑代码最终会打进一个代码库中统一部署。<br>目前遇到的问题<br>1、全部开发人员会共享一个代码库，不同模块的边界模糊，实现高内聚、松耦合极其困难。（我们现在发版经常遇到要选择部分功能上线 GIT分支合并上传就会很麻烦）<br>2、处理遗留系统，尝试去做重构改进时，会动一发而牵全身。<br>3、模块的边界轻易被穿透。</p>
-<h4 id="微服务的主要特性"><a href="#微服务的主要特性" class="headerlink" title="微服务的主要特性"></a>微服务的主要特性</h4><p>微服务架构强调每个服务一个进程。<br>独立开发与演进,隔离代码库至少让同一应用系统不同层次的开发人员享有自己完全自治的领地，每个微服务都有一个掌控者。<br>通过分解巨大单体式应用为多个服务方法解决了复杂性问题。<br>在功能不变的情况下，应用被分解为多个可管理的分支或服务。<br>微服务架构模式是每个微服务独立的部署。<br>开发者不再需要协调其它服务部署对本服务的影响。<br>这种改变可以加快部署速度。UI 团队可以采用 AB 测试，快速的部署变化。<br>微服务架构模式使得持续化部署成为可能。<br>你可以根据每个服务的规模来部署满足需求的规模。甚至于，你可以使用更适合于服务资源需求的硬件。<br>微服务架构模式使得每个服务独立扩展。</p>
-<h6 id="成本"><a href="#成本" class="headerlink" title="成本"></a>成本</h6><p>把 1 个应用进程部署到 1 台主机，部署复杂度是 1 x 1 = 1，我们有 200 台主机，那么部署复杂度是 1 x 200 = 200。<br>把 1 个应用进程拆分成了 50 个微服务进程，则部署复杂度变成了 50 x 200 = 10000。<br>部署变得复杂和麻烦多了，同时监控的进程数也大幅增加，监控的复杂度也上升了很多。<br>所以实施微服务架构是有很高成本的，只有系统的规模到了一定程度才适合。<br>微服务推崇一切自动化的文化，这也是因为其运维复杂度的乘数级飙升，<br>从开发之后的构建、测试、部署都需要一个高度自动化的环境来支撑才能有效降低边际成本。</p>
-<h6 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h6><p>每个微服务都很小，这样能聚焦一个指定的业务功能或业务需求。<br>微服务能够被小团队单独开发，这个小团队是2到5人的开发人员组成。<br>微服务是松耦合的，是有功能意义的服务，无论是在开发阶段或部署阶段都是独立的。<br>微服务能使用不同的语言开发。<br>微服务允许容易且灵活的方式集成自动部署，通过持续集成工具，如Jenkins, bamboo 。<br>一个团队的新成员能够更快投入生产。<br>微服务易于被一个开发人员理解，修改和维护，这样小团队能够更关注自己的工作成果。无需通过合作才能体现价值。<br>微服务允许你利用融合最新技术。<br>微服务只是业务逻辑的代码，不会和HTML,CSS 或其他界面组件混合。<br>微服务能够即时被要求扩展。<br>微服务能部署中低端配置的服务器上。<br>易于和第三方集成。<br>每个微服务都有自己的存储能力，可以有自己的数据库。也可以有统一数据库。</p>
-<h6 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h6><p>微服务架构可能带来过多的操作。<br>需要DevOps技巧 (<a href="http://en.wikipedia.org/wiki/DevOps)" target="_blank" rel="noopener">http://en.wikipedia.org/wiki/DevOps)</a>.</p>
-<ol>
-<li>开发（软件工程）、技术运营和质量保障（QA）三者的交集。</li>
-<li>是一组过程、方法与系统的统称，用于促进开发（应用程序/软件工程）、技术运营和质量保障（QA）部门之间的沟通、协作与整合。它的出现是由于软件行业日益清晰地认识到：为了按时交付软件产品和服务，开发和运营工作必须紧密合作。[1]</li>
-</ol>
-<p>可能双倍的努力。<br>分布式系统可能复杂难以管理。<br>因为分布部署跟踪问题难。<br>当服务数量增加，管理复杂性增加。</p>
-<h4 id="实施要点"><a href="#实施要点" class="headerlink" title="实施要点"></a>实施要点</h4><p>1.自动化文化与环境：自动构建、自动测试、自动部署。<br>2.围绕业务能力建模服务，松耦合、高内聚、暴露接口而隐藏实现细节。<br>3.服务协作模型：中心化（乐队模型：中心指挥）和去中心化（舞蹈模型：群舞自组织），各自场景不同。<br>4.服务交互方式：RPC/REST/WS 技术很多但考虑统一。<br>5.服务部署的独立性、失败隔离性、可监控性。<br>6.服务流控：降级、限流<br>7.服务恢复：多考虑故障发生如何快速恢复而非如何避免发生故障。<br>8.服务发布：灰度。<br>9.服务部署：一服务一主机模型，需要虚拟化(Hypervisor)、容器化(LXC, Docker)等技术支持，实现硬件资源隔离。<br>10.服务配置：中心化配置服务支持<br>11.康威定律：任何设计系统的组织，最终产生的设计等同于组织之内、之间的沟通结构。系统架构的设计符合组织沟通结构取得的收益最大。<br>12.伯斯塔尔法则：服务健壮性原则 —— 发送时要保守，接收时要开放。</p>
-<h3 id="网关"><a href="#网关" class="headerlink" title="网关"></a>网关</h3><p>实现一个API网关作为所有客户端的唯一入口。API网关有两种方式来处理请求。有些请求被简单地代理/路由到合适的服务上，其他的请求被转给到一组服务。</p>
-<p>相比于提供普适的API，API网关根据不同的客户端开放不同的API。比如，Netflix API网关运行着客户端特定的适配器代码，会向客户端提供最适合其需求的API。<br>API网关也可以实现安全性，比如验证客户端是否被授权进行某请求。</p>
-<h3 id="需要考虑的问题"><a href="#需要考虑的问题" class="headerlink" title="需要考虑的问题"></a>需要考虑的问题</h3><p>单个微服务代码量小，易修改和维护。但是，系统复杂度的总量是不变的，每个服务代码少了，但服务的个数肯定就多了。就跟拼图游戏一样，切的越碎，越难拼出整幅图。一个系统被拆分成零碎的微服务，最后要集成为一个完整的系统，其复杂度肯定比大块的功能集成要高很多。<br>单个微服务数据独立，可独立部署和运行。虽然微服务本身是可以独立部署和运行的，但仍然避免不了业务上的你来我往，这就涉及到要对外通信，当微服务的数量达到一定量级的时候，如何提供一个高效的集群通信机制成为一个问题。<br>单个微服务拥有自己的进程，进程本身就可以动态的启停，为无缝升级的打好了基础，但谁来启动和停止进程，什么时机，选择在哪台设备上做这件事情才是无缝升级的关键。这个能力并不是微服务本身提供的，而是需要背后强大的版本管理和部署能力。<br>多个相同的微服务可以做负载均衡，提高性能和可靠性。正是因为相同微服务可以有多个不同实例，让服务按需动态伸缩成为可能，在高峰期可以启动更多的相同的微服务实例为更多用户服务，以此提高响应速度。同时这种机制也提供了高可靠性，在某个微服务故障后，其他相同的微服务可以接替其工作，对外表现为某个设备故障后业务不中断。同样的道理，微服务本身是不会去关心系统负载的，那么什么时候应该启动更多的微服务，多个微服务的流量应该如何调度和分发，这背后也有一套复杂的负载监控和均衡的系统在起作用。<br>微服务可以独立部署和对外提供服务，微服务的业务上线和下线是动态的，当一个新的微服务上线时，用户是如何访问到这种新的服务？这就需要有一个统一的入口，新的服务可以动态的注册到这个入口上，用户每次访问时可以从这个入口拿到系统所有服务的访问地址。这个统一的系统入口并不是微服务本身的一部分，所以这种能力需要系统单独提供。<br>还有一些企业级关注的系统问题，比如，安全策略如何集中管理？系统故障如何快速审计和跟踪到具体服务？整个系统状态如何监控？服务之间的依赖关系如何管理？等等这些问题都不是单个微服务考虑的范畴，而需要有一个系统性的考虑和设计，让每个微服务都能够按照系统性的要求和约束提供对应的安全性，可靠性，可维护性的能力。<br>服务容错：当企业微服务化以后，服务之间会有错综复杂的依赖关系，例如，一个前端请求一般会依赖于多个后端服务，技术上称为1 -&gt; N扇出. 在实际生产环境中，服务往往不是百分百可靠，服务可能会出错或者产生延迟，如果一个应用不能对其依赖的故障进行容错和隔离，那么该应用本身就处在被拖垮的风险中。在一个高流量的网站中，某个单一后端一旦发生延迟，可能在数秒内导致所有应用资源(线程，队列等)被耗尽，造成所谓的雪崩效应(Cascading Failure)，严重时可致整个网站瘫痪。</p>
-<p>服务依赖</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>微服务的实施是有一定的先决条件：基础的运维能力（如监控、快速配置、快速部署）需提前构建，否则就会陷入如我们般被动的局面。推荐采用基础设施及代码的实践，通过代码来描述计算和网络基础设施的方法，使得图案度i可以快速安全的搭建和处理由新的配置代替的服务器，服务器之间可以拥有更高的一致性，降低了在“我的环境工作，而你的环境不工作”的可能，也是为后续的发布策略和运维提供更好的支撑。<br>其他要点<br>系统支撑</p>
-<h4 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h4><p>日志和审计，主要是日志的汇总，分类和查询<br>监控和告警，主要是监控每个服务的状态，必要时产生告警<br>消息总线，轻量级的MQ或HTTP<br>注册发现<br>负载均衡<br>部署和升级<br>事件调度机制<br>资源管理，如：底层的虚拟机，物理机和网络管理</p>
-<h4 id="画龙点睛"><a href="#画龙点睛" class="headerlink" title="画龙点睛"></a>画龙点睛</h4><p>认证和鉴权<br>微服务统一代码框架，支持多种编程语言<br>统一服务构建和打包<br>统一服务测试<br>微服务CI/CD流水线<br>服务依赖关系管理<br>统一问题跟踪调试框架，俗称调用链<br>灰度发布<br>蓝绿部署</p>
-<h4 id="容器（Docker）与微服务"><a href="#容器（Docker）与微服务" class="headerlink" title="容器（Docker）与微服务"></a>容器（Docker）与微服务</h4><p>•容器够小<br>–解决微服务对机器数量的诉求<br>•容器独立<br>–解决多语言问题<br>•开发环境与生产环境相同<br>–单机开发、提升效率<br>•容器效率高<br>–省钱<br>•代码/image一体化<br>–可复用管理系统<br>•容器的横向与纵向扩容<br>–可复制<br>–可动态调节CPU与内存<br>•Image管理<br>•系统安全管理<br>•授权管理<br>•系统成熟度<br>•社区成熟度<br>由于Docker引入，不同的微服务可以使用不同的技术架构，比如Node.js Java PHP Python等，这些单个的服务都可以独立完成交付生命周期<br>微服务+API + 平台的开发模式，容器化微服务的持续交付概念。 </p>
-<p>首先需要考虑构建DevOps能力，这是保证微服务架构在持续交付和应对复杂运维问题的动力之源；<br>其次保持服务持续演进，使之能够快速、低成本地被拆分和合并，以快速响应业务的变化；<br>同时要保持团队和架构对齐。微服务貌似是技术层面的变革，但它对团队结构和组织文化有很强的要求和影响。识别和构建匹配架构的团队是解决问题的另一大支柱。<br>最后，打造持续改进的自组织文化是实施微服务的关键基石。只有持续改进，持续学习和反馈，持续打造这样一个文化氛围和团队，微服务架构才能持续发展下去，保持新鲜的生命力，从而实现我们的初衷。</p>
-<p>参考资料<br>1、微服务架构下的开发部署实践<br><a href="https://zhuanlan.zhihu.com/p/21563604" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/21563604</a><br>2、微服务与SOA：与其重用+不如抓住敏捷性<a href="http://www.searchsoa.com.cn/showcontent_88178.htm" target="_blank" rel="noopener">http://www.searchsoa.com.cn/showcontent_88178.htm</a><br>3、Red Hat：API层是微服务架构成功的关键<a href="https://searchcloudcomputing.techtarget.com.cn/5-11978/" target="_blank" rel="noopener">https://searchcloudcomputing.techtarget.com.cn/5-11978/</a><br>4、SOA和微服务架构的区别<br><a href="https://www.zhihu.com/question/37808426" target="_blank" rel="noopener">https://www.zhihu.com/question/37808426</a><br>5、解析微服务架构<br><a href="https://kb.cnblogs.com/page/520922/" target="_blank" rel="noopener">https://kb.cnblogs.com/page/520922/</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/28/微服务架构(初探)/" data-id="cjuwblbaz001eo4f5vdgxv5vm" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/微服务/">微服务</a></li></ul>
 
     </footer>
   </div>
@@ -621,7 +621,7 @@ casbin 实际比这个简单的例子要强大得多，你可以用声明的方�
           </li>
         
           <li>
-            <a href="/2019/03/16/GO-NSQ/">NSQ(有赞版)</a>
+            <a href="/2019/03/16/protoful - 各种文件生成（手记）/">protoful 集中记录</a>
           </li>
         
       </ul>
@@ -636,7 +636,7 @@ casbin 实际比这个简单的例子要强大得多，你可以用声明的方�
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2019 John Doe<br>
+      &copy; 2019 Felix<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
