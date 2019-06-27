@@ -128,11 +128,15 @@
 合并某分支到当前分支：git merge &lt;name&gt;
 
 删除分支：git branch -d &lt;name&gt;
-</code></pre>
+</code></pre><p>###其他技巧</p>
+<p>git remote add  upstream <a href="mailto:git@code.izhaohu.com" target="_blank" rel="noopener">git@code.izhaohu.com</a>:dolphin/proto.git</p>
+<p>upstream 已经在 remote 列表中！然后我们就可以轻松地进行同步了。<br>先确保当前处在 master 分支上，然后获取 upstream 的修改，再并入我们本地的 master 分支。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout master</span><br><span class="line">$ git fetch upstream</span><br><span class="line">$ git merge upstream/master</span><br></pre></td></tr></table></figure></p>
+<p>再把本地的更新 push 到 origin，也就是我们的 GitHub 仓库：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/04/25/Git fork、pr的开发模式/" data-id="cjuwcdlvy000dpgf5vxf1qze8" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/04/25/Git fork、pr的开发模式/" data-id="cjxeb4weq000n1kf5ztlzmpii" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Git-fork、pr/">Git fork、pr</a></li></ul>
@@ -189,7 +193,7 @@ Channel, complex, and function types不能被转义
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/04/02/GO-json/" data-id="cjuwcdlvw000cpgf5iogq11s2" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/04/02/GO-json/" data-id="cjxeb4wf5000r1kf5nu443ub5" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GO-json/">GO json</a></li></ul>
@@ -236,10 +240,234 @@ Channel, complex, and function types不能被转义
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/28/浏览器避免使用之端口/" data-id="cjuwcdlwf000ppgf5ma246p53" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/03/28/浏览器避免使用之端口/" data-id="cjxeb4wfx000x1kf5iab1lvy0" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/端口/">端口</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Elasticsearch （一）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/16/Elasticsearch （一）/" class="article-date">
+  <time datetime="2019-03-15T16:00:00.000Z" itemprop="datePublished">2019-03-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/16/Elasticsearch （一）/">Elasticsearch （一）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>Elasticsearch是一个基于Apache Lucene(TM)的开源搜索引擎。无论在开源还是专有领域，Lucene可以被认为是迄今为止最先进、性能最好的、功能最全的搜索引擎库。</p>
+<p>但是Lucene使用部署都非常复杂，而ES则可以通过 RESTful API 来使用 Lucene。</p>
+<h3 id="主要认识"><a href="#主要认识" class="headerlink" title="主要认识"></a>主要认识</h3><ul>
+<li><p>分布式的实时文件存储，每个字段都被索引并可被搜索</p>
+</li>
+<li><p>分布式的实时分析搜索引擎</p>
+</li>
+<li><p>可以扩展到上百台服务器，处理PB级结构化或非结构化数据</p>
+</li>
+<li><p>面向文档</p>
+<p>  存储整个对象或文档(document)。然而它不仅仅是存储，还会索引(index)每个文档的内容使之可以被搜索。在Elasticsearch中，你可以对文档（而非成行成列的数据）进行索引、搜索、排序、过滤。这种理解数据的方式与以往完全不同，这也是Elasticsearch能够执行复杂的全文搜索的原因之一。</p>
+</li>
+<li><p>使用JSON 对文档进行序列化</p>
+</li>
+</ul>
+<h3 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h3><p>在Elasticsearch中存储数据的行为就叫做索引(indexing)</p>
+<p>在Elasticsearch中，文档归属于一种类型(type),而这些类型存在于索引(index)中。</p>
+<p>对比图来类比传统关系型数据库:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Relational DB -&gt; Databases -&gt; Tables -&gt; Rows -&gt; Columns</span><br><span class="line"></span><br><span class="line">Elasticsearch -&gt; Indices   -&gt; Types  -&gt; Documents -&gt; Fields</span><br></pre></td></tr></table></figure></p>
+<p>Elasticsearch集群可以包含多个索引(indices)（数据库），每一个索引可以包含多个类型(types)（表），每一个类型包含多个文档(documents)（行），然后每个文档包含多个字段(Fields)（列）。</p>
+<h4 id="索引含义的区分"><a href="#索引含义的区分" class="headerlink" title="索引含义的区分"></a>索引含义的区分</h4><ul>
+<li><p>索引（名词）一个索引(index)就像是传统关系数据库中的数据库，它是相关文档存储的地方，index的复数是indices 或indexes。</p>
+</li>
+<li><p>索引（动词）「索引一个文档」表示把一个文档存储到索引（名词）里，以便它可以被检索或者查询。这很像SQL中的INSERT关键字，差别是，如果文档已经存在，新的文档将覆盖旧的文档。</p>
+</li>
+<li><p>倒排索引 传统数据库为特定列增加一个索引，例如B-Tree索引来加速检索。Elasticsearch和Lucene使用一种叫做倒排索引(inverted index)的数据结构来达到相同目的。</p>
+</li>
+</ul>
+<h4 id="建立索引-例子"><a href="#建立索引-例子" class="headerlink" title="建立索引(例子)"></a>建立索引(例子)</h4><ul>
+<li><p>template<br>  默认的 order 值就是 0。order 值越大，在 merge 规则的时候优先级越高。<br>  模板 es 模板有个坑，如果若干个匹配模板的order一致，如order都等于0，则这几个模板的优先级顺序是随机的。</p>
+</li>
+<li><p>mappings 映射的定制<br>  ES 可以随时根据数据中的新字段来创建新的映射关系。我们也可以在还没有正式数据写入之前，先创建一个基础的映射。等后续数据有其他字段时，ES 也一样会自动处理。</p>
+</li>
+</ul>
+<h5 id="特殊字符"><a href="#特殊字符" class="headerlink" title="特殊字符"></a>特殊字符</h5><pre><code>ES有一些默认的特殊字段，这些字段统一以_下划线开头。如_index，_type，_id。默认不开启的还有 _ttl，_timestamp，_size，_parent 等；
+</code></pre><ul>
+<li><p>_all<br>  _all 里存储了各字段的数据内容。其作用是，在检索的时候，如果无法或者未指明具体搜索哪个字段的数据，那么 ES 默认就会是从 _all 里去查找。</p>
+<p>  对于日志场景，如果你的日志划分出来的字段比较少且数目固定。那么，完全可以关闭掉 _all 功能，节省这部分 IO 和 CPU。</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&quot;_all&quot; : &#123;</span><br><span class="line">    &quot;enabled&quot; : false</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>_source</p>
+<p>  _source 里存储了该条记录的 JSON 源数据内容。这部分内容只是按照 ES 接收到的内容原样存储下来，并不经过索引过程。对于 ES 的请求过程来说，它不参与 Query 阶段，而只用于 Fetch 阶段。我们在 GET 或者 /_search 时看到的数据内容，都是从 _source 里获取到的。</p>
+<p>  所以，虽然 _source 也重复了一遍索引中的数据，一般我们并不建议关闭这个功能。因为一旦关闭，你搜索的结果除了一个 _id，啥都看不到。对于日志场景，意义不是很大。</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;order&quot;: 0,		//</span><br><span class="line">    &quot;index_patterns&quot;: [</span><br><span class="line">        &quot;es_test_index_2&quot;</span><br><span class="line">    ],</span><br><span class="line">    &quot;settings&quot;: &#123;</span><br><span class="line">        &quot;index&quot;: &#123;</span><br><span class="line">            &quot;max_result_window&quot;: &quot;30000&quot;,</span><br><span class="line">            &quot;refresh_interval&quot;: &quot;60s&quot;,</span><br><span class="line">            &quot;analysis&quot;: &#123;</span><br><span class="line">                &quot;analyzer&quot;: &#123;</span><br><span class="line">                    &quot;custom_standard&quot;: &#123;</span><br><span class="line">                        &quot;type&quot;: &quot;custom&quot;,</span><br><span class="line">                        &quot;tokenizer&quot;: &quot;standard&quot;,</span><br><span class="line">                        &quot;char_filter&quot;: [</span><br><span class="line">                            &quot;my_char_filter&quot;</span><br><span class="line">                        ],</span><br><span class="line">                        &quot;filter&quot;: &quot;lowercase&quot;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;,</span><br><span class="line">                &quot;char_filter&quot;: &#123;</span><br><span class="line">                    &quot;my_char_filter&quot;: &#123;</span><br><span class="line">                        &quot;type&quot;: &quot;mapping&quot;,</span><br><span class="line">                        &quot;mappings&quot;: [</span><br><span class="line">                            &quot;· =&gt; xxDOT1xx&quot;,</span><br><span class="line">                            &quot;+ =&gt; xxPLUSxx&quot;,</span><br><span class="line">                            &quot;- =&gt; xxMINUSxx&quot;,</span><br><span class="line">                            &quot;\&quot; =&gt; xxQUOTATIONxx&quot;,</span><br><span class="line">                            &quot;（ =&gt; xxLEFTBRACKET1xx&quot;,</span><br><span class="line">                            &quot;） =&gt; xxRIGHTBRACKET1xx&quot;,</span><br><span class="line">                            &quot;&amp; =&gt; xxANDxx&quot;,</span><br><span class="line">                            &quot;| =&gt; xxVERTICALxx&quot;,</span><br><span class="line">                            &quot;—=&gt; xxUNDERLINExx&quot;,</span><br><span class="line">                            &quot;/=&gt; xxSLASHxx&quot;,</span><br><span class="line">                            &quot;！=&gt; xxEXCLAxx&quot;,</span><br><span class="line">                            &quot;•=&gt; xxDOT2xx&quot;,</span><br><span class="line">                            &quot;【=&gt;xxLEFTBRACKET2xx&quot;,</span><br><span class="line">                            &quot;】 =&gt; xxRIGHTBRACKET2xx&quot;,</span><br><span class="line">                            &quot;`=&gt;xxapostrophexx&quot;,</span><br><span class="line">                            &quot;.=&gt;xxDOT3xx&quot;,</span><br><span class="line">                            &quot;#=&gt;xxhashtagxx&quot;,</span><br><span class="line">                            &quot;，=&gt;xxcommaxx&quot;</span><br><span class="line">                        ]</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;number_of_shards&quot;: &quot;3&quot;,</span><br><span class="line">            &quot;number_of_replicas&quot;: &quot;1&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    //索引映射</span><br><span class="line">    &quot;mappings&quot;: &#123;</span><br><span class="line">        &quot;logs&quot;: &#123;</span><br><span class="line">            &quot;_all&quot;: &#123;</span><br><span class="line">                &quot;enabled&quot;: false</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;properties&quot;: &#123;</span><br><span class="line">                &quot;search_text&quot;: &#123;</span><br><span class="line">                    &quot;analyzer&quot;: &quot;custom_standard&quot;,</span><br><span class="line">                    &quot;type&quot;: &quot;text&quot;</span><br><span class="line">                &#125;,</span><br><span class="line">                &quot;search_word&quot;: &#123;</span><br><span class="line">                    &quot;type&quot;: &quot;keyword&quot;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/03/16/Elasticsearch （一）/" data-id="cjxeb4w6500001kf5dwx0y7zl" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-protoful - 各种文件生成（手记）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/16/protoful - 各种文件生成（手记）/" class="article-date">
+  <time datetime="2019-03-15T16:00:00.000Z" itemprop="datePublished">2019-03-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/16/protoful - 各种文件生成（手记）/">protoful 集中记录</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">生成GO </span><br><span class="line">protoc -I$GOPATH/src \</span><br><span class="line">  -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \</span><br><span class="line">  -I$GOPATH/src/protobuf/src/ \</span><br><span class="line">  -I$GOPATH/src/datacenter/proto \</span><br><span class="line">  --go_out=plugins=grpc:. \</span><br><span class="line">  adverse_event.proto</span><br><span class="line"></span><br><span class="line">生成envoy 翻译器 descriptor.pb </span><br><span class="line">protoc -I$GOPATH/src \</span><br><span class="line">    -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \</span><br><span class="line">    -I$GOPATH/src/protobuf/src/ \</span><br><span class="line">    -I$GOPATH/src/datacenter/proto \</span><br><span class="line">    --include_imports \</span><br><span class="line">    --include_source_info \</span><br><span class="line">    --descriptor_set_out=../build/envoy/descriptor.pb \</span><br><span class="line">    *.proto</span><br><span class="line"></span><br><span class="line">生成grpc-webJS</span><br><span class="line">protoc -I$GOPATH/src \</span><br><span class="line">    -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \</span><br><span class="line">    -I$GOPATH/src/protobuf/src/ \</span><br><span class="line">    -I$GOPATH/src/datacenter/proto \</span><br><span class="line">    --js_out=import_style=commonjs:. \</span><br><span class="line">    --grpc-web_out=import_style=commonjs,mode=grpcwebtext:. *.proto</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">生成protoc-gen-swagger</span><br><span class="line">protoc -I$GOPATH/src \</span><br><span class="line">-I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \</span><br><span class="line">-I$GOPATH/src/protobuf/src/ \</span><br><span class="line">-I$GOPATH/src/proto-doc/proto \</span><br><span class="line">--swagger_out=logtostderr=true:. \</span><br><span class="line">adverse_event.proto</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">交叉编译</span><br><span class="line">set GOARCH=amd64</span><br><span class="line"></span><br><span class="line">set GOOS=linux</span><br><span class="line"></span><br><span class="line">go build xx.go</span><br></pre></td></tr></table></figure>
+<p>GO mod的使用 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">打开</span><br><span class="line">GO111MODULE=on</span><br><span class="line"></span><br><span class="line">Usage:</span><br><span class="line"></span><br><span class="line">	go mod &lt;command&gt; [arguments]</span><br><span class="line"></span><br><span class="line">The commands are:</span><br><span class="line"></span><br><span class="line">	download    download modules to local cache</span><br><span class="line">	edit        edit go.mod from tools or scripts</span><br><span class="line">	graph       print module requirement graph</span><br><span class="line">	init        initialize new module in current directory</span><br><span class="line">	tidy        add missing and remove unused modules</span><br><span class="line">	vendor      make vendored copy of dependencies</span><br><span class="line">	verify      verify dependencies have expected content</span><br><span class="line">	why         explain why packages or modules are needed</span><br><span class="line"></span><br><span class="line">Use &quot;go help mod &lt;command&gt;&quot; for more information about a command.</span><br><span class="line"></span><br><span class="line">GO111MODULE=on go mod init</span><br><span class="line">GO111MODULE=on go mod tidy</span><br></pre></td></tr></table></figure>
+<p>内网穿透工具</p>
+<p><a href="https://dashboard.ngrok.com/get-started" target="_blank" rel="noopener">https://dashboard.ngrok.com/get-started</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ngrok http 80</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/03/16/protoful - 各种文件生成（手记）/" data-id="cjxeb4wio001l1kf542xks84e" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/protoful/">protoful</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-GO-NSQ" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/16/GO-NSQ/" class="article-date">
+  <time datetime="2019-03-15T16:00:00.000Z" itemprop="datePublished">2019-03-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/16/GO-NSQ/">NSQ(有赞版)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>NSQ参数说明 请参阅 <a href="wiki.jikexueyuan.com/project/nsq-guide/nsqd.html" title="Title">NSQ参数</a></p>
+<p>####核心概念</p>
+<ul>
+<li><p>Topic ——一个topic就是程序发布消息的一个逻辑键，当程序第一次发布消息时就会创建topic。</p>
+</li>
+<li><p>Channels ——channel组与消费者相关，是消费者之间的负载均衡，channel在某种意义上来说是一个“队列”。每当一个发布者发送一条消息到一个topic，消息会被复制到所有消费者连接的channel上，消费者通过这个特殊的channel读取消息，实际上，在消费者第一次订阅时就会创建channel。</p>
+</li>
+<li><p>Channel会将消息进行排列，如果没有消费者读取消息，消息首先会在内存中排队，当量太大时就会被保存到磁盘中。</p>
+</li>
+<li><p>Message s——消息构成了我们数据流的中坚力量，消费者可以选择结束消息，表明它们正在被正常处理，或者重新将他们排队待到后面再进行处理。每个消息包含传递尝试的次数，当消息传递超过一定的阀值次数时，我们应该放弃这些消息，或者作为额外消息进行处理。</p>
+</li>
+<li><p>NSQ在操作期间同样运行着两个程序：</p>
+<ul>
+<li><p>Nsqd ——nsqd守护进程是NSQ的核心部分，它是一个单独的监听某个端口进来的消息的二进制程序。每个nsqd节点都独立运行，不共享任何状态。当一个节点启动时，它向一组nsqlookupd节点进行注册操作，并将保存在此节点上的topic和channel进行广播。</p>
+<p>   客户端可以发布消息到nsqd守护进程上，或者从nsqd守护进程上读取消息。通常，消息发布者会向一个单一的local nsqd发布消息，消费者从连接了的一组nsqd节点的topic上远程读取消息。如果你不关心动态添加节点功能，你可以直接运行standalone模式。</p>
+</li>
+<li><p>Nsqlookupd ——nsqlookupd服务器像consul或etcd那样工作，只是它被设计得没有协调和强一致性能力。每个nsqlookupd都作为nsqd节点注册信息的短暂数据存储区。消费者连接这些节点去检测需要从哪个nsqd节点上读取消息。</p>
+</li>
+<li><p>NSQ 重要名词<br>1、In-Flight<br>  客户端读到消息，正在处理的部分（可以理解成没有 NSQ 的 ACK）</p>
+<p>2、Finish<br>  正常流程下，处理完的逻辑，需要手动标记已经处理完了 msg.Finish()<br>  不标记的消息，过了一段时间后，会有重排机制，这种重排会导致整个消息的消费变慢。</p>
+<p>3、Requeue<br>  人工标记重排，该类重排属于正常业务逻辑范畴，不会拖慢消费速度。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>####NSQ  组件</p>
+<ul>
+<li><p>nsqd 是一个守护进程，负责接收，排队，投递消息给客户端。</p>
+</li>
+<li><p>nsqlookupd 是守护进程负责管理拓扑信息。</p>
+<p>  客户端通过查询 nsqlookupd 来发现指定话题（topic）的生产者，并且 nsqd 节点广播话题（topic）和通道（channel）信息。</p>
+<p>  有两个接口：TCP 接口，nsqd 用它来广播。HTTP 接口，客户端用它来发现和管理。</p>
+</li>
+<li><p>nsqadmin 是一套 WEB UI，用来汇集集群的实时统计，并执行不同的管理任务。</p>
+</li>
+</ul>
+<p>Linux 下安装</p>
+<ul>
+<li>安装使用  nsq环境<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">1、获取docker 镜像</span><br><span class="line">docker pull nsqio/nsq</span><br><span class="line"></span><br><span class="line">2、运行 nsqlookupd</span><br><span class="line">docker run -d --name nsqlookupd -p 4160:4160 -p 4161:4161 nsqio/nsq /nsqlookupd</span><br><span class="line"></span><br><span class="line">- -http-address=&quot;0.0.0.0:4161&quot;: &lt;addr&gt;:&lt;port&gt; 监听 HTTP 客户端</span><br><span class="line"></span><br><span class="line">- -tcp-address=&quot;0.0.0.0:4160&quot;: TCP 客户端监听的 &lt;addr&gt;:&lt;port&gt; </span><br><span class="line"></span><br><span class="line">3 docker 运行 nsqd</span><br><span class="line">docker run --name nsqd -p 4150:4150 -p 4151:4151 nsqio/nsq /nsqd --broadcast-address=127.0.0.1 --lookupd-tcp-address=127.0.0.1:4160</span><br><span class="line"></span><br><span class="line">- -broadcast-address=&quot;&quot;: 通过 lookupd  注册的地址（默认名是 OS）</span><br><span class="line"></span><br><span class="line">- -lookupd-tcp-address=: 解析 TCP 地址名字 (可能会给多次)</span><br><span class="line"></span><br><span class="line">4 docker 运行 nsqadmin</span><br><span class="line">docker run --name nsqadmin -p 4171:4171 nsqio/nsq /nsqadmin --lookupd-http-address=127.0.0.1:4161</span><br><span class="line"></span><br><span class="line">- -graphite-url=&quot;&quot;: URL to graphite HTTP 地址</span><br><span class="line"></span><br><span class="line">- -http-address=&quot;0.0.0.0:4171&quot;: &lt;addr&gt;:&lt;port&gt; HTTP clients 监听的地址和端口</span><br><span class="line"></span><br><span class="line">- -lookupd-http-address=[]: lookupd HTTP 地址 (可能会提供多次)</span><br><span class="line"></span><br><span class="line">- -notification-http-endpoint=&quot;&quot;: HTTP 端点 (完全限定) ，管理动作将会发送到</span><br><span class="line"></span><br><span class="line">- -nsqd-http-address=[]: nsqd HTTP 地址 (可能会提供多次)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="一些认识"><a href="#一些认识" class="headerlink" title="一些认识"></a>一些认识</h3><ul>
+<li><p>发布者：消息发布，只能面向具体的nsqd服务进行</p>
+<ul>
+<li>一个topic的发布者只对应一个具体的NSQD，但可以多个发布者同时向一个NSQD发送消息，他们是N:1的关系。<br>NSQD与topic是1：N的关系。</li>
+</ul>
+</li>
+<li><p>消费者：</p>
+<ul>
+<li><p>consumer要接收消息，是要连接到具体的nsqd服务的。通常我们能通过封装好的方法，基于lookupd服务来获取所有的nsqd服务地址并连接。</p>
+</li>
+<li><p>一个消费者订阅的topic分布在哪些nsqd服务中，则会直接连接。nsqd之间是绝对不会互传topic的具体数据的。下图描绘了consumer与nsqd的关系： </p>
+</li>
+<li><p>当多个nsqd服务都有相同的topic的时候，consumer要修改默认设置config.MaxInFlight才能连接。</p>
+</li>
+<li><p>consumer与topic没有直接联系，而是通过具体的channel接受数据。如果consumer退出，channel不会自动删除。 如果不再需要，需要通过http端口删除channel，否则很可能会导致磁盘空间不足。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>TEST</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">curl -d &apos;Hello Linux localhost Msg&apos; &apos;http://127.0.0.1:4151/pub?topic=test&apos;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/03/16/GO-NSQ/" data-id="cjxeb4w8v00081kf5p0e3x7qd" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GO-Grpc-NSQ/">GO Grpc NSQ</a></li></ul>
 
     </footer>
   </div>
@@ -322,144 +550,10 @@ preserve_proto_field_names: true
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/16/Envoy - 初探 /" data-id="cjuwcdluz0003pgf5z7xj3ewj" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/03/16/Envoy - 初探 /" data-id="cjxeb4wdl000i1kf5tnkeyshw" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Envoy-grpc-restful/">Envoy grpc restful</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-GO-NSQ" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/16/GO-NSQ/" class="article-date">
-  <time datetime="2019-03-15T16:00:00.000Z" itemprop="datePublished">2019-03-16</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/16/GO-NSQ/">NSQ(有赞版)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>NSQ参数说明 请参阅 <a href="wiki.jikexueyuan.com/project/nsq-guide/nsqd.html" title="Title">NSQ参数</a></p>
-<p>####核心概念</p>
-<ul>
-<li><p>Topic ——一个topic就是程序发布消息的一个逻辑键，当程序第一次发布消息时就会创建topic。</p>
-</li>
-<li><p>Channels ——channel组与消费者相关，是消费者之间的负载均衡，channel在某种意义上来说是一个“队列”。每当一个发布者发送一条消息到一个topic，消息会被复制到所有消费者连接的channel上，消费者通过这个特殊的channel读取消息，实际上，在消费者第一次订阅时就会创建channel。</p>
-</li>
-<li><p>Channel会将消息进行排列，如果没有消费者读取消息，消息首先会在内存中排队，当量太大时就会被保存到磁盘中。</p>
-</li>
-<li><p>Message s——消息构成了我们数据流的中坚力量，消费者可以选择结束消息，表明它们正在被正常处理，或者重新将他们排队待到后面再进行处理。每个消息包含传递尝试的次数，当消息传递超过一定的阀值次数时，我们应该放弃这些消息，或者作为额外消息进行处理。</p>
-</li>
-<li><p>NSQ在操作期间同样运行着两个程序：</p>
-<ul>
-<li><p>Nsqd ——nsqd守护进程是NSQ的核心部分，它是一个单独的监听某个端口进来的消息的二进制程序。每个nsqd节点都独立运行，不共享任何状态。当一个节点启动时，它向一组nsqlookupd节点进行注册操作，并将保存在此节点上的topic和channel进行广播。</p>
-<p>   客户端可以发布消息到nsqd守护进程上，或者从nsqd守护进程上读取消息。通常，消息发布者会向一个单一的local nsqd发布消息，消费者从连接了的一组nsqd节点的topic上远程读取消息。如果你不关心动态添加节点功能，你可以直接运行standalone模式。</p>
-</li>
-<li><p>Nsqlookupd ——nsqlookupd服务器像consul或etcd那样工作，只是它被设计得没有协调和强一致性能力。每个nsqlookupd都作为nsqd节点注册信息的短暂数据存储区。消费者连接这些节点去检测需要从哪个nsqd节点上读取消息。</p>
-</li>
-</ul>
-</li>
-</ul>
-<p>####NSQ  组件</p>
-<ul>
-<li><p>nsqd 是一个守护进程，负责接收，排队，投递消息给客户端。</p>
-</li>
-<li><p>nsqlookupd 是守护进程负责管理拓扑信息。</p>
-<p>  客户端通过查询 nsqlookupd 来发现指定话题（topic）的生产者，并且 nsqd 节点广播话题（topic）和通道（channel）信息。</p>
-<p>  有两个接口：TCP 接口，nsqd 用它来广播。HTTP 接口，客户端用它来发现和管理。</p>
-</li>
-<li><p>nsqadmin 是一套 WEB UI，用来汇集集群的实时统计，并执行不同的管理任务。</p>
-</li>
-</ul>
-<p>Linux 下安装</p>
-<ul>
-<li>安装使用  nsq环境<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">1、获取docker 镜像</span><br><span class="line">docker pull nsqio/nsq</span><br><span class="line"></span><br><span class="line">2、运行 nsqlookupd</span><br><span class="line">docker run -d --name nsqlookupd -p 4160:4160 -p 4161:4161 nsqio/nsq /nsqlookupd</span><br><span class="line"></span><br><span class="line">- -http-address=&quot;0.0.0.0:4161&quot;: &lt;addr&gt;:&lt;port&gt; 监听 HTTP 客户端</span><br><span class="line"></span><br><span class="line">- -tcp-address=&quot;0.0.0.0:4160&quot;: TCP 客户端监听的 &lt;addr&gt;:&lt;port&gt; </span><br><span class="line"></span><br><span class="line">3 docker 运行 nsqd</span><br><span class="line">docker run --name nsqd -p 4150:4150 -p 4151:4151 nsqio/nsq /nsqd --broadcast-address=127.0.0.1 --lookupd-tcp-address=127.0.0.1:4160</span><br><span class="line"></span><br><span class="line">- -broadcast-address=&quot;&quot;: 通过 lookupd  注册的地址（默认名是 OS）</span><br><span class="line"></span><br><span class="line">- -lookupd-tcp-address=: 解析 TCP 地址名字 (可能会给多次)</span><br><span class="line"></span><br><span class="line">4 docker 运行 nsqadmin</span><br><span class="line">docker run --name nsqadmin -p 4171:4171 nsqio/nsq /nsqadmin --lookupd-http-address=127.0.0.1:4161</span><br><span class="line"></span><br><span class="line">- -graphite-url=&quot;&quot;: URL to graphite HTTP 地址</span><br><span class="line"></span><br><span class="line">- -http-address=&quot;0.0.0.0:4171&quot;: &lt;addr&gt;:&lt;port&gt; HTTP clients 监听的地址和端口</span><br><span class="line"></span><br><span class="line">- -lookupd-http-address=[]: lookupd HTTP 地址 (可能会提供多次)</span><br><span class="line"></span><br><span class="line">- -notification-http-endpoint=&quot;&quot;: HTTP 端点 (完全限定) ，管理动作将会发送到</span><br><span class="line"></span><br><span class="line">- -nsqd-http-address=[]: nsqd HTTP 地址 (可能会提供多次)</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h3 id="一些认识"><a href="#一些认识" class="headerlink" title="一些认识"></a>一些认识</h3><ul>
-<li><p>发布者：消息发布，只能面向具体的nsqd服务进行</p>
-<ul>
-<li>一个topic的发布者只对应一个具体的NSQD，但可以多个发布者同时向一个NSQD发送消息，他们是N:1的关系。<br>NSQD与topic是1：N的关系。</li>
-</ul>
-</li>
-<li><p>消费者：</p>
-<ul>
-<li><p>consumer要接收消息，是要连接到具体的nsqd服务的。通常我们能通过封装好的方法，基于lookupd服务来获取所有的nsqd服务地址并连接。</p>
-</li>
-<li><p>一个消费者订阅的topic分布在哪些nsqd服务中，则会直接连接。nsqd之间是绝对不会互传topic的具体数据的。下图描绘了consumer与nsqd的关系： </p>
-</li>
-<li><p>当多个nsqd服务都有相同的topic的时候，consumer要修改默认设置config.MaxInFlight才能连接。</p>
-</li>
-<li><p>consumer与topic没有直接联系，而是通过具体的channel接受数据。如果consumer退出，channel不会自动删除。 如果不再需要，需要通过http端口删除channel，否则很可能会导致磁盘空间不足。</p>
-</li>
-</ul>
-</li>
-</ul>
-<p>TEST</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">curl -d &apos;Hello Linux localhost Msg&apos; &apos;http://127.0.0.1:4151/pub?topic=test&apos;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/16/GO-NSQ/" data-id="cjuwcdlv50004pgf5b4jaoavs" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GO-Grpc-NSQ/">GO Grpc NSQ</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-protoful - 各种文件生成（手记）" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/16/protoful - 各种文件生成（手记）/" class="article-date">
-  <time datetime="2019-03-15T16:00:00.000Z" itemprop="datePublished">2019-03-16</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/16/protoful - 各种文件生成（手记）/">protoful 集中记录</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">生成GO </span><br><span class="line">protoc -I$GOPATH/src \</span><br><span class="line">  -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \</span><br><span class="line">  -I$GOPATH/src/protobuf/src/ \</span><br><span class="line">  -I$GOPATH/src/datacenter/proto \</span><br><span class="line">  --go_out=plugins=grpc:. \</span><br><span class="line">  adverse_event.proto</span><br><span class="line"></span><br><span class="line">生成envoy 翻译器 descriptor.pb </span><br><span class="line">protoc -I$GOPATH/src \</span><br><span class="line">    -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \</span><br><span class="line">    -I$GOPATH/src/protobuf/src/ \</span><br><span class="line">    -I$GOPATH/src/datacenter/proto \</span><br><span class="line">    --include_imports \</span><br><span class="line">    --include_source_info \</span><br><span class="line">    --descriptor_set_out=../build/envoy/descriptor.pb \</span><br><span class="line">    *.proto</span><br><span class="line"></span><br><span class="line">生成grpc-webJS</span><br><span class="line">protoc -I$GOPATH/src \</span><br><span class="line">    -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \</span><br><span class="line">    -I$GOPATH/src/protobuf/src/ \</span><br><span class="line">    -I$GOPATH/src/datacenter/proto \</span><br><span class="line">    --js_out=import_style=commonjs:. \</span><br><span class="line">    --grpc-web_out=import_style=commonjs,mode=grpcwebtext:. *.proto</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">生成protoc-gen-swagger</span><br><span class="line">protoc -I$GOPATH/src \</span><br><span class="line">-I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \</span><br><span class="line">-I$GOPATH/src/protobuf/src/ \</span><br><span class="line">-I$GOPATH/src/proto-doc/proto \</span><br><span class="line">--swagger_out=logtostderr=true:. \</span><br><span class="line">adverse_event.proto</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">交叉编译</span><br><span class="line">set GOARCH=amd64</span><br><span class="line"></span><br><span class="line">set GOOS=linux</span><br><span class="line"></span><br><span class="line">go build xx.go</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/16/protoful - 各种文件生成（手记）/" data-id="cjuwcdlw7000jpgf5lsqyabod" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/protoful/">protoful</a></li></ul>
 
     </footer>
   </div>
@@ -513,7 +607,7 @@ github.com/pkg/errors
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/11/GO-Tracing/" data-id="cjuwcdlva0005pgf58v50ywwa" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/03/11/GO-Tracing/" data-id="cjxeb4w8700031kf5xrglamp3" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GO-Grpc-tracing/">GO Grpc tracing</a></li></ul>
@@ -559,7 +653,7 @@ github.com/pkg/errors
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/02/GO-GRPC-GATEWAY/" data-id="cjuwcdlub0000pgf5thu9evw8" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/03/02/GO-GRPC-GATEWAY/" data-id="cjxeb4w8h00061kf5rz8b3a7s" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/微服务-GRPC/">微服务 GRPC</a></li></ul>
@@ -654,66 +748,10 @@ protoc --go_out=plugins=grpc:. *.proto
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/01/GO-GRPC/" data-id="cjuwcdlus0001pgf5vo6pao5m" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/03/01/GO-GRPC/" data-id="cjxeb4w8c00041kf5ie7lthqs" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/微服务-GRPC/">微服务 GRPC</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-GO-interceptor" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/02/16/GO-interceptor/" class="article-date">
-  <time datetime="2019-02-15T16:00:00.000Z" itemprop="datePublished">2019-02-16</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/02/16/GO-interceptor/">GO-interceptor</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>引用  <a href="https://studygolang.com/articles/15389?fr=sidebar&quot;With a Title&quot;" target="_blank" rel="noopener">带入gRPC：Unary and Stream interceptor</a>. </p>
-<h2 id="interceptor-（拦截器）"><a href="#interceptor-（拦截器）" class="headerlink" title="interceptor （拦截器）"></a>interceptor （拦截器）</h2><p>在 grpc 中进行通信前 与 后的逻辑处理</p>
-<p>在 gRPC 中，大类可分为两种 RPC 方法，与拦截器的对应关系是：</p>
-<ul>
-<li><p>普通方法：一元拦截器（grpc.UnaryInterceptor）</p>
-</li>
-<li><p>流方法：流拦截器（grpc.StreamInterceptor）</p>
-</li>
-</ul>
-<p>常规实现方式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">var opts []grpc.ServerOption</span><br><span class="line">// 注册interceptor</span><br><span class="line">var interceptor grpc.UnaryServerInterceptor</span><br><span class="line">interceptor = func(ctx context.Context, req interface&#123;&#125;, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface&#123;&#125;, err error) &#123;</span><br><span class="line"></span><br><span class="line">    /*</span><br><span class="line">        一些中间逻辑代码</span><br><span class="line">    */</span><br><span class="line">    return handler(ctx, req)</span><br><span class="line">&#125;</span><br><span class="line">opts = append(opts, grpc.UnaryInterceptor(interceptor))</span><br></pre></td></tr></table></figure></p>
-<p>grpc 本身只能设置一个拦截器，为了避免所有逻辑都写在可以 可以使用(go-grpc-middleware)来处理</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">import &quot;github.com/grpc-ecosystem/go-grpc-middleware&quot;</span><br><span class="line"></span><br><span class="line">//RPC 方法的入参出参的日志输出</span><br><span class="line">func LoggingInterceptor(ctx context.Context, req interface&#123;&#125;, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface&#123;&#125;, error) &#123;</span><br><span class="line">    log.Printf(&quot;gRPC method: %s, %v&quot;, info.FullMethod, req)</span><br><span class="line">    resp, err := handler(ctx, req)</span><br><span class="line">    log.Printf(&quot;gRPC method: %s, %v&quot;, info.FullMethod, resp)</span><br><span class="line">    return resp, err</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//RPC 方法的异常保护和日志输出</span><br><span class="line">func RecoveryInterceptor(ctx context.Context, req interface&#123;&#125;, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface&#123;&#125;, err error) &#123;</span><br><span class="line">    defer func() &#123;</span><br><span class="line">        if e := recover(); e != nil &#123;</span><br><span class="line">            debug.PrintStack()</span><br><span class="line">            err = status.Errorf(codes.Internal, &quot;Panic err: %v&quot;, e)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;()</span><br><span class="line"></span><br><span class="line">    return handler(ctx, req)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">myServer := grpc.NewServer(</span><br><span class="line">    grpc.Creds(c), //安全通信,处理证书认证相关</span><br><span class="line">    grpc.StreamInterceptor(grpc_middleware.ChainStreamServer(</span><br><span class="line">        ...</span><br><span class="line">    )),</span><br><span class="line">    grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(</span><br><span class="line">       ...</span><br><span class="line">    )),</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">or </span><br><span class="line"></span><br><span class="line">opts := []grpc.ServerOption&#123;</span><br><span class="line">    grpc.Creds(c),</span><br><span class="line">    grpc_middleware.WithUnaryServerChain(</span><br><span class="line">        RecoveryInterceptor,</span><br><span class="line">        LoggingInterceptor,</span><br><span class="line">    ),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>请参阅 <a href="https://github.com/felixyao1985/rbac-grpc-interceptor" title="Title" target="_blank" rel="noopener">案例分享</a></p>
-<p>##JWT - GO</p>
-<p>现成的库，不是官方，但是星高！有很多方法可以使用</p>
-<p>github.com/dgrijalva/jwt-go </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line">测试Token</span><br><span class="line">*/</span><br><span class="line">Token,_ := jwt.GenerateToken(&quot;felix&quot;,&quot;123456&quot;)</span><br><span class="line">fmt.Println(Token)</span><br><span class="line">jwt.ParseToken(Token.Token)</span><br></pre></td></tr></table></figure>
-<p>请参阅 <a href="https://github.com/felixyao1985/go-grpc-gateway-examples/blob/master/jwt/middleware.go" title="Title" target="_blank" rel="noopener">JWT中间件</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/02/16/GO-interceptor/" data-id="cjuwcdlvr0009pgf5c97c8f9u" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GO-interceptor-JWT/">GO interceptor JWT</a></li></ul>
 
     </footer>
   </div>
@@ -740,7 +778,7 @@ protoc --go_out=plugins=grpc:. *.proto
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Envoy-grpc-restful/">Envoy grpc restful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-NSQ/">GO Grpc NSQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-tracing/">GO Grpc tracing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-generate/">GO generate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-interceptor-JWT/">GO interceptor JWT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-json/">GO json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-权限管理/">GO 权限管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git-fork、pr/">Git fork、pr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Protocol-Buffer/">Protocol Buffer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gRPC/">gRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protoful/">protoful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务/">微服务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务-GRPC/">微服务 GRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/端口/">端口</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Envoy-grpc-restful/">Envoy grpc restful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-NSQ/">GO Grpc NSQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-tracing/">GO Grpc tracing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-generate/">GO generate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-interceptor-JWT/">GO interceptor JWT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-json/">GO json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-权限管理/">GO 权限管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git-fork、pr/">Git fork、pr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Protocol-Buffer/">Protocol Buffer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gRPC/">gRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protoful/">protoful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务/">微服务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务-GRPC/">微服务 GRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/端口/">端口</a></li></ul>
     </div>
   </div>
 
@@ -750,7 +788,7 @@ protoc --go_out=plugins=grpc:. *.proto
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Envoy-grpc-restful/" style="font-size: 10px;">Envoy grpc restful</a> <a href="/tags/GO-Grpc-NSQ/" style="font-size: 10px;">GO Grpc NSQ</a> <a href="/tags/GO-Grpc-tracing/" style="font-size: 10px;">GO Grpc tracing</a> <a href="/tags/GO-generate/" style="font-size: 10px;">GO generate</a> <a href="/tags/GO-interceptor-JWT/" style="font-size: 10px;">GO interceptor JWT</a> <a href="/tags/GO-json/" style="font-size: 10px;">GO json</a> <a href="/tags/GO-权限管理/" style="font-size: 10px;">GO 权限管理</a> <a href="/tags/Git-fork、pr/" style="font-size: 10px;">Git fork、pr</a> <a href="/tags/Protocol-Buffer/" style="font-size: 10px;">Protocol Buffer</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/Redux/" style="font-size: 10px;">Redux</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/gRPC/" style="font-size: 10px;">gRPC</a> <a href="/tags/protoful/" style="font-size: 10px;">protoful</a> <a href="/tags/微服务/" style="font-size: 20px;">微服务</a> <a href="/tags/微服务-GRPC/" style="font-size: 15px;">微服务 GRPC</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a>
+      <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Elasticsearch/" style="font-size: 10px;">Elasticsearch</a> <a href="/tags/Envoy-grpc-restful/" style="font-size: 10px;">Envoy grpc restful</a> <a href="/tags/GO-Grpc-NSQ/" style="font-size: 10px;">GO Grpc NSQ</a> <a href="/tags/GO-Grpc-tracing/" style="font-size: 10px;">GO Grpc tracing</a> <a href="/tags/GO-generate/" style="font-size: 10px;">GO generate</a> <a href="/tags/GO-interceptor-JWT/" style="font-size: 10px;">GO interceptor JWT</a> <a href="/tags/GO-json/" style="font-size: 10px;">GO json</a> <a href="/tags/GO-权限管理/" style="font-size: 10px;">GO 权限管理</a> <a href="/tags/Git-fork、pr/" style="font-size: 10px;">Git fork、pr</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Protocol-Buffer/" style="font-size: 10px;">Protocol Buffer</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/Redux/" style="font-size: 10px;">Redux</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/gRPC/" style="font-size: 10px;">gRPC</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/protoful/" style="font-size: 10px;">protoful</a> <a href="/tags/微服务/" style="font-size: 20px;">微服务</a> <a href="/tags/微服务-GRPC/" style="font-size: 15px;">微服务 GRPC</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a>
     </div>
   </div>
 
@@ -784,11 +822,11 @@ protoc --go_out=plugins=grpc:. *.proto
           </li>
         
           <li>
-            <a href="/2019/03/16/Envoy - 初探 /">Envoy - 初探</a>
+            <a href="/2019/03/16/Elasticsearch （一）/">Elasticsearch （一）</a>
           </li>
         
           <li>
-            <a href="/2019/03/16/GO-NSQ/">NSQ(有赞版)</a>
+            <a href="/2019/03/16/protoful - 各种文件生成（手记）/">protoful 集中记录</a>
           </li>
         
       </ul>

@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="Felix Blog">
 <meta property="og:description" content="123456789101112131415161718192021222324252627282930313233343536373839404142生成GO protoc -I$GOPATH/src \  -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \  -I$GOPATH/src/pro">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-03-27T02:42:29.149Z">
+<meta property="og:updated_time" content="2019-05-09T02:04:06.908Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="protoful 集中记录">
 <meta name="twitter:description" content="123456789101112131415161718192021222324252627282930313233343536373839404142生成GO protoc -I$GOPATH/src \  -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \  -I$GOPATH/src/pro">
@@ -88,11 +88,15 @@
     <div class="article-entry" itemprop="articleBody">
       
         <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">生成GO </span><br><span class="line">protoc -I$GOPATH/src \</span><br><span class="line">  -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \</span><br><span class="line">  -I$GOPATH/src/protobuf/src/ \</span><br><span class="line">  -I$GOPATH/src/datacenter/proto \</span><br><span class="line">  --go_out=plugins=grpc:. \</span><br><span class="line">  adverse_event.proto</span><br><span class="line"></span><br><span class="line">生成envoy 翻译器 descriptor.pb </span><br><span class="line">protoc -I$GOPATH/src \</span><br><span class="line">    -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \</span><br><span class="line">    -I$GOPATH/src/protobuf/src/ \</span><br><span class="line">    -I$GOPATH/src/datacenter/proto \</span><br><span class="line">    --include_imports \</span><br><span class="line">    --include_source_info \</span><br><span class="line">    --descriptor_set_out=../build/envoy/descriptor.pb \</span><br><span class="line">    *.proto</span><br><span class="line"></span><br><span class="line">生成grpc-webJS</span><br><span class="line">protoc -I$GOPATH/src \</span><br><span class="line">    -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \</span><br><span class="line">    -I$GOPATH/src/protobuf/src/ \</span><br><span class="line">    -I$GOPATH/src/datacenter/proto \</span><br><span class="line">    --js_out=import_style=commonjs:. \</span><br><span class="line">    --grpc-web_out=import_style=commonjs,mode=grpcwebtext:. *.proto</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">生成protoc-gen-swagger</span><br><span class="line">protoc -I$GOPATH/src \</span><br><span class="line">-I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \</span><br><span class="line">-I$GOPATH/src/protobuf/src/ \</span><br><span class="line">-I$GOPATH/src/proto-doc/proto \</span><br><span class="line">--swagger_out=logtostderr=true:. \</span><br><span class="line">adverse_event.proto</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">交叉编译</span><br><span class="line">set GOARCH=amd64</span><br><span class="line"></span><br><span class="line">set GOOS=linux</span><br><span class="line"></span><br><span class="line">go build xx.go</span><br></pre></td></tr></table></figure>
-
+<p>GO mod的使用 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">打开</span><br><span class="line">GO111MODULE=on</span><br><span class="line"></span><br><span class="line">Usage:</span><br><span class="line"></span><br><span class="line">	go mod &lt;command&gt; [arguments]</span><br><span class="line"></span><br><span class="line">The commands are:</span><br><span class="line"></span><br><span class="line">	download    download modules to local cache</span><br><span class="line">	edit        edit go.mod from tools or scripts</span><br><span class="line">	graph       print module requirement graph</span><br><span class="line">	init        initialize new module in current directory</span><br><span class="line">	tidy        add missing and remove unused modules</span><br><span class="line">	vendor      make vendored copy of dependencies</span><br><span class="line">	verify      verify dependencies have expected content</span><br><span class="line">	why         explain why packages or modules are needed</span><br><span class="line"></span><br><span class="line">Use &quot;go help mod &lt;command&gt;&quot; for more information about a command.</span><br><span class="line"></span><br><span class="line">GO111MODULE=on go mod init</span><br><span class="line">GO111MODULE=on go mod tidy</span><br></pre></td></tr></table></figure>
+<p>内网穿透工具</p>
+<p><a href="https://dashboard.ngrok.com/get-started" target="_blank" rel="noopener">https://dashboard.ngrok.com/get-started</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ngrok http 80</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/16/protoful - 各种文件生成（手记）/" data-id="cjuwcdlw7000jpgf5lsqyabod" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/03/16/protoful - 各种文件生成（手记）/" data-id="cjxeb4wio001l1kf542xks84e" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/protoful/">protoful</a></li></ul>
@@ -103,19 +107,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/03/16/GO-NSQ/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/03/16/Elasticsearch （一）/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          NSQ(有赞版)
+          Elasticsearch （一）
         
       </div>
     </a>
   
   
-    <a href="/2019/03/11/GO-Tracing/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2019/03/16/GO-NSQ/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">基于jaeger和tracing实现 grpc调用链跟踪模块</div>
+      <div class="article-nav-title">NSQ(有赞版)</div>
     </a>
   
 </nav>
@@ -134,7 +138,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Envoy-grpc-restful/">Envoy grpc restful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-NSQ/">GO Grpc NSQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-tracing/">GO Grpc tracing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-generate/">GO generate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-interceptor-JWT/">GO interceptor JWT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-json/">GO json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-权限管理/">GO 权限管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git-fork、pr/">Git fork、pr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Protocol-Buffer/">Protocol Buffer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gRPC/">gRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protoful/">protoful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务/">微服务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务-GRPC/">微服务 GRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/端口/">端口</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Envoy-grpc-restful/">Envoy grpc restful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-NSQ/">GO Grpc NSQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-tracing/">GO Grpc tracing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-generate/">GO generate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-interceptor-JWT/">GO interceptor JWT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-json/">GO json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-权限管理/">GO 权限管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git-fork、pr/">Git fork、pr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Protocol-Buffer/">Protocol Buffer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gRPC/">gRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protoful/">protoful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务/">微服务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务-GRPC/">微服务 GRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/端口/">端口</a></li></ul>
     </div>
   </div>
 
@@ -144,7 +148,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Envoy-grpc-restful/" style="font-size: 10px;">Envoy grpc restful</a> <a href="/tags/GO-Grpc-NSQ/" style="font-size: 10px;">GO Grpc NSQ</a> <a href="/tags/GO-Grpc-tracing/" style="font-size: 10px;">GO Grpc tracing</a> <a href="/tags/GO-generate/" style="font-size: 10px;">GO generate</a> <a href="/tags/GO-interceptor-JWT/" style="font-size: 10px;">GO interceptor JWT</a> <a href="/tags/GO-json/" style="font-size: 10px;">GO json</a> <a href="/tags/GO-权限管理/" style="font-size: 10px;">GO 权限管理</a> <a href="/tags/Git-fork、pr/" style="font-size: 10px;">Git fork、pr</a> <a href="/tags/Protocol-Buffer/" style="font-size: 10px;">Protocol Buffer</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/Redux/" style="font-size: 10px;">Redux</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/gRPC/" style="font-size: 10px;">gRPC</a> <a href="/tags/protoful/" style="font-size: 10px;">protoful</a> <a href="/tags/微服务/" style="font-size: 20px;">微服务</a> <a href="/tags/微服务-GRPC/" style="font-size: 15px;">微服务 GRPC</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a>
+      <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Elasticsearch/" style="font-size: 10px;">Elasticsearch</a> <a href="/tags/Envoy-grpc-restful/" style="font-size: 10px;">Envoy grpc restful</a> <a href="/tags/GO-Grpc-NSQ/" style="font-size: 10px;">GO Grpc NSQ</a> <a href="/tags/GO-Grpc-tracing/" style="font-size: 10px;">GO Grpc tracing</a> <a href="/tags/GO-generate/" style="font-size: 10px;">GO generate</a> <a href="/tags/GO-interceptor-JWT/" style="font-size: 10px;">GO interceptor JWT</a> <a href="/tags/GO-json/" style="font-size: 10px;">GO json</a> <a href="/tags/GO-权限管理/" style="font-size: 10px;">GO 权限管理</a> <a href="/tags/Git-fork、pr/" style="font-size: 10px;">Git fork、pr</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Protocol-Buffer/" style="font-size: 10px;">Protocol Buffer</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/Redux/" style="font-size: 10px;">Redux</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/gRPC/" style="font-size: 10px;">gRPC</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/protoful/" style="font-size: 10px;">protoful</a> <a href="/tags/微服务/" style="font-size: 20px;">微服务</a> <a href="/tags/微服务-GRPC/" style="font-size: 15px;">微服务 GRPC</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a>
     </div>
   </div>
 
@@ -178,11 +182,11 @@
           </li>
         
           <li>
-            <a href="/2019/03/16/Envoy - 初探 /">Envoy - 初探</a>
+            <a href="/2019/03/16/Elasticsearch （一）/">Elasticsearch （一）</a>
           </li>
         
           <li>
-            <a href="/2019/03/16/GO-NSQ/">NSQ(有赞版)</a>
+            <a href="/2019/03/16/protoful - 各种文件生成（手记）/">protoful 集中记录</a>
           </li>
         
       </ul>
