@@ -7,18 +7,18 @@
   
   <title>MySQL json 数据类型 | Felix Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="必须要5.7以上版本才能使用JSON path 是以 $ 开头，之后就是JSON的层级使用。 $ $[0].name $[0][1] //*表示所有 $[*] 数据比较json中的数据可以用 =, &amp;lt;, &amp;lt;=, &amp;gt;, &amp;gt;=, &amp;lt;&amp;gt;, !=, and &amp;lt;=&amp;gt; 进行比较。 json里的数据类型是多样的，在不同类型之间进行比较时，高优先级的要大于低优先级的">
+  <meta name="description" content="必须要5.7以上版本才能使用写在开头mysql json 的功能很强大，只是用来当一个储存数据的字段 就没什么意义了。 使用proto做交互的话，只要JSON 写得好 用proro.Unmarshal() 就可以很方便的转换类型 可以精简很多代码 JSON path 是以 $ 开头，之后就是JSON的层级使用。 $ $[0].name $[0][1] //*表示所有 $[*] 数据比较json中的">
 <meta name="keywords" content="MySQL,json">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySQL json 数据类型">
 <meta property="og:url" content="http://yoursite.com/2018/03/28/mysql-json/index.html">
 <meta property="og:site_name" content="Felix Blog">
-<meta property="og:description" content="必须要5.7以上版本才能使用JSON path 是以 $ 开头，之后就是JSON的层级使用。 $ $[0].name $[0][1] //*表示所有 $[*] 数据比较json中的数据可以用 =, &amp;lt;, &amp;lt;=, &amp;gt;, &amp;gt;=, &amp;lt;&amp;gt;, !=, and &amp;lt;=&amp;gt; 进行比较。 json里的数据类型是多样的，在不同类型之间进行比较时，高优先级的要大于低优先级的">
+<meta property="og:description" content="必须要5.7以上版本才能使用写在开头mysql json 的功能很强大，只是用来当一个储存数据的字段 就没什么意义了。 使用proto做交互的话，只要JSON 写得好 用proro.Unmarshal() 就可以很方便的转换类型 可以精简很多代码 JSON path 是以 $ 开头，之后就是JSON的层级使用。 $ $[0].name $[0][1] //*表示所有 $[*] 数据比较json中的">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-27T06:47:01.969Z">
+<meta property="og:updated_time" content="2019-06-27T06:57:20.204Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL json 数据类型">
-<meta name="twitter:description" content="必须要5.7以上版本才能使用JSON path 是以 $ 开头，之后就是JSON的层级使用。 $ $[0].name $[0][1] //*表示所有 $[*] 数据比较json中的数据可以用 =, &amp;lt;, &amp;lt;=, &amp;gt;, &amp;gt;=, &amp;lt;&amp;gt;, !=, and &amp;lt;=&amp;gt; 进行比较。 json里的数据类型是多样的，在不同类型之间进行比较时，高优先级的要大于低优先级的">
+<meta name="twitter:description" content="必须要5.7以上版本才能使用写在开头mysql json 的功能很强大，只是用来当一个储存数据的字段 就没什么意义了。 使用proto做交互的话，只要JSON 写得好 用proro.Unmarshal() 就可以很方便的转换类型 可以精简很多代码 JSON path 是以 $ 开头，之后就是JSON的层级使用。 $ $[0].name $[0][1] //*表示所有 $[*] 数据比较json中的">
   
     <link rel="alternate" href="/atom.xml" title="Felix Blog" type="application/atom+xml">
   
@@ -87,7 +87,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h6 id="必须要5-7以上版本才能使用"><a href="#必须要5-7以上版本才能使用" class="headerlink" title="必须要5.7以上版本才能使用"></a>必须要5.7以上版本才能使用</h6><p>JSON path 是以 $ 开头，之后就是JSON的层级使用。</p>
+        <h6 id="必须要5-7以上版本才能使用"><a href="#必须要5-7以上版本才能使用" class="headerlink" title="必须要5.7以上版本才能使用"></a>必须要5.7以上版本才能使用</h6><h5 id="写在开头"><a href="#写在开头" class="headerlink" title="写在开头"></a>写在开头</h5><p>mysql json 的功能很强大，只是用来当一个储存数据的字段 就没什么意义了。</p>
+<p>使用proto做交互的话，只要JSON 写得好 用proro.Unmarshal() 就可以很方便的转换类型 可以精简很多代码</p>
+<p>JSON path 是以 $ 开头，之后就是JSON的层级使用。</p>
 <pre><code>$
 $[0].name
 $[0][1]
@@ -178,7 +180,7 @@ $[*]
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/28/mysql-json/" data-id="cjxeb4wei000m1kf5rwq71wyz" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/03/28/mysql-json/" data-id="cjxebfci3000lt0f54pryw6uw" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/json/">json</a></li></ul>
@@ -189,19 +191,19 @@ $[*]
     
 <nav id="article-nav">
   
-    <a href="/2018/03/28/MobX/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/02/11/GO-casbin 随手记/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          MobX 状态管理
+          GO-casbin 随手记
         
       </div>
     </a>
   
   
-    <a href="/2018/03/28/微服务架构(初探)/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2018/03/28/微服务架构(选型方案）/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">微服务架构(初探)</div>
+      <div class="article-nav-title">微服务架构(选型方案)</div>
     </a>
   
 </nav>
@@ -264,11 +266,11 @@ $[*]
           </li>
         
           <li>
-            <a href="/2019/03/16/Elasticsearch （一）/">Elasticsearch （一）</a>
+            <a href="/2019/03/16/protoful - 各种文件生成（手记）/">protoful 集中记录</a>
           </li>
         
           <li>
-            <a href="/2019/03/16/protoful - 各种文件生成（手记）/">protoful 集中记录</a>
+            <a href="/2019/03/16/GO-NSQ/">NSQ(有赞版)</a>
           </li>
         
       </ul>
