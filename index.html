@@ -62,6 +62,400 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-docker_笔记" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/05/08/docker_笔记/" class="article-date">
+  <time datetime="2020-05-07T16:00:00.000Z" itemprop="datePublished">2020-05-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/08/docker_笔记/">docker 笔记</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Docker-笔记"><a href="#Docker-笔记" class="headerlink" title="Docker 笔记"></a>Docker 笔记</h1><p>引自 <a href="https://github.com/heibaiying/Full-Stack-Notes/blob/master/notes/Docker_%E5%9F%BA%E7%A1%80.md" target="_blank" rel="noopener">heibaiying/Full-Stack-Notes/Docker_基础</a></p>
+<h2 id="Docker-常用命令"><a href="#Docker-常用命令" class="headerlink" title="Docker 常用命令"></a>Docker 常用命令</h2><h3 id="基础命令"><a href="#基础命令" class="headerlink" title="基础命令"></a>基础命令</h3><ul>
+<li><strong>docker version</strong>：用于查看 docker 的版本信息</li>
+<li><strong>docker info</strong>：用于查看 docker 的配置信息</li>
+<li><strong>docker help</strong>：用于查看帮助信息</li>
+</ul>
+<h3 id="镜像相关命令"><a href="#镜像相关命令" class="headerlink" title="镜像相关命令"></a>镜像相关命令</h3><h4 id="1-docker-search-镜像名"><a href="#1-docker-search-镜像名" class="headerlink" title="1. docker search  镜像名"></a>1. docker search  镜像名</h4><p>从官方镜像仓库 Docker Hub 查找指定名称的镜像。常用参数为 <code>--no-trunc</code>，代表显示完整的镜像信息。</p>
+<h4 id="2-docker-images"><a href="#2-docker-images" class="headerlink" title="2. docker images"></a>2. docker images</h4><p>列出所有顶层镜像的相关信息。常用参数如下：</p>
+<ul>
+<li><strong>-a</strong> ：显示所有镜像，包括中间隐藏的镜像</li>
+<li><strong>-q</strong> ：只显示镜像 ID</li>
+<li><strong>–digests</strong> ：显示摘要信息</li>
+<li><strong>–no-trunc</strong> ：显示完整镜像信息</li>
+</ul>
+<h4 id="3-docker-pull-镜像名-TAG"><a href="#3-docker-pull-镜像名-TAG" class="headerlink" title="3. docker pull  镜像名 [:TAG]"></a>3. docker pull  镜像名 [:TAG]</h4><p>从官方仓库下载镜像，<code>:TAG</code> 为镜像版本，不加则默认下载最新版本。</p>
+<h4 id="4-docker-rmi-镜像名或ID-TAG"><a href="#4-docker-rmi-镜像名或ID-TAG" class="headerlink" title="4. docker rmi 镜像名或ID  [:TAG]"></a>4. docker rmi 镜像名或ID  [:TAG]</h4><p>删除指定版本的镜像，不加 <code>:TAG</code> 则默认删除镜像的最新版本。如果有基于该镜像的容器存在，则该镜像无法直接删除，此时可以使用参数 <code>-f</code>，代表强制删除。rmi 命令支持批量删除，多个镜像名之间使用空格分隔。如果想要删除所有镜像，则可以使用命令 <code>docker rmi -f $(docker images -qa)</code> 。</p>
+<h2 id="容器相关命令"><a href="#容器相关命令" class="headerlink" title="容器相关命令"></a>容器相关命令</h2><h4 id="1-docker-run-OPTIONS-IMAGE-COMMAND-ARG…"><a href="#1-docker-run-OPTIONS-IMAGE-COMMAND-ARG…" class="headerlink" title="1. docker run [OPTIONS] IMAGE [COMMAND] [ARG…]"></a>1. docker run [OPTIONS] IMAGE [COMMAND] [ARG…]</h4><p>run 是 docker 中最为核心的一个命令，用于新建并启动容器，其拥有众多可用参数，可以使用 <code>docker run --help</code> 查看所有可用参数。常用参数如下：</p>
+<ul>
+<li><strong>-i</strong> ：表示使用交互模式，始终保持输入流开放；</li>
+<li><strong>-t</strong> ：表示分配一个伪终端，通常和 <code>-i</code> 结合使用，表示使用伪终端与容器进行交互；</li>
+<li><strong>-d</strong> ：以后台方式运行容器；</li>
+<li><strong>–name</strong> ：指定启动容器的名字，如果不指定，则由 docker 随机分配；</li>
+<li><strong>-c</strong> ：用于给运行在容器中的所有进程分配 CPU 的 shares 值，这是一个相对权重，实际的处理速度与宿主机的 CPU 相关；</li>
+<li><strong>-m</strong> ：用于限制为容器中所有进程分配的内存总量，以 B、K、M、G 为单位；</li>
+<li><strong>-v</strong> ：挂载数据卷 volume，可以用多个 <code>-v</code> 参数同时挂载多个 volume。volume 的格式为：<code>[host-dir]:[container-dir]:[rw:ro]</code> ，<code>[rw:ro]</code> 用于指定数据卷的模式，<code>rw</code> 代表读写模式，<code>ro</code> 代表只读模式。</li>
+<li><strong>-p</strong> ：用于将容器的端口暴露给宿主机的端口，格式为：<code>hostPort:containerPort</code> ，通过端口的暴露，可以让外部主机能够访问容器内的应用。</li>
+</ul>
+<h4 id="2-docker-ps-OPTIONS"><a href="#2-docker-ps-OPTIONS" class="headerlink" title="2. docker ps [OPTIONS]"></a>2. docker ps [OPTIONS]</h4><p>列出当前所有正在运行的容器。常用参数如下：</p>
+<ul>
+<li><strong>-a</strong> ：列出所有容器，包括运行的和已经停止的所有容器</li>
+<li><strong>-n</strong> ：显示最近创建的 n 个容器</li>
+<li><strong>-q</strong> ：只显示容器编号</li>
+<li><strong>–no-trunc</strong> ：不要截断输出信息</li>
+</ul>
+<h4 id="3-启动-重启-停止-强制停止容器"><a href="#3-启动-重启-停止-强制停止容器" class="headerlink" title="3. 启动\重启\停止\强制停止容器"></a>3. 启动\重启\停止\强制停止容器</h4><p>与容器启动、停止相关的命令为：<code>docker start|restart|stop|kill 容器名或ID</code> ，start 命令用于启动已有的容器，restart 用于重启正在运行的容器，stop 用于停止正在运行的容器，kill  用于强制停止容器。</p>
+<h4 id="4-进入正在运行的容器"><a href="#4-进入正在运行的容器" class="headerlink" title="4. 进入正在运行的容器"></a>4. 进入正在运行的容器</h4><p>想要进入正在运行的容器，与容器主进程交互，有以下两种常用方法：</p>
+<ul>
+<li>docker attach 容器名或ID</li>
+<li>docker exec -it 容器名或ID /bin/bash</li>
+</ul>
+<h4 id="5-退出容器"><a href="#5-退出容器" class="headerlink" title="5. 退出容器"></a>5. 退出容器</h4><p>想要退出正在运行的容器，有以下两种常用方法：</p>
+<ul>
+<li><strong>exit</strong> ：退出并停止容器；</li>
+<li><strong>ctrl+P+Q</strong> ：退出。</li>
+</ul>
+<h4 id="6-docker-rm-容器名或ID"><a href="#6-docker-rm-容器名或ID" class="headerlink" title="6. docker rm 容器名或ID"></a>6. docker rm 容器名或ID</h4><p>删除已停止的容器，常用参数为<code>-f</code>，表示强制删除容器，即便容器还在运行。想要删除所有容器，可以使用 <code>docker rm -f $(docker ps -aq)</code> 命令。</p>
+<h4 id="7-查看容器信息"><a href="#7-查看容器信息" class="headerlink" title="7. 查看容器信息"></a>7. 查看容器信息</h4><p>可以使用 <code>docker inspect [OPTIONS] NAME|ID [NAME|ID...]</code> 查看容器或者镜像的详细信息，想要查看指定的信息，可以使用 <code>-- format</code> 参数来指定输出的模板格式，示例如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker inspect --format='&#123;&#123;.NetworkSettings&#125;&#125;'  32cb3ace3279</span><br></pre></td></tr></table></figure>
+<h4 id="8-查看容器运行日志"><a href="#8-查看容器运行日志" class="headerlink" title="8. 查看容器运行日志"></a>8. 查看容器运行日志</h4><p>可以使用 <code>docker logs [OPTIONS] CONTAINER</code> 查看容器中进程的运行日志，常用参数如下：</p>
+<ul>
+<li><strong>–details</strong> ：显示日志详情</li>
+<li><strong>-f</strong> ：跟随日志输出显示</li>
+<li><strong>–tail</strong> ：从末尾开始显示指定行的数据</li>
+<li><strong>-t</strong> ：显示时间戳</li>
+<li><strong>–since</strong> ：开始时间</li>
+<li><strong>–until</strong> ： 结束时间</li>
+</ul>
+<h2 id="DockerFile"><a href="#DockerFile" class="headerlink" title="DockerFile"></a>DockerFile</h2><p>dockerfile 是 Docker 用来构建镜像的文本文件，包含自定义的指令和格式，可以通过 build 命令从 dockerfile 中构建镜像，命令格式为：<code>docker build [OPTIONS] PATH | URL | -</code> 。</p>
+<p>dockerfile 描述了组装镜像的步骤，其中每条指令都是单独执行的。除了 FROM 指令，其他的每一条指令都会在上一条指令所生成镜像的基础上执行，执行完后会生成一个新的镜像层，新镜像层覆盖在原来的镜像之上从而形成新的镜像。为了提高镜像构建的速度， Docker Daemon 会缓存构建过程中的中间镜像。在构建镜像时，它会将 dockerfile 中下一条指令和基础镜像的所有子镜像做比较，如果有一个子镜像是由相同的指令生成的，则命中缓存，直接使用该镜像，而不用再生成一个新的镜像。常用指令如下：</p>
+<h3 id="1-FROM"><a href="#1-FROM" class="headerlink" title="1. FROM"></a>1. FROM</h3><p>FROM 指令用于指定基础镜像，因此所有的 dockerfile 都必须使用 FROM 指令开头。FROM 指令可以出现多次，这样会构建多个镜像，每个镜像创建完成后，Docker 命令行界面会输出该镜像的 ID。常用指令格式为：<code>FROM &lt;image&gt;[:&lt;tag&gt;] [AS &lt;name&gt;]</code>。</p>
+<h3 id="2-MAINTAINER"><a href="#2-MAINTAINER" class="headerlink" title="2. MAINTAINER"></a>2. MAINTAINER</h3><p>MAINTAINER 指令可以用来设置作者名称和邮箱，目前 MAINTAINER  指令被标识为废弃，官方推荐使用 LABEL 代替。</p>
+<h3 id="3-LABEL"><a href="#3-LABEL" class="headerlink" title="3. LABEL"></a>3. LABEL</h3><p>LABEL 指令可以用于指定镜像相关的元数据信息。格式为：<code>LABEL &lt;key&gt;=&lt;value&gt; &lt;key&gt;=&lt;value&gt; &lt;key&gt;=&lt;value&gt; ...</code> 。</p>
+<h3 id="4-ENV"><a href="#4-ENV" class="headerlink" title="4. ENV"></a>4. ENV</h3><p>ENV 指令用于声明环境变量，声明好的环境变量可以在后面的指令中引用，引用格式为 <code>$variable_name</code> 或 <code>${variable_name}</code> 。常用格式有以下两种：</p>
+<ul>
+<li><code>ENV &lt;key&gt; &lt;value&gt;</code> ：用于设置单个环境变量；</li>
+<li><code>ENV &lt;key&gt;=&lt;value&gt; ...</code> ：用于一次设置多个环境变量。</li>
+</ul>
+<h3 id="5-EXPOSE"><a href="#5-EXPOSE" class="headerlink" title="5. EXPOSE"></a>5. EXPOSE</h3><p>EXPOSE 用于指明容器对外暴露的端口号，格式为：<code>EXPOSE &lt;port&gt; [&lt;port&gt;/&lt;protocol&gt;...]</code> ，您可以指定端口是侦听 TCP 还是 UDP，如果未指定协议，则默认为 TCP。</p>
+<h3 id="6-WORKDIR"><a href="#6-WORKDIR" class="headerlink" title="6. WORKDIR"></a>6. WORKDIR</h3><p>WORKDIR 用于指明工作目录，它可以多次使用。如果指明的是相对路径，则它将相对于上一个WORKDIR指令的路径。示例如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">WORKDIR /a</span><br><span class="line">WORKDIR b</span><br><span class="line">WORKDIR c</span><br><span class="line">RUN pwd # 此时pwd为：/a/b/c</span><br></pre></td></tr></table></figure>
+<h3 id="7-COPY"><a href="#7-COPY" class="headerlink" title="7. COPY"></a>7. COPY</h3><p>COPY 指令的常用格式为：<code>COPY  &lt;src&gt;... &lt;dest&gt;</code>，用于将指定路径中的文件添加到新的镜像中，拷贝的目标路径可以不存在，程序会自动创建。</p>
+<h3 id="8-ADD"><a href="#8-ADD" class="headerlink" title="8. ADD"></a>8. ADD</h3><p>ADD 指令的常用格式为：<code>COPY  &lt;src&gt;... &lt;dest&gt;</code>，作用与 COPY 指令类似，但功能更为强大，例如 <code>Src</code> 支持文件的网络地址，且如果 <code>Src</code> 指向的是压缩文件，ADD 在复制完成后还会自动进行解压。</p>
+<h3 id="9-RUN"><a href="#9-RUN" class="headerlink" title="9.  RUN"></a>9.  RUN</h3><p>RUN 指令会在前一条命令创建出的镜像基础上再创建一个容器，并在容器中运行命令，在命令结束后提交该容器为新的镜像。它支持以下两种格式：</p>
+<ul>
+<li><code>RUN &lt;command&gt;</code> （<em>shell</em> 格式）</li>
+<li><code>RUN [&quot;executable&quot;, &quot;param1&quot;, &quot;param2&quot;]</code> (<em>exec</em> 格式)</li>
+</ul>
+<p>使用 shell 格式时候，命令通过 <code>/bin/sh -c</code> 运行，而当使用 exec 格式时，命令是直接运行的，容器不调用 shell 程序，这意味着不会发生正常的 shell 处理。例如，<code>RUN [&quot;echo&quot;,&quot;$HOME&quot;]</code> 不会对 <code>$HOME</code> 执行变量替换，此时正确的格式应为：<code>RUN [&quot;sh&quot;,&quot;-c&quot;,&quot;echo $HOME&quot;]</code>。下面的 CMD 指令也存在同样的问题。</p>
+<h3 id="10-CMD"><a href="#10-CMD" class="headerlink" title="10. CMD"></a>10. CMD</h3><ul>
+<li><code>CMD [&quot;executable&quot;,&quot;param1&quot;,&quot;param2&quot;]</code> (<em>exec</em> 格式, 首选)</li>
+<li><code>CMD [&quot;param1&quot;,&quot;param2&quot;]</code> (作为 <em>ENTRYPOINT</em> 的默认参数)</li>
+<li><code>CMD command param1 param2</code> (<em>shell</em> 格式)</li>
+</ul>
+<p>CMD 指令提供容器运行时的默认值，这些默认值可以是一条指令，也可以是一些参数。一个 dockerfile 中可以有多条 CMD 指令，但只有最后一条 CMD 指令有效。CMD 指令与 RUN 指令的命令格式相同，但作用不同：RUN 指令是在镜像的构建阶段用于产生新的镜像；而 CMD 指令则是在容器的启动阶段默认将 CMD 指令作为第一条执行的命令，如果用户在 docker run 时指定了新的命令参数，则会覆盖 CMD 指令中的命令。</p>
+<h3 id="11-ENTRYPOINT"><a href="#11-ENTRYPOINT" class="headerlink" title="11.  ENTRYPOINT"></a>11.  ENTRYPOINT</h3><p>ENTRYPOINT 指令 支持以下两种格式：</p>
+<ul>
+<li><code>ENTRYPOINT [&quot;executable&quot;, &quot;param1&quot;, &quot;param2&quot;]</code> (<em>exec</em> 格式，首先)</li>
+<li><code>ENTRYPOINT command param1 param2</code> (<em>shell</em> 格式)</li>
+</ul>
+<p>ENTRYPOINT 指令 和 CMD 指令类似，都可以让容器在每次启动时执行相同的命令。但不同的是 CMD 后面可以是参数也可以是命令，而 ENTRYPOINT 只能是命令；另外 docker run 命令提供的运行参数可以覆盖 CMD，但不能覆盖 ENTRYPOINT ，这意味着 ENTRYPOINT  指令上的命令一定会被执行。如下 dockerfile 片段：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ENTRYPOINT [&quot;/bin/echo&quot;, &quot;Hello&quot;]</span><br><span class="line">CMD [&quot;world&quot;]</span><br></pre></td></tr></table></figure>
+<p>当执行 <code>docker run -it image</code> 后，此时输出为 <code>hello world</code>，而当你执行 <code>docker run -it image spring</code> ，此时 CMD 中的参数会被覆盖，此时输出为<code>hello spring</code>。</p>
+<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><h3 id="部署GO项目"><a href="#部署GO项目" class="headerlink" title="部署GO项目"></a>部署GO项目</h3><p>  这里举例将GO源码，打入docker 在docker内进行编译的过程，如果在之前就已经编译，则可以选择更小的镜像，直接将编译好的文件复制到镜像即可</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 以官方仓库的golang镜像为基础开始创建</span><br><span class="line">FROM golang</span><br><span class="line"><span class="meta">#</span> 作者信息</span><br><span class="line">MAINTAINER  felix</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>工作目录</span><br><span class="line">WORKDIR $GOPATH/src/godocker</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>将文件复制到镜像中</span><br><span class="line">ADD . $GOPATH/src/godocker</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 执行操作（就跟在终端执行语句一样） </span><br><span class="line">RUN go build main.go</span><br><span class="line"></span><br><span class="line">EXPOSE 8080</span><br><span class="line"></span><br><span class="line">ENTRYPOINT ["./main"]</span><br></pre></td></tr></table></figure>
+<p>执行下面镜像构建命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker build -t go-docker:latest .</span><br><span class="line"></span><br><span class="line">docker images 查看创建的镜像</span><br></pre></td></tr></table></figure>
+<p>镜像构建完成后，可以使用以下命令进行启动：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -p 8080:8080 -d go-docker</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/05/08/docker_笔记/" data-id="ck9xwwda4000fx0f5bi5w5gyz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/">docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Nginx 基础" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/05/08/Nginx 基础/" class="article-date">
+  <time datetime="2020-05-07T16:00:00.000Z" itemprop="datePublished">2020-05-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/08/Nginx 基础/">Nginx 基础</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Nginx-基础"><a href="#Nginx-基础" class="headerlink" title="Nginx 基础"></a>Nginx 基础</h1><p>引自 <a href="https://github.com/heibaiying/Full-Stack-Notes/edit/master/notes/Nginx_%E5%9F%BA%E7%A1%80.md" target="_blank" rel="noopener">heibaiying/Full-Stack-Notes/Nginx_基础</a></p>
+<nav><br><a href="#一Nginx-简介">一、Nginx 简介</a><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#11-简介">1.1 简介</a><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#12-正向代理和反向代理">1.2 正向代理和反向代理</a><br><br><a href="#二基本命令">二、基本命令</a><br><br><a href="#三配置格式">三、配置格式</a><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#31-基本配置格式">3.1 基本配置格式</a><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#32-时间和空间单位">3.2 时间和空间单位</a><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#33-官方配置模板">3.3 官方配置模板</a><br><br><a href="#四部署静态网站">四、部署静态网站</a><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#41-增加配置">4.1 增加配置</a><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#42-检查配置">4.2 检查配置</a><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#43-重载配置">4.3 重载配置</a><br><br><a href="#五实现负载均衡">五、实现负载均衡</a><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#51-部署后台服务">5.1 部署后台服务</a><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#52-负载均衡配置">5.2 负载均衡配置</a><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#53-负载均衡策略">5.3 负载均衡策略</a><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#44-声明备用服务">4.4 声明备用服务</a><br><br><a href="#六实现动静分离">六、实现动静分离</a><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#61-动静分离配置">6.1 动静分离配置</a><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#62-常见配置异常">6.2 常见配置异常</a><br><br></nav>
+
+
+
+<h2 id="一、Nginx-简介"><a href="#一、Nginx-简介" class="headerlink" title="一、Nginx 简介"></a>一、Nginx 简介</h2><h3 id="1-1-简介"><a href="#1-1-简介" class="headerlink" title="1.1 简介"></a>1.1 简介</h3><p>Nginx（engine x）是一个免费的，开源的，高性能的 HTTP 服务器， IMAP/POP3 代理服务器 和 TCP/UDP 代理服务器，通常可以用于进行反向代理和实现基于软件的负载均衡，除此之外，它还具备以下特性：</p>
+<ul>
+<li>Nginx 在设计时遵循模块化的设计方案，可以通过组合模块来扩展实现不同的功能，具备很高的扩展性。</li>
+<li>Nginx 遵循 matser \ worker 架构，主进程负责管理一个或者多个 worker 进程，每个 worker 进程负责处理实际的连接，当某个 worker 进程出错时，主进程会迅速创建一个新的 worker 来继续处理连接请求，从而保证高可用。</li>
+<li>Nginx 在高连接数的情况下仍然可以保持极低的内存占用，从而可以支持高并发量地访问。</li>
+<li>Nginx 支持热部署和配置热加载，并支持在不停机的情况下进行版本升级。</li>
+<li>有免费的开源版本和商业版本 ( Nginx Plus )，可以按需选择或者进行二次开发。</li>
+<li>在高并发环境下，Nginx 比其他 WEB 服务器有更快的响应速度。</li>
+</ul>
+<h3 id="1-2-正向代理和反向代理"><a href="#1-2-正向代理和反向代理" class="headerlink" title="1.2 正向代理和反向代理"></a>1.2 正向代理和反向代理</h3><p>Nginx 能够同时支持正向代理和反向代理，这两种代理模式的区别如下：</p>
+<ul>
+<li>正向代理发生在客户端，是客户端主动发起的代理。如我们不能直接访问某个服务器，但可以间接通过中间的代理服务器去进行访问，然后将访问结果再返回给我们。</li>
+<li>反向代理发生在服务端，客户端并不知道发生了代理，示例如下。用户只知道将请求发送给 Nginx，但是并不知道请求被转发了，也不知道被转发给了哪一台应用服务器。实际上对于用户来说，他也没必要知道，因为请求结果都是相同的。</li>
+</ul>
+<div align="center"> <img src="/2020/05/08/Nginx 基础/pictures/nginx-plus.png"> </div>
+
+<h2 id="二、基本命令"><a href="#二、基本命令" class="headerlink" title="二、基本命令"></a>二、基本命令</h2><p>Nginx Shell 的基本使用格式如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx [-?hvVtTq] [-s signal] [-c filename] [-p prefix] [-g directives]</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>-?,-h</strong> ：显示帮助信息；</li>
+<li><strong>-v</strong>：查看版本号；</li>
+<li><strong>-V</strong>：查看版本号及配置信息；</li>
+<li><strong>-t</strong>：检测配置文件是否有语法错误；</li>
+<li><strong>-q</strong>：静默模式，在检测配置期间除了错误提示外，不输出其他消息；</li>
+<li><strong>-s signal</strong>：向 Master 进程发送信号，支持以下信号类型：stop ( 立即停止 )，quit ( 优雅停止 )，reload ( 重新加载配置文件 )，reopen (打开一个新的日志文件来继续记录日志) ； </li>
+<li><strong>-p prefix</strong> ：指定路径的前缀，默认为安装目录，如 <code>/usr/app/nginx-1.16.1/</code> ；</li>
+<li><strong>-c filename</strong> ：指定配置文件的位置， 默认值为 <code>conf/nginx.conf</code>，其实际指向的路径为 <code>prefix + filename</code>；</li>
+<li><strong>-g directives</strong>：从指定的配置文件中设置全局指令。</li>
+</ul>
+<h2 id="三、配置格式"><a href="#三、配置格式" class="headerlink" title="三、配置格式"></a>三、配置格式</h2><h3 id="3-1-基本配置格式"><a href="#3-1-基本配置格式" class="headerlink" title="3.1 基本配置格式"></a>3.1 基本配置格式</h3><p>Nginx 的配置由全局配置和局部配置（指令块）共同组成，所有的指令块都遵循相同的配置格式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;section&gt;&#123;</span><br><span class="line">    &lt;directive&gt;    &lt;parameters&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>指令块使用大括号进行划分，大括号内是独立的配置上下文，包含指令和具体的参数，每行指令以分号作为结尾。除此之外，Nginx 的配置中还支持以下操作：</p>
+<ul>
+<li>支持使用 <code>include</code> 语法来引入外部配置文件，从而可以将每个独立的配置拆分到单独的文件中；</li>
+<li>支持使用 <code>#</code> 符号来添加注释；</li>
+<li>支持使用 <code>$</code> 符号来引用变量；</li>
+<li>部分指令的参数支持使用正则表达式。</li>
+</ul>
+<h3 id="3-2-时间和空间单位"><a href="#3-2-时间和空间单位" class="headerlink" title="3.2 时间和空间单位"></a>3.2 时间和空间单位</h3><p>Nginx  的配置文件支持以下空间和时间单位：</p>
+<ul>
+<li><p><strong>空间单位</strong>：不加任何单位默认就是 bytes，除此之外还支持 k/K，m/M，g/G 等常用单位。</p>
+</li>
+<li><p><strong>空间单位</strong>：支持 ms (毫秒) ，s (秒) ，m (分钟) ，h (小时) ，d (天)，w (星期)，M (月，30天)，y (年，365天) 等常用单位，并支持组合使用，如 <code>1h 30m</code> (1小时 30分)，<code>1y 6M</code>（1年零6个月）。</p>
+</li>
+</ul>
+<h3 id="3-3-官方配置模板"><a href="#3-3-官方配置模板" class="headerlink" title="3.3 官方配置模板"></a>3.3 官方配置模板</h3><p>在安装 Nginx 后，在安装目录的 conf 目录下会有一个官方的配置样例 nginx.conf ，其内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br></pre></td><td class="code"><pre><span class="line"># 使用这个参数来配置worker进程的用户和组，如果没有指定组，则默认为指定用户所处的组，默认值为nobody</span><br><span class="line">user  nobody;</span><br><span class="line"># 指定用于处理客户端连接的worker进程的数量，通常设置为CPU的核心数。</span><br><span class="line"># 如果是为IO密集型操作进行负载，可以设置为核心数的1.5 ~ 2倍</span><br><span class="line">worker_processes  1;</span><br><span class="line"></span><br><span class="line"># 指定日志的位置和日志级别，日志级别按照由低到高的顺序如下：[debug|info|notice|warn|error|crit]</span><br><span class="line">error_log  logs/error.log;</span><br><span class="line">#error_log  logs/error.log  notice;</span><br><span class="line">#error_log  logs/error.log  info;</span><br><span class="line"></span><br><span class="line"># 指定记录主进程的ID的文件</span><br><span class="line">pid        logs/nginx.pid;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">events &#123;</span><br><span class="line">    # 指定每个工程线程的最大连接数，总的连接数 max_clients = worker_processes * worker_connections</span><br><span class="line">    worker_connections  1024;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line">    # 使用include来引用外部文件</span><br><span class="line">    include       mime.types;</span><br><span class="line">    # 指定默认MIME类型</span><br><span class="line">    default_type  application/octet-stream;</span><br><span class="line"></span><br><span class="line">    # 定义日志的输出格式，使用$来进行变量引用</span><br><span class="line">    #log_format  main  &apos;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &apos;</span><br><span class="line">    #                  &apos;$status $body_bytes_sent &quot;$http_referer&quot; &apos;</span><br><span class="line">    #                  &apos;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&apos;;</span><br><span class="line"></span><br><span class="line">    # 定义访问日志的存放位置</span><br><span class="line">    access_log  logs/access.log  main;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    # 是否开启系统调用方法sendfile(),开启后可以直接在内核空间完成文件的发送，即零拷贝</span><br><span class="line">    sendfile        on;</span><br><span class="line">    # 是否开启Socket选项,它只有在sendfile启用后才会生效</span><br><span class="line">    tcp_nopush     on;</span><br><span class="line"></span><br><span class="line">    # 连接超时时间</span><br><span class="line">    keepalive_timeout  65;</span><br><span class="line"></span><br><span class="line">    # 开启文件压缩</span><br><span class="line">       gzip  on;</span><br><span class="line"></span><br><span class="line">    # 配置nginx服务器(虚拟主机)</span><br><span class="line">    server &#123;</span><br><span class="line">        # 监听端口</span><br><span class="line">        listen       80;</span><br><span class="line">        server_name  localhost;</span><br><span class="line"></span><br><span class="line">        # 默认字符集</span><br><span class="line">        charset koi8-r;</span><br><span class="line">        # 配置当前虚拟主机的访问日志的存放位置</span><br><span class="line">        access_log  logs/host.access.log  main;</span><br><span class="line">        </span><br><span class="line">        # 虚拟主机对应的映射目录</span><br><span class="line">        location / &#123;</span><br><span class="line">            root   html;</span><br><span class="line">            index  index.html index.htm;</span><br><span class="line">        &#125;</span><br><span class="line">            </span><br><span class="line">        # 错误重定向页面</span><br><span class="line">        # error_page  404              /404.html;</span><br><span class="line">        error_page   500 502 503 504  /50x.html;</span><br><span class="line">        location = /50x.html &#123;</span><br><span class="line">            root   html;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        # 禁止访问根目录下以ht结尾的文件</span><br><span class="line">        location ~ /\.ht &#123;</span><br><span class="line">            deny  all;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    # 支持配置多台虚拟主机</span><br><span class="line">    #server &#123;</span><br><span class="line">    #    listen       8000;</span><br><span class="line">    #    listen       somename:8080;</span><br><span class="line">    #    server_name  somename  alias  another.alias;</span><br><span class="line"></span><br><span class="line">    #    location / &#123;</span><br><span class="line">    #        root   html;</span><br><span class="line">    #        index  index.html index.htm;</span><br><span class="line">    #    &#125;</span><br><span class="line">    #&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    # 配置Https服务</span><br><span class="line">    server &#123;</span><br><span class="line">        listen       443 ssl;</span><br><span class="line">        server_name  localhost;</span><br><span class="line">        </span><br><span class="line">        # 指定数字证书</span><br><span class="line">        ssl_certificate      cert.pem;</span><br><span class="line">        # 指定密匙</span><br><span class="line">        ssl_certificate_key  cert.key;</span><br><span class="line"></span><br><span class="line">        # 设置存储session的缓存类型和大小</span><br><span class="line">        ssl_session_cache    shared:SSL:1m;</span><br><span class="line">        # session缓存时间</span><br><span class="line">        ssl_session_timeout  5m;</span><br><span class="line"></span><br><span class="line">        # 返回客户端支持的密码列表</span><br><span class="line">        ssl_ciphers  HIGH:!aNULL:!MD5;</span><br><span class="line">        # 指定在使用SSLv3和TLS协议时，服务器密码应优先于客户端密码</span><br><span class="line">        ssl_prefer_server_ciphers  on;</span><br><span class="line"></span><br><span class="line">        location / &#123;</span><br><span class="line">            root   html;</span><br><span class="line">            index  index.html index.htm;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="四、部署静态网站"><a href="#四、部署静态网站" class="headerlink" title="四、部署静态网站"></a>四、部署静态网站</h2><p>Nginx 通常用作 HTTP 服务器来部署静态资源，其具体的操作步骤如下：</p>
+<h3 id="4-1-增加配置"><a href="#4-1-增加配置" class="headerlink" title="4.1 增加配置"></a>4.1 增加配置</h3><p>修改 <code>nginx.conf</code> ，并在 http 指令块中增加如下配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">   # 监听端口号</span><br><span class="line">   listen 9010;</span><br><span class="line">   # 如果有域名的话，可以在这里进行配置</span><br><span class="line">   server_name _;      </span><br><span class="line">   # 存放静态页面的目录</span><br><span class="line">   root /usr/web;</span><br><span class="line">   # 主页面</span><br><span class="line">   index index.html;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>在 <code>/usr/web</code> 目录下新建一个测试页面 index.html，内容如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!doctype html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">content</span>=<span class="string">"width=device-width, user-scalable=no, initial-scale=1.0,</span></span></span><br><span class="line"><span class="tag"><span class="string">         maximum-scale=1.0, minimum-scale=1.0"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"X-UA-Compatible"</span> <span class="attr">content</span>=<span class="string">"ie=edge"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>Nginx静态资源网站<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span> <span class="attr">style</span>=<span class="string">"text-align: center"</span>&gt;</span>Nginx静态资源网站<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="4-2-检查配置"><a href="#4-2-检查配置" class="headerlink" title="4.2 检查配置"></a>4.2 检查配置</h3><p>使用 <code>-t</code> 参数来检查配置，出现 successful 则代表配置正确：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@node1 web]# nginx -t -c conf/nginx.conf</span><br><span class="line">nginx: the configuration file /usr/app/nginx-1.16.1/conf/nginx.conf syntax is ok</span><br><span class="line">nginx: configuration file /usr/app/nginx-1.16.1/conf/nginx.conf test is successful</span><br></pre></td></tr></table></figure>
+<h3 id="4-3-重载配置"><a href="#4-3-重载配置" class="headerlink" title="4.3 重载配置"></a>4.3 重载配置</h3><p>启动 Nginx ，如果 Nginx 已经启动，可以使用如下命令重载配置：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx -s reload</span><br></pre></td></tr></table></figure>
+<p>访问 <a href="http://hostname:9010/index.html" target="_blank" rel="noopener">http://hostname:9010/index.html</a> ，即可查看到静态网站首页。</p>
+<h2 id="五、实现负载均衡"><a href="#五、实现负载均衡" class="headerlink" title="五、实现负载均衡"></a>五、实现负载均衡</h2><h3 id="5-1-部署后台服务"><a href="#5-1-部署后台服务" class="headerlink" title="5.1 部署后台服务"></a>5.1 部署后台服务</h3><p>这里我使用 Docker 来部署两个 Tomcat，之后将测试项目 WAR 包分别拷贝到 <code>/usr/webapps001</code> 和  <code>/usr/webapps002</code>  两个挂载的容器卷下，程序会自动解压并运行，两个项目的端口号分别为 8080 和 8090：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">run -d  -it --privileged=true -v /usr/webapps01:/usr/local/tomcat/webapps \</span><br><span class="line">-p 8080:8080 --name tomcat8080  96c4e536d0eb</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">run -d  -it  --privileged=true -v /usr/webapps02:/usr/local/tomcat/webapps \</span><br><span class="line">-p 8090:8080 --name tomcat8090  96c4e536d0eb</span><br></pre></td></tr></table></figure>
+<h3 id="5-2-负载均衡配置"><a href="#5-2-负载均衡配置" class="headerlink" title="5.2 负载均衡配置"></a>5.2 负载均衡配置</h3><p>修改 <code>nginx.conf</code> ，并在 http 指令块中增加如下配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># 这里指令块的名称可以随意指定，只要和下面的proxy_pass的值相同即可，通常配置为项目名</span><br><span class="line">upstream springboot &#123;</span><br><span class="line">    server 192.168.0.226:8080;</span><br><span class="line">    server 192.168.0.226:8090;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    listen 9020;</span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_pass http://springboot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>重载配置后，打开浏览器，通过 9020 端口访问项目，此时 Nginx 会以轮询的方式将请求分发到 8080 和 8090 端口上。在测试负载均衡策略的时候，最好将浏览器的缓存功能关闭，避免造成影响。</p>
+<h3 id="5-3-负载均衡策略"><a href="#5-3-负载均衡策略" class="headerlink" title="5.3 负载均衡策略"></a>5.3 负载均衡策略</h3><p>在上面的配置中，我们没有配置任何负载均衡策略，默认采用的是轮询策略，除此之外，Nginx 还支持以下负载均衡策略：</p>
+<h4 id="1-权重策略-Weighted-load-balancing"><a href="#1-权重策略-Weighted-load-balancing" class="headerlink" title="1. 权重策略 ( Weighted load balancing )"></a>1. 权重策略 ( Weighted load balancing )</h4><p>通过为不同的服务分配不同的权重来进行转发，配置示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">upstream myapp1 &#123;</span><br><span class="line">    server srv1.example.com weight=3;</span><br><span class="line">    server srv2.example.com weight=2;</span><br><span class="line">    server srv3.example.com;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="2-最少连接策略-Least-connected-load-balancing"><a href="#2-最少连接策略-Least-connected-load-balancing" class="headerlink" title="2. 最少连接策略 ( Least connected load balancing )"></a>2. 最少连接策略 ( Least connected load balancing )</h4><p>将请求转发给连接数最少的服务，配置实例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">upstream myapp1 &#123;</span><br><span class="line">    least_conn;</span><br><span class="line">    server srv1.example.com;</span><br><span class="line">    server srv2.example.com;</span><br><span class="line">    server srv3.example.com;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="3-IP-策略-IP-Hash-load-balancing"><a href="#3-IP-策略-IP-Hash-load-balancing" class="headerlink" title="3. IP 策略 ( IP Hash load balancing )"></a>3. IP 策略 ( IP Hash load balancing )</h4><p>通过对请求的 IP 地址进行哈希运算并取模来决定转发对象，配置示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">upstream myapp1 &#123;</span><br><span class="line">    ip_hash;</span><br><span class="line">    server srv1.example.com;</span><br><span class="line">    server srv2.example.com;</span><br><span class="line">    server srv3.example.com;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上是 Nginx 内置的基础的负载均衡策略，如果想要实现其他更加复杂的负载均衡策略，可以通过第三方模块来实现。</p>
+<h3 id="4-4-声明备用服务"><a href="#4-4-声明备用服务" class="headerlink" title="4.4 声明备用服务"></a>4.4 声明备用服务</h3><p>在上面任何负载均衡策略当中，都可以通过 backup 参数来添加备用服务，示例如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">server backup1.example.com:8080   backup;</span><br></pre></td></tr></table></figure>
+<p>处于备用状态下的服务并不会参与负载均衡，除非所有主服务都已宕机，此时 Nginx 才会将请求转发到备用服务上。</p>
+<h2 id="六、实现动静分离"><a href="#六、实现动静分离" class="headerlink" title="六、实现动静分离"></a>六、实现动静分离</h2><h3 id="6-1-动静分离配置"><a href="#6-1-动静分离配置" class="headerlink" title="6.1 动静分离配置"></a>6.1 动静分离配置</h3><p>Nginx 能够支持高并发的访问，并具有静态资源缓存等特性，因此相比于 Tomcat 等动态资源应用服务器，其更加适合于部署静态资源。想要实现动静分离，只需要在 server 指令块中通过正则表达式来划分静态资源，并指定其存放位置，示例如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 9020;</span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_pass http://springboot;</span><br><span class="line">    &#125;</span><br><span class="line">    # 通过正则来控制所需要分离的静态资源</span><br><span class="line">    location ~ .*\.(html|htm|gif|jpg|jpeg|bmp|png|ico|txt|js|css)$ &#123;</span><br><span class="line">        # 静态资源存放目录</span><br><span class="line">        root /usr/resources/;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="6-2-常见配置异常"><a href="#6-2-常见配置异常" class="headerlink" title="6.2 常见配置异常"></a>6.2 常见配置异常</h3><h4 id="1-No-such-file-or-directory"><a href="#1-No-such-file-or-directory" class="headerlink" title="1. No such file or directory"></a>1. No such file or directory</h4><p>第一个常见的问题是找不到静态资源，此时可以查看 logs 目录下的 <code>error.log</code> 日志，通常输出如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">2019/09/01 17:12:43 [error] 12402#0: *163 open() "/usr/resources/spring-boot-tomcat/css/show.css"</span><br><span class="line">failed (2: No such file or directory), client: 192.168.0.106, server: , </span><br><span class="line">request: "GET /spring-boot-tomcat/css/show.css HTTP/1.1", host: "192.168.0.226:9020",</span><br><span class="line">referrer: "http://192.168.0.226:9020/spring-boot-tomcat/index"</span><br></pre></td></tr></table></figure>
+<p>出现这个问题，是因为 Nginx 要求静态资源的请求路径必须和原有请求路径完全相同，这里我的项目在 Tomcat 中解压后的项目名为 <code>pring-boot-tomcat</code>，以 show.css 文件为例，其正确的存储路径应该为：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/resources/spring-boot-tomcat/css/show.css</span><br></pre></td></tr></table></figure>
+<p>即： 静态资源根目录 + 项目名 + 原有路径，通常我们在创建目录时会忽略掉项目名这一层级，从而导致异常。</p>
+<h4 id="2-Permission-denied"><a href="#2-Permission-denied" class="headerlink" title="2. Permission denied"></a>2. Permission denied</h4><p>路径正确后，另外一个常见的问题是权限不足，错误日志如下。此时需要保证配置文件中的 user 用户必须具有静态资源所处目录的访问权限，或者在创建静态资源目录时，直接使用 user 配置的用户来创建：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">2019/09/01 17:15:14 [error] 12402#0: *170 open() "/usr/resources/spring-boot-tomcat/css/show.css" </span><br><span class="line">failed (13: Permission denied), client: 192.168.0.106, server: ,</span><br><span class="line">request: "GET /spring-boot-tomcat/css/show.css HTTP/1.1", host: "192.168.0.226:9020", </span><br><span class="line">referrer: "http://192.168.0.226:9020/spring-boot-tomcat/index"</span><br></pre></td></tr></table></figure>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>官方文档：<a href="http://nginx.org/en/docs/" target="_blank" rel="noopener">nginx documentation</a> ，<a href="http://nginx.org/en/docs/http/load_balancing.html" target="_blank" rel="noopener">Using nginx as HTTP load balancer</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/05/08/Nginx 基础/" data-id="ck9xwwdab000hx0f5zmrhinol" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-GO-jaeger-es" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/11/25/GO-jaeger-es/" class="article-date">
+  <time datetime="2019-11-24T16:00:00.000Z" itemprop="datePublished">2019-11-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/11/25/GO-jaeger-es/">使用es 来存放 jaeger</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="OpenTracing-基础知识准备"><a href="#OpenTracing-基础知识准备" class="headerlink" title="OpenTracing 基础知识准备"></a>OpenTracing 基础知识准备</h2><h4 id="The-OpenTracing-数据模型"><a href="#The-OpenTracing-数据模型" class="headerlink" title="The OpenTracing 数据模型"></a>The OpenTracing 数据模型</h4><p>首先需要阐明的是 Span 和 trace 的概念。 用图论的观点来看的话，traces 可以被认为是 spans 的 DAG。也就是说，对N个 spans 形成的 DAG 是一个 Traces。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">单个 Trace 中 Span 之间的因果关系</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        [Span A]  ←←←(the root span)</span><br><span class="line">            |</span><br><span class="line">     +------+------+</span><br><span class="line">     |             |</span><br><span class="line"> [Span B]      [Span C] ←←←(Span C is a `ChildOf` Span A)</span><br><span class="line">     |             |</span><br><span class="line"> [Span D]      +---+-------+</span><br><span class="line">               |           |</span><br><span class="line">           [Span E]    [Span F] &gt;&gt;&gt; [Span G] &gt;&gt;&gt; [Span H]</span><br><span class="line">                                       ↑</span><br><span class="line">                                       ↑</span><br><span class="line">                                       ↑</span><br><span class="line">                         (Span G `FollowsFrom` Span F)</span><br><span class="line"></span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">单个 Trace 中 Spans 之间的时间关系</span><br><span class="line"></span><br><span class="line">––|–––––––|–––––––|–––––––|–––––––|–––––––|–––––––|–––––––|–&gt; time</span><br><span class="line"></span><br><span class="line"> [Span A···················································]</span><br><span class="line">   [Span B··············································]</span><br><span class="line">      [Span D··········································]</span><br><span class="line">    [Span C········································]</span><br><span class="line">         [Span E·······]        [Span F··] [Span G··] [Span H··]</span><br></pre></td></tr></table></figure>
+<h6 id="每个-Span-包含一些状态："><a href="#每个-Span-包含一些状态：" class="headerlink" title="每个 Span 包含一些状态："></a>每个 Span 包含一些状态：</h6><ul>
+<li><p>Operation 的 名字(An operation name)</p>
+</li>
+<li><p>开始 ts (A start timestamp)</p>
+</li>
+<li><p>结束 ts (A finish timestamp)</p>
+</li>
+<li><p>0个或多个以 keys：values 为形式组成的 Span Tags。 key 必须是 string， values 则可以是 strings， bool，numeric types</p>
+</li>
+<li><p>0个或多个 Span logs</p>
+</li>
+</ul>
+<h6 id="一个-SpanContext"><a href="#一个-SpanContext" class="headerlink" title="一个 SpanContext"></a>一个 SpanContext</h6><ul>
+<li><p>通过 SpanContext 可以指向 0个 或者多个 因果相关的 Span。</p>
+</li>
+<li><p>每个 SpanContext 包含以下状态：</p>
+</li>
+<li><p>任何 OpenTraceing 实现相关的状态(比如 trace 和 span id）都需要被一个跨进程的 Span 所联系。</p>
+</li>
+</ul>
+<p>​- Baggage Items: 跨进程的 key value 对。</p>
+<h4 id="DAG"><a href="#DAG" class="headerlink" title="DAG"></a>DAG</h4><pre><code>RDD的依赖关系分为两种：窄依赖(Narrow Dependencies)与宽依赖(Wide Dependencies，源码中称为Shuffle Dependencies)
+
+- 窄依赖
+
+    每个父RDD的一个Partition最多被子RDD的一个Partition所使用（1:1 或 n:1）。例如map、filter、union等操作都会产生窄依赖
+
+    子RDD分区通常对应常数个父RDD分区(O(1)，与数据规模无关）。
+
+- 宽依赖
+
+    一个父RDD的Partition会被多个子RDD的Partition所使用，例如groupByKey、reduceByKey、sortByKey等操作都会产生宽依赖；（1:m 或 n:m）
+
+    子RDD分区通常对应所有的父RDD分区(O(n)，与数据规模有关）
+
+在Spark里每一个操作生成一个RDD，RDD之间连一条边，最后这些RDD和他们之间的边组成一个有向无环图，这个就是DAG。
+
+Spark会根据宽依赖窄依赖来划分具体的Stage，而依赖有2个作用：
+
+- 用来解决数据容错的高效性
+
+- 其二用来划分stage。
+</code></pre><h2 id="OpenTracing-API"><a href="#OpenTracing-API" class="headerlink" title="OpenTracing API"></a>OpenTracing API</h2><pre><code>在 OpenTracing 有着三个关键的并且相互关联的类型： Tracer, Span, SpanContext。下面，我们来介绍下每种类型的基本行为。 简单地说，每种行为都会在具体的语言中变为一个“方法”，
+</code></pre><h4 id="Tracer"><a href="#Tracer" class="headerlink" title="Tracer"></a>Tracer</h4><pre><code>Tracer接口用来创建Span，以及处理如何处理Inject(serialize) 和 Extract (deserialize)，用于跨进程边界传递。
+
+- 创建一个新的span
+
+- 将SpanContext上下文Inject（注入）到carrier
+
+- 将SpanContext上下文从carrier中Extract（提取）
+
+    注意，对于Inject（注入）和Extract（提取），format是必须的。
+
+    Inject（注入）和Extract（提取）依赖于可扩展的format参数。format参数规定了另一个参数&quot;carrier&quot;的类型，同时约束了&quot;carrier&quot;中SpanContext是如何编码的。
+</code></pre><h4 id="Span"><a href="#Span" class="headerlink" title="Span"></a>Span</h4><p>#####设置(set) baggage item</p>
+<pre><code>Baggage item是对应于某个 Span 及其 SpanContext ，以及所有直接或间接引用自本地(local) Span 的 Span 的键值对。也就是说，baggage items是与其trace一起传播的。
+
+Baggage item为全栈式的OpenTracing集成提供了强大的功能(比如在移动App上使用时，它可以一路追踪数据直至储存系统的深度)，不过使用这些功能时要当心。
+
+每个键值都会被拷贝到每一个本地(local)及远程的子Span，这可能导致巨大的网络和CPU开销。
+</code></pre><h4 id="SpanContext"><a href="#SpanContext" class="headerlink" title="SpanContext"></a>SpanContext</h4><pre><code>相对于OpenTracing中其他的功能，SpanContext更多的是一个“概念”。也就是说，OpenTracing实现中，需要重点考虑，并提供一套自己的API。
+
+OpenTracing的使用者仅仅需要，在创建span、向传输协议Inject（注入）和从传输协议中Extract（提取）时，使用SpanContext和references，
+
+OpenTracing要求，SpanContext是不可变的，目的是防止由于Span的结束和相互关系，造成的复杂生命周期问题。
+</code></pre><p>#不使用Cassandra来存放 jaeger 主要是因为我们已经部署了ELK 所以尝试使用elasticsearch来存放</p>
+<p>#####Jaeger 组件</p>
+<h6 id="Agent"><a href="#Agent" class="headerlink" title="Agent"></a>Agent</h6><p>Agent是一个网络守护进程，监听通过UDP发送过来的Span，它会将其批量发送给collector。按照设计，Agent要被部署到所有主机上，作为基础设施。Agent将collector和客户端之间的路由与发现机制抽象了出来。</p>
+<h6 id="Collector"><a href="#Collector" class="headerlink" title="Collector"></a>Collector</h6><p>Collector从Jaeger Agent接收Trace，并通过一个处理管道对其进行处理。目前的管道会校验Trace、建立索引、执行转换并最终进行存储。存储是一个可插入的组件，现在支持Cassandra和elasticsearch。</p>
+<h6 id="Query"><a href="#Query" class="headerlink" title="Query"></a>Query</h6><p>Query服务会从存储中检索Trace并通过UI界面进行展现，该UI界面通过React技术实现，其页面UI如下图所示，展现了一条Trace的详细信息。</p>
+<h6 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h6><p>jaeger采集到的数据必须存储到某个存储引擎，目前支持Cassandra和elasticsearch</p>
+<p>#####部署步骤</p>
+<p>会通过docker-compose 统一部署 所以先列出完整yaml文件 再一一说明<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">version: &apos;2.1&apos;</span><br><span class="line">services:</span><br><span class="line"></span><br><span class="line">  elasticsearch:</span><br><span class="line">    image: elasticsearch:5.6.4</span><br><span class="line">    environment:</span><br><span class="line">      - &quot;ES_JAVA_OPTS=-Xms1024m -Xmx1024m&quot;</span><br><span class="line"></span><br><span class="line">  collector:</span><br><span class="line">    image: jaegertracing/jaeger-collector</span><br><span class="line">    environment:</span><br><span class="line">      - SPAN_STORAGE_TYPE=elasticsearch</span><br><span class="line">      - ES_SERVER_URLS=http://elasticsearch:9200</span><br><span class="line">      - ES_USERNAME=elastic</span><br><span class="line">      - LOG_LEVEL=debug</span><br><span class="line">    depends_on:</span><br><span class="line">      - elasticsearch</span><br><span class="line"></span><br><span class="line">  agent:</span><br><span class="line">    image: jaegertracing/jaeger-agent</span><br><span class="line">    environment:</span><br><span class="line">      - COLLECTOR_HOST_PORT=collector:14267</span><br><span class="line">      - LOG_LEVEL=debug</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;5775:5775/udp&quot;</span><br><span class="line">      - &quot;5778:5778&quot;</span><br><span class="line">      - &quot;6831:6831/udp&quot;</span><br><span class="line">      - &quot;6832:6832/udp&quot;</span><br><span class="line">    depends_on:</span><br><span class="line">      - collector</span><br><span class="line">  query:</span><br><span class="line">    image: jaegertracing/jaeger-query</span><br><span class="line">    environment:</span><br><span class="line">      - SPAN_STORAGE_TYPE=elasticsearch</span><br><span class="line">      - ES_SERVER_URLS=http://elasticsearch:9200</span><br><span class="line">      - ES_USERNAME=elastic</span><br><span class="line">      - LOG_LEVEL=debug</span><br><span class="line">    ports:</span><br><span class="line">      - 16686:16686</span><br><span class="line">    depends_on:</span><br><span class="line">      - elasticsearch</span><br><span class="line"></span><br><span class="line">  hotrod:</span><br><span class="line">    image: jaegertracing/example-hotrod:1.6</span><br><span class="line">    command: all --jaeger-agent.host-port=agent:6831</span><br><span class="line">    ports:</span><br><span class="line">      - 8080:8080</span><br><span class="line">    depends_on:</span><br><span class="line">      - agent</span><br></pre></td></tr></table></figure></p>
+<h6 id="Docker-安装ES"><a href="#Docker-安装ES" class="headerlink" title="Docker 安装ES"></a>Docker 安装ES</h6><h6 id="Docker-安装collector"><a href="#Docker-安装collector" class="headerlink" title="Docker 安装collector"></a>Docker 安装collector</h6><pre><code>如ES部署再同一个机器上 可以使用--link关联
+
+多服务器则可以用过 ES_SERVER_URLS = http://你的es ip:9200 来关联
+</code></pre><h6 id="Docker-安装query"><a href="#Docker-安装query" class="headerlink" title="Docker 安装query"></a>Docker 安装query</h6><pre><code>如同conllector
+
+部署完成query之后，根据你暴露的端口号（-p 16686:16686/tcp），浏览器输入以下地址(将localhost换成你部署query的地址)：
+
+注意，ES_USERNAME、ES_PASSWORD这两个环境变量，当你的elasticsearch未设置账号密码时，你可以不填，也可以填上默认值，elasticsearch的默认ES_USERNAME=elastic，ES_PASSWORD=changeme
+</code></pre><h6 id="Docker-安装agent"><a href="#Docker-安装agent" class="headerlink" title="Docker 安装agent"></a>Docker 安装agent</h6><pre><code>根据uber jaeger官网的架构，agent一般是和jaeger-client部署在一起，agent作为一个基础架构，每一台应用（接入jaeger-client的应用）所在的机器都需要部署一个agent;
+
+根据数据采集原理，jaeger-client采集到数据之后，是通过UDP端口发送到agent的，jaeger-client和agent部署在一起的好处是UDP传输数据都在应用所在的机器，可避免UDP的跨网络传输，多一层安全保障。
+
+当然，架构可能是多变的，你的agent可能不和jaeger-client所在的应用在一台机器，这个时候，jaeger-client就必须显示的指定其连接的agent的IP及port,具体做法后文jaeger-client对应模块会讲到。
+
+前文提到，jaeger-client采集到数据之后，是通过UDP端口发送到agent的，agent接收到数据之后，使用Uber的Tchannel协议，将数据发送到collector，所以，agent是必须和collector相连的；
+
+--collector.host-port=collector ip1:14267,collector ip2:14267,collector ip3:14267，用逗号分开，连接三个collector，这样的话，这三个collector只要一个存活，agent就可以吧数据传输完成，以避免单点故障
+</code></pre><h6 id="hotrod"><a href="#hotrod" class="headerlink" title="hotrod"></a>hotrod</h6><pre><code>用以测试
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/11/25/GO-jaeger-es/" data-id="ck9xwwdau000lx0f5bwy1jmum" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GO-Grpc-tracing-jaeger/">GO Grpc tracing jaeger</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Git fork、pr的开发模式" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/04/25/Git fork、pr的开发模式/" class="article-date">
@@ -136,7 +530,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/04/25/Git fork、pr的开发模式/" data-id="cjxebfchj000ft0f52kurdv3n" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/04/25/Git fork、pr的开发模式/" data-id="ck9xwwdaz000nx0f5qxopn1k6" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Git-fork、pr/">Git fork、pr</a></li></ul>
@@ -193,7 +587,7 @@ Channel, complex, and function types不能被转义
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/04/02/GO-json/" data-id="cjxebfch2000dt0f5ju8f5vmw" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/04/02/GO-json/" data-id="ck9xwwd9g000bx0f5glzvj5lv" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GO-json/">GO json</a></li></ul>
@@ -240,7 +634,7 @@ Channel, complex, and function types不能被转义
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/28/浏览器避免使用之端口/" data-id="cjxebfcip000tt0f5ans9sm02" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/03/28/浏览器避免使用之端口/" data-id="ck9xwwdcy0012x0f5avxwbl0h" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/端口/">端口</a></li></ul>
@@ -252,9 +646,9 @@ Channel, complex, and function types不能被转义
 
 
   
-    <article id="post-protoful - 各种文件生成（手记）" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Envoy - 初探 " class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/03/16/protoful - 各种文件生成（手记）/" class="article-date">
+    <a href="/2019/03/16/Envoy - 初探 /" class="article-date">
   <time datetime="2019-03-15T16:00:00.000Z" itemprop="datePublished">2019-03-16</time>
 </a>
     
@@ -266,7 +660,7 @@ Channel, complex, and function types不能被转义
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/16/protoful - 各种文件生成（手记）/">protoful 集中记录</a>
+      <a class="article-title" href="/2019/03/16/Envoy - 初探 /">Envoy - 初探</a>
     </h1>
   
 
@@ -274,19 +668,144 @@ Channel, complex, and function types不能被转义
     
     <div class="article-entry" itemprop="articleBody">
       
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">生成GO </span><br><span class="line">protoc -I$GOPATH/src \</span><br><span class="line">  -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \</span><br><span class="line">  -I$GOPATH/src/protobuf/src/ \</span><br><span class="line">  -I$GOPATH/src/datacenter/proto \</span><br><span class="line">  --go_out=plugins=grpc:. \</span><br><span class="line">  adverse_event.proto</span><br><span class="line"></span><br><span class="line">生成envoy 翻译器 descriptor.pb </span><br><span class="line">protoc -I$GOPATH/src \</span><br><span class="line">    -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \</span><br><span class="line">    -I$GOPATH/src/protobuf/src/ \</span><br><span class="line">    -I$GOPATH/src/datacenter/proto \</span><br><span class="line">    --include_imports \</span><br><span class="line">    --include_source_info \</span><br><span class="line">    --descriptor_set_out=../build/envoy/descriptor.pb \</span><br><span class="line">    *.proto</span><br><span class="line"></span><br><span class="line">生成grpc-webJS</span><br><span class="line">protoc -I$GOPATH/src \</span><br><span class="line">    -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \</span><br><span class="line">    -I$GOPATH/src/protobuf/src/ \</span><br><span class="line">    -I$GOPATH/src/datacenter/proto \</span><br><span class="line">    --js_out=import_style=commonjs:. \</span><br><span class="line">    --grpc-web_out=import_style=commonjs,mode=grpcwebtext:. *.proto</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">生成protoc-gen-swagger</span><br><span class="line">protoc -I$GOPATH/src \</span><br><span class="line">-I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \</span><br><span class="line">-I$GOPATH/src/protobuf/src/ \</span><br><span class="line">-I$GOPATH/src/proto-doc/proto \</span><br><span class="line">--swagger_out=logtostderr=true:. \</span><br><span class="line">adverse_event.proto</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">交叉编译</span><br><span class="line">set GOARCH=amd64</span><br><span class="line"></span><br><span class="line">set GOOS=linux</span><br><span class="line"></span><br><span class="line">go build xx.go</span><br></pre></td></tr></table></figure>
-<p>GO mod的使用 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">打开</span><br><span class="line">GO111MODULE=on</span><br><span class="line"></span><br><span class="line">Usage:</span><br><span class="line"></span><br><span class="line">	go mod &lt;command&gt; [arguments]</span><br><span class="line"></span><br><span class="line">The commands are:</span><br><span class="line"></span><br><span class="line">	download    download modules to local cache</span><br><span class="line">	edit        edit go.mod from tools or scripts</span><br><span class="line">	graph       print module requirement graph</span><br><span class="line">	init        initialize new module in current directory</span><br><span class="line">	tidy        add missing and remove unused modules</span><br><span class="line">	vendor      make vendored copy of dependencies</span><br><span class="line">	verify      verify dependencies have expected content</span><br><span class="line">	why         explain why packages or modules are needed</span><br><span class="line"></span><br><span class="line">Use &quot;go help mod &lt;command&gt;&quot; for more information about a command.</span><br><span class="line"></span><br><span class="line">GO111MODULE=on go mod init</span><br><span class="line">GO111MODULE=on go mod tidy</span><br></pre></td></tr></table></figure>
-<p>内网穿透工具</p>
-<p><a href="https://dashboard.ngrok.com/get-started" target="_blank" rel="noopener">https://dashboard.ngrok.com/get-started</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ngrok http 80</span><br></pre></td></tr></table></figure>
+        <p>##基础知识</p>
+<p>网络代理/网络服务器</p>
+<p>Envoy基本概念：集群，监听器，路由和过滤器</p>
+<p>首先，有一个监听器。这告诉Envoy绑定到一个端口，在本例中为10000：</p>
+<p>接下来，监听器有一个过滤器。过滤器告诉监听器如何处理它收到的请求，并为Envoy提供一系列过滤器。</p>
+<p>如果您需要做一些复杂的事情，那么要对每个请求使用几个过滤器。</p>
+<pre><code>envoy.http_connection_manager 过滤器，它用于代理HTTP请求。
+
+HTTP连接管理器还有一个适用的HTTP过滤器列表（请参阅HTTP过滤器列表）。
+
+其中最重要的是将envoy.router 的请求路由到后端的过滤器。
+</code></pre><p>TCP过滤器列表: <a href="https://www.envoyproxy.io/docs/envoy/v1.8.0/api-v2/api/v2/listener/listener.proto#listener-filter" target="_blank" rel="noopener">https://www.envoyproxy.io/docs/envoy/v1.8.0/api-v2/api/v2/listener/listener.proto#listener-filter</a></p>
+<p>HTTP过滤器列表: <a href="https://www.envoyproxy.io/docs/envoy/v1.8.0/api-v2/config/filter/network/http_connection_manager/v2/http_connection_manager.proto#envoy-api-msg-config-filter-network-http-connection-manager-v2-httpfilter" target="_blank" rel="noopener">https://www.envoyproxy.io/docs/envoy/v1.8.0/api-v2/config/filter/network/http_connection_manager/v2/http_connection_manager.proto#envoy-api-msg-config-filter-network-http-connection-manager-v2-httpfilter</a></p>
+<p><pre><code><br>static_resources:<br>  listeners:</code></pre></p>
+<ul>
+<li>name: listener_0<br>address:<br>  socket_address: { address: 0.0.0.0, port_value: 10000 }<br>filter_chains:<ul>
+<li>filters:<ul>
+<li>name: envoy.http_connection_manager<br>config:<br>  access_log:<ul>
+<li>name: envoy.file_access_log<br>config:<br>  path: “/var/log/envoy.log”<br>codec_type: auto<br>stat_prefix: ingress_http<br>route_config:<br>name: local_route<br>virtual_hosts:<ul>
+<li>name: local_service<br>domains: [“*”]<br>routes:<ul>
+<li>match: { prefix: “/datacenter.AdverseEvent” }<br>route:<br>  cluster: dc_ae<br>  max_grpc_timeout: 0s</li>
+<li>match: { prefix: “/izhaohu-adverse/api/adverse” }<br>route:<br>  cluster: dc_ae<br>  max_grpc_timeout: 0s<br>cors:<br>allow_origin:<ul>
+<li>“*”<br>allow_methods: GET, PUT, DELETE, POST, OPTIONS<br>allow_headers: keep-alive,user-agent,cache-control,content-type,content-transfer-encoding,custom-header-1,x-accept-content-transfer-encoding,x-accept-response-streaming,x-user-agent,x-grpc-web,grpc-timeout<br>max_age: “1728000”<br>expose_headers: custom-header-1,grpc-status,grpc-message<br>enabled: true<br>http_filters:<br>//一个翻译器 他帮助grpc 与 json互通。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>name: envoy.grpc_json_transcoder<br>config:<br>//翻译器的字典，需要通过proto生成<br>  proto_descriptor: “/data/descriptor.pb”<br>  services: [“datacenter.AdverseEvent”]<br>  print_options:<pre><code>add_whitespace: false
+always_print_primitive_fields: true
+always_print_enums_as_ints: false
+preserve_proto_field_names: true
+</code></pre></li>
+<li>name: envoy.grpc_web</li>
+<li>name: envoy.cors</li>
+<li>name: envoy.router<br>//服务模块<br>clusters:</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>name: dc_ae<br>connect_timeout: 1.25s<br>type: logical_dns<br>http2_protocol_options: {}<br>lb_policy: round_robin<br>hosts: [{ socket_address: { address: dc-ae, port_value: 60001 }}]</li>
+</ul>
+<p></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">生成descriptor.pb</span><br><span class="line">protoc -I$GOPATH/src \</span><br><span class="line">    -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \</span><br><span class="line">    -I$GOPATH/src/protobuf/src/ \</span><br><span class="line">    -I$GOPATH/src/datacenter/proto \</span><br><span class="line">    --include_imports \</span><br><span class="line">    --include_source_info \</span><br><span class="line">    --descriptor_set_out=../build/envoy/descriptor.pb \</span><br><span class="line">    *.proto</span><br></pre></td></tr></table></figure>
+<p>请参阅 <a href="https://github.com/felixyao1985/envoy-demo" title="Title" target="_blank" rel="noopener">案例分享</a></p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/16/protoful - 各种文件生成（手记）/" data-id="cjxebfci8000nt0f551w7xyjq" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/03/16/Envoy - 初探 /" data-id="ck9xwwd5n0000x0f5h4d27clm" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/protoful/">protoful</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Envoy-grpc-restful/">Envoy grpc restful</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Elasticsearch （一）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/16/Elasticsearch （一）/" class="article-date">
+  <time datetime="2019-03-15T16:00:00.000Z" itemprop="datePublished">2019-03-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/16/Elasticsearch （一）/">Elasticsearch （一）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>Elasticsearch是一个基于Apache Lucene(TM)的开源搜索引擎。无论在开源还是专有领域，Lucene可以被认为是迄今为止最先进、性能最好的、功能最全的搜索引擎库。</p>
+<p>但是Lucene使用部署都非常复杂，而ES则可以通过 RESTful API 来使用 Lucene。</p>
+<h3 id="主要认识"><a href="#主要认识" class="headerlink" title="主要认识"></a>主要认识</h3><ul>
+<li><p>分布式的实时文件存储，每个字段都被索引并可被搜索</p>
+</li>
+<li><p>分布式的实时分析搜索引擎</p>
+</li>
+<li><p>可以扩展到上百台服务器，处理PB级结构化或非结构化数据</p>
+</li>
+<li><p>面向文档</p>
+<p>  存储整个对象或文档(document)。然而它不仅仅是存储，还会索引(index)每个文档的内容使之可以被搜索。在Elasticsearch中，你可以对文档（而非成行成列的数据）进行索引、搜索、排序、过滤。这种理解数据的方式与以往完全不同，这也是Elasticsearch能够执行复杂的全文搜索的原因之一。</p>
+</li>
+<li><p>使用JSON 对文档进行序列化</p>
+</li>
+</ul>
+<h3 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h3><p>在Elasticsearch中存储数据的行为就叫做索引(indexing)</p>
+<p>在Elasticsearch中，文档归属于一种类型(type),而这些类型存在于索引(index)中。</p>
+<p>对比图来类比传统关系型数据库:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Relational DB -&gt; Databases -&gt; Tables -&gt; Rows -&gt; Columns</span><br><span class="line"></span><br><span class="line">Elasticsearch -&gt; Indices   -&gt; Types  -&gt; Documents -&gt; Fields</span><br></pre></td></tr></table></figure></p>
+<p>Elasticsearch集群可以包含多个索引(indices)（数据库），每一个索引可以包含多个类型(types)（表），每一个类型包含多个文档(documents)（行），然后每个文档包含多个字段(Fields)（列）。</p>
+<h4 id="索引含义的区分"><a href="#索引含义的区分" class="headerlink" title="索引含义的区分"></a>索引含义的区分</h4><ul>
+<li><p>索引（名词）一个索引(index)就像是传统关系数据库中的数据库，它是相关文档存储的地方，index的复数是indices 或indexes。</p>
+</li>
+<li><p>索引（动词）「索引一个文档」表示把一个文档存储到索引（名词）里，以便它可以被检索或者查询。这很像SQL中的INSERT关键字，差别是，如果文档已经存在，新的文档将覆盖旧的文档。</p>
+</li>
+<li><p>倒排索引 传统数据库为特定列增加一个索引，例如B-Tree索引来加速检索。Elasticsearch和Lucene使用一种叫做倒排索引(inverted index)的数据结构来达到相同目的。</p>
+</li>
+</ul>
+<h4 id="建立索引-例子"><a href="#建立索引-例子" class="headerlink" title="建立索引(例子)"></a>建立索引(例子)</h4><ul>
+<li><p>template<br>  默认的 order 值就是 0。order 值越大，在 merge 规则的时候优先级越高。<br>  模板 es 模板有个坑，如果若干个匹配模板的order一致，如order都等于0，则这几个模板的优先级顺序是随机的。</p>
+</li>
+<li><p>mappings 映射的定制<br>  ES 可以随时根据数据中的新字段来创建新的映射关系。我们也可以在还没有正式数据写入之前，先创建一个基础的映射。等后续数据有其他字段时，ES 也一样会自动处理。</p>
+</li>
+</ul>
+<h5 id="特殊字符"><a href="#特殊字符" class="headerlink" title="特殊字符"></a>特殊字符</h5><pre><code>ES有一些默认的特殊字段，这些字段统一以_下划线开头。如_index，_type，_id。默认不开启的还有 _ttl，_timestamp，_size，_parent 等；
+</code></pre><ul>
+<li><p>_all<br>  _all 里存储了各字段的数据内容。其作用是，在检索的时候，如果无法或者未指明具体搜索哪个字段的数据，那么 ES 默认就会是从 _all 里去查找。</p>
+<p>  对于日志场景，如果你的日志划分出来的字段比较少且数目固定。那么，完全可以关闭掉 _all 功能，节省这部分 IO 和 CPU。</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&quot;_all&quot; : &#123;</span><br><span class="line">    &quot;enabled&quot; : false</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>_source</p>
+<p>  _source 里存储了该条记录的 JSON 源数据内容。这部分内容只是按照 ES 接收到的内容原样存储下来，并不经过索引过程。对于 ES 的请求过程来说，它不参与 Query 阶段，而只用于 Fetch 阶段。我们在 GET 或者 /_search 时看到的数据内容，都是从 _source 里获取到的。</p>
+<p>  所以，虽然 _source 也重复了一遍索引中的数据，一般我们并不建议关闭这个功能。因为一旦关闭，你搜索的结果除了一个 _id，啥都看不到。对于日志场景，意义不是很大。</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;order&quot;: 0,		//</span><br><span class="line">    &quot;index_patterns&quot;: [</span><br><span class="line">        &quot;es_test_index_2&quot;</span><br><span class="line">    ],</span><br><span class="line">    &quot;settings&quot;: &#123;</span><br><span class="line">        &quot;index&quot;: &#123;</span><br><span class="line">            &quot;max_result_window&quot;: &quot;30000&quot;,</span><br><span class="line">            &quot;refresh_interval&quot;: &quot;60s&quot;,</span><br><span class="line">            &quot;analysis&quot;: &#123;</span><br><span class="line">                &quot;analyzer&quot;: &#123;</span><br><span class="line">                    &quot;custom_standard&quot;: &#123;</span><br><span class="line">                        &quot;type&quot;: &quot;custom&quot;,</span><br><span class="line">                        &quot;tokenizer&quot;: &quot;standard&quot;,</span><br><span class="line">                        &quot;char_filter&quot;: [</span><br><span class="line">                            &quot;my_char_filter&quot;</span><br><span class="line">                        ],</span><br><span class="line">                        &quot;filter&quot;: &quot;lowercase&quot;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;,</span><br><span class="line">                &quot;char_filter&quot;: &#123;</span><br><span class="line">                    &quot;my_char_filter&quot;: &#123;</span><br><span class="line">                        &quot;type&quot;: &quot;mapping&quot;,</span><br><span class="line">                        &quot;mappings&quot;: [</span><br><span class="line">                            &quot;· =&gt; xxDOT1xx&quot;,</span><br><span class="line">                            &quot;+ =&gt; xxPLUSxx&quot;,</span><br><span class="line">                            &quot;- =&gt; xxMINUSxx&quot;,</span><br><span class="line">                            &quot;\&quot; =&gt; xxQUOTATIONxx&quot;,</span><br><span class="line">                            &quot;（ =&gt; xxLEFTBRACKET1xx&quot;,</span><br><span class="line">                            &quot;） =&gt; xxRIGHTBRACKET1xx&quot;,</span><br><span class="line">                            &quot;&amp; =&gt; xxANDxx&quot;,</span><br><span class="line">                            &quot;| =&gt; xxVERTICALxx&quot;,</span><br><span class="line">                            &quot;—=&gt; xxUNDERLINExx&quot;,</span><br><span class="line">                            &quot;/=&gt; xxSLASHxx&quot;,</span><br><span class="line">                            &quot;！=&gt; xxEXCLAxx&quot;,</span><br><span class="line">                            &quot;•=&gt; xxDOT2xx&quot;,</span><br><span class="line">                            &quot;【=&gt;xxLEFTBRACKET2xx&quot;,</span><br><span class="line">                            &quot;】 =&gt; xxRIGHTBRACKET2xx&quot;,</span><br><span class="line">                            &quot;`=&gt;xxapostrophexx&quot;,</span><br><span class="line">                            &quot;.=&gt;xxDOT3xx&quot;,</span><br><span class="line">                            &quot;#=&gt;xxhashtagxx&quot;,</span><br><span class="line">                            &quot;，=&gt;xxcommaxx&quot;</span><br><span class="line">                        ]</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;number_of_shards&quot;: &quot;3&quot;,</span><br><span class="line">            &quot;number_of_replicas&quot;: &quot;1&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    //索引映射</span><br><span class="line">    &quot;mappings&quot;: &#123;</span><br><span class="line">        &quot;logs&quot;: &#123;</span><br><span class="line">            &quot;_all&quot;: &#123;</span><br><span class="line">                &quot;enabled&quot;: false</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;properties&quot;: &#123;</span><br><span class="line">                &quot;search_text&quot;: &#123;</span><br><span class="line">                    &quot;analyzer&quot;: &quot;custom_standard&quot;,</span><br><span class="line">                    &quot;type&quot;: &quot;text&quot;</span><br><span class="line">                &#125;,</span><br><span class="line">                &quot;search_word&quot;: &#123;</span><br><span class="line">                    &quot;type&quot;: &quot;keyword&quot;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/03/16/Elasticsearch （一）/" data-id="ck9xwwd830003x0f5wz76w9bd" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a></li></ul>
 
     </footer>
   </div>
@@ -382,7 +901,7 @@ Channel, complex, and function types不能被转义
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/16/GO-NSQ/" data-id="cjxebfcfw0005t0f5o5ilhrmz" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/03/16/GO-NSQ/" data-id="ck9xwwd980009x0f5lqzikhh0" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GO-Grpc-NSQ/">GO Grpc NSQ</a></li></ul>
@@ -394,9 +913,9 @@ Channel, complex, and function types不能被转义
 
 
   
-    <article id="post-Envoy - 初探 " class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-protoful - 各种文件生成（手记）" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/03/16/Envoy - 初探 /" class="article-date">
+    <a href="/2019/03/16/protoful - 各种文件生成（手记）/" class="article-date">
   <time datetime="2019-03-15T16:00:00.000Z" itemprop="datePublished">2019-03-16</time>
 </a>
     
@@ -408,7 +927,7 @@ Channel, complex, and function types不能被转义
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/16/Envoy - 初探 /">Envoy - 初探</a>
+      <a class="article-title" href="/2019/03/16/protoful - 各种文件生成（手记）/">protoful 集中记录</a>
     </h1>
   
 
@@ -416,342 +935,19 @@ Channel, complex, and function types不能被转义
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>##基础知识</p>
-<p>网络代理/网络服务器</p>
-<p>Envoy基本概念：集群，监听器，路由和过滤器</p>
-<p>首先，有一个监听器。这告诉Envoy绑定到一个端口，在本例中为10000：</p>
-<p>接下来，监听器有一个过滤器。过滤器告诉监听器如何处理它收到的请求，并为Envoy提供一系列过滤器。</p>
-<p>如果您需要做一些复杂的事情，那么要对每个请求使用几个过滤器。</p>
-<pre><code>envoy.http_connection_manager 过滤器，它用于代理HTTP请求。
-
-HTTP连接管理器还有一个适用的HTTP过滤器列表（请参阅HTTP过滤器列表）。
-
-其中最重要的是将envoy.router 的请求路由到后端的过滤器。
-</code></pre><p>TCP过滤器列表: <a href="https://www.envoyproxy.io/docs/envoy/v1.8.0/api-v2/api/v2/listener/listener.proto#listener-filter" target="_blank" rel="noopener">https://www.envoyproxy.io/docs/envoy/v1.8.0/api-v2/api/v2/listener/listener.proto#listener-filter</a></p>
-<p>HTTP过滤器列表: <a href="https://www.envoyproxy.io/docs/envoy/v1.8.0/api-v2/config/filter/network/http_connection_manager/v2/http_connection_manager.proto#envoy-api-msg-config-filter-network-http-connection-manager-v2-httpfilter" target="_blank" rel="noopener">https://www.envoyproxy.io/docs/envoy/v1.8.0/api-v2/config/filter/network/http_connection_manager/v2/http_connection_manager.proto#envoy-api-msg-config-filter-network-http-connection-manager-v2-httpfilter</a></p>
-<p><pre><code><br>static_resources:<br>  listeners:</code></pre></p>
-<ul>
-<li>name: listener_0<br>address:<br>  socket_address: { address: 0.0.0.0, port_value: 10000 }<br>filter_chains:<ul>
-<li>filters:<ul>
-<li>name: envoy.http_connection_manager<br>config:<br>  access_log:<ul>
-<li>name: envoy.file_access_log<br>config:<br>  path: “/var/log/envoy.log”<br>codec_type: auto<br>stat_prefix: ingress_http<br>route_config:<br>name: local_route<br>virtual_hosts:<ul>
-<li>name: local_service<br>domains: [“*”]<br>routes:<ul>
-<li>match: { prefix: “/datacenter.AdverseEvent” }<br>route:<br>  cluster: dc_ae<br>  max_grpc_timeout: 0s</li>
-<li>match: { prefix: “/izhaohu-adverse/api/adverse” }<br>route:<br>  cluster: dc_ae<br>  max_grpc_timeout: 0s<br>cors:<br>allow_origin:<ul>
-<li>“*”<br>allow_methods: GET, PUT, DELETE, POST, OPTIONS<br>allow_headers: keep-alive,user-agent,cache-control,content-type,content-transfer-encoding,custom-header-1,x-accept-content-transfer-encoding,x-accept-response-streaming,x-user-agent,x-grpc-web,grpc-timeout<br>max_age: “1728000”<br>expose_headers: custom-header-1,grpc-status,grpc-message<br>enabled: true<br>http_filters:<br>//一个翻译器 他帮助grpc 与 json互通。</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>name: envoy.grpc_json_transcoder<br>config:<br>//翻译器的字典，需要通过proto生成<br>  proto_descriptor: “/data/descriptor.pb”<br>  services: [“datacenter.AdverseEvent”]<br>  print_options:<pre><code>add_whitespace: false
-always_print_primitive_fields: true
-always_print_enums_as_ints: false
-preserve_proto_field_names: true
-</code></pre></li>
-<li>name: envoy.grpc_web</li>
-<li>name: envoy.cors</li>
-<li>name: envoy.router<br>//服务模块<br>clusters:</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>name: dc_ae<br>connect_timeout: 1.25s<br>type: logical_dns<br>http2_protocol_options: {}<br>lb_policy: round_robin<br>hosts: [{ socket_address: { address: dc-ae, port_value: 60001 }}]</li>
-</ul>
-<p></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">生成descriptor.pb</span><br><span class="line">protoc -I$GOPATH/src \</span><br><span class="line">    -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \</span><br><span class="line">    -I$GOPATH/src/protobuf/src/ \</span><br><span class="line">    -I$GOPATH/src/datacenter/proto \</span><br><span class="line">    --include_imports \</span><br><span class="line">    --include_source_info \</span><br><span class="line">    --descriptor_set_out=../build/envoy/descriptor.pb \</span><br><span class="line">    *.proto</span><br></pre></td></tr></table></figure>
-<p>请参阅 <a href="https://github.com/felixyao1985/envoy-demo" title="Title" target="_blank" rel="noopener">案例分享</a></p>
-
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">生成GO </span><br><span class="line">protoc -I$GOPATH/src \</span><br><span class="line">  -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \</span><br><span class="line">  -I$GOPATH/src/protobuf/src/ \</span><br><span class="line">  -I$GOPATH/src/datacenter/proto \</span><br><span class="line">  --go_out=plugins=grpc:. \</span><br><span class="line">  adverse_event.proto</span><br><span class="line"></span><br><span class="line">生成envoy 翻译器 descriptor.pb </span><br><span class="line">protoc -I$GOPATH/src \</span><br><span class="line">    -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \</span><br><span class="line">    -I$GOPATH/src/protobuf/src/ \</span><br><span class="line">    -I$GOPATH/src/datacenter/proto \</span><br><span class="line">    --include_imports \</span><br><span class="line">    --include_source_info \</span><br><span class="line">    --descriptor_set_out=../build/envoy/descriptor.pb \</span><br><span class="line">    *.proto</span><br><span class="line"></span><br><span class="line">生成grpc-webJS</span><br><span class="line">protoc -I$GOPATH/src \</span><br><span class="line">    -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \</span><br><span class="line">    -I$GOPATH/src/protobuf/src/ \</span><br><span class="line">    -I$GOPATH/src/datacenter/proto \</span><br><span class="line">    --js_out=import_style=commonjs:. \</span><br><span class="line">    --grpc-web_out=import_style=commonjs,mode=grpcwebtext:. *.proto</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">生成protoc-gen-swagger</span><br><span class="line">protoc -I$GOPATH/src \</span><br><span class="line">-I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \</span><br><span class="line">-I$GOPATH/src/protobuf/src/ \</span><br><span class="line">-I$GOPATH/src/proto-doc/proto \</span><br><span class="line">--swagger_out=logtostderr=true:. \</span><br><span class="line">adverse_event.proto</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">交叉编译</span><br><span class="line">set GOARCH=amd64</span><br><span class="line"></span><br><span class="line">set GOOS=linux</span><br><span class="line"></span><br><span class="line">go build xx.go</span><br></pre></td></tr></table></figure>
+<p>GO mod的使用 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">打开</span><br><span class="line">GO111MODULE=on</span><br><span class="line"></span><br><span class="line">Usage:</span><br><span class="line"></span><br><span class="line">	go mod &lt;command&gt; [arguments]</span><br><span class="line"></span><br><span class="line">The commands are:</span><br><span class="line"></span><br><span class="line">	download    download modules to local cache</span><br><span class="line">	edit        edit go.mod from tools or scripts</span><br><span class="line">	graph       print module requirement graph</span><br><span class="line">	init        initialize new module in current directory</span><br><span class="line">	tidy        add missing and remove unused modules</span><br><span class="line">	vendor      make vendored copy of dependencies</span><br><span class="line">	verify      verify dependencies have expected content</span><br><span class="line">	why         explain why packages or modules are needed</span><br><span class="line"></span><br><span class="line">Use &quot;go help mod &lt;command&gt;&quot; for more information about a command.</span><br><span class="line"></span><br><span class="line">GO111MODULE=on go mod init</span><br><span class="line">GO111MODULE=on go mod tidy</span><br></pre></td></tr></table></figure>
+<p>内网穿透工具</p>
+<p><a href="https://dashboard.ngrok.com/get-started" target="_blank" rel="noopener">https://dashboard.ngrok.com/get-started</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ngrok http 80</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/16/Envoy - 初探 /" data-id="cjxebfcem0001t0f5mvxw3j0t" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/03/16/protoful - 各种文件生成（手记）/" data-id="ck9xwwdhj0027x0f5hl6bevm6" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Envoy-grpc-restful/">Envoy grpc restful</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Elasticsearch （一）" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/16/Elasticsearch （一）/" class="article-date">
-  <time datetime="2019-03-15T16:00:00.000Z" itemprop="datePublished">2019-03-16</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/16/Elasticsearch （一）/">Elasticsearch （一）</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>Elasticsearch是一个基于Apache Lucene(TM)的开源搜索引擎。无论在开源还是专有领域，Lucene可以被认为是迄今为止最先进、性能最好的、功能最全的搜索引擎库。</p>
-<p>但是Lucene使用部署都非常复杂，而ES则可以通过 RESTful API 来使用 Lucene。</p>
-<h3 id="主要认识"><a href="#主要认识" class="headerlink" title="主要认识"></a>主要认识</h3><ul>
-<li><p>分布式的实时文件存储，每个字段都被索引并可被搜索</p>
-</li>
-<li><p>分布式的实时分析搜索引擎</p>
-</li>
-<li><p>可以扩展到上百台服务器，处理PB级结构化或非结构化数据</p>
-</li>
-<li><p>面向文档</p>
-<p>  存储整个对象或文档(document)。然而它不仅仅是存储，还会索引(index)每个文档的内容使之可以被搜索。在Elasticsearch中，你可以对文档（而非成行成列的数据）进行索引、搜索、排序、过滤。这种理解数据的方式与以往完全不同，这也是Elasticsearch能够执行复杂的全文搜索的原因之一。</p>
-</li>
-<li><p>使用JSON 对文档进行序列化</p>
-</li>
-</ul>
-<h3 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h3><p>在Elasticsearch中存储数据的行为就叫做索引(indexing)</p>
-<p>在Elasticsearch中，文档归属于一种类型(type),而这些类型存在于索引(index)中。</p>
-<p>对比图来类比传统关系型数据库:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Relational DB -&gt; Databases -&gt; Tables -&gt; Rows -&gt; Columns</span><br><span class="line"></span><br><span class="line">Elasticsearch -&gt; Indices   -&gt; Types  -&gt; Documents -&gt; Fields</span><br></pre></td></tr></table></figure></p>
-<p>Elasticsearch集群可以包含多个索引(indices)（数据库），每一个索引可以包含多个类型(types)（表），每一个类型包含多个文档(documents)（行），然后每个文档包含多个字段(Fields)（列）。</p>
-<h4 id="索引含义的区分"><a href="#索引含义的区分" class="headerlink" title="索引含义的区分"></a>索引含义的区分</h4><ul>
-<li><p>索引（名词）一个索引(index)就像是传统关系数据库中的数据库，它是相关文档存储的地方，index的复数是indices 或indexes。</p>
-</li>
-<li><p>索引（动词）「索引一个文档」表示把一个文档存储到索引（名词）里，以便它可以被检索或者查询。这很像SQL中的INSERT关键字，差别是，如果文档已经存在，新的文档将覆盖旧的文档。</p>
-</li>
-<li><p>倒排索引 传统数据库为特定列增加一个索引，例如B-Tree索引来加速检索。Elasticsearch和Lucene使用一种叫做倒排索引(inverted index)的数据结构来达到相同目的。</p>
-</li>
-</ul>
-<h4 id="建立索引-例子"><a href="#建立索引-例子" class="headerlink" title="建立索引(例子)"></a>建立索引(例子)</h4><ul>
-<li><p>template<br>  默认的 order 值就是 0。order 值越大，在 merge 规则的时候优先级越高。<br>  模板 es 模板有个坑，如果若干个匹配模板的order一致，如order都等于0，则这几个模板的优先级顺序是随机的。</p>
-</li>
-<li><p>mappings 映射的定制<br>  ES 可以随时根据数据中的新字段来创建新的映射关系。我们也可以在还没有正式数据写入之前，先创建一个基础的映射。等后续数据有其他字段时，ES 也一样会自动处理。</p>
-</li>
-</ul>
-<h5 id="特殊字符"><a href="#特殊字符" class="headerlink" title="特殊字符"></a>特殊字符</h5><pre><code>ES有一些默认的特殊字段，这些字段统一以_下划线开头。如_index，_type，_id。默认不开启的还有 _ttl，_timestamp，_size，_parent 等；
-</code></pre><ul>
-<li><p>_all<br>  _all 里存储了各字段的数据内容。其作用是，在检索的时候，如果无法或者未指明具体搜索哪个字段的数据，那么 ES 默认就会是从 _all 里去查找。</p>
-<p>  对于日志场景，如果你的日志划分出来的字段比较少且数目固定。那么，完全可以关闭掉 _all 功能，节省这部分 IO 和 CPU。</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&quot;_all&quot; : &#123;</span><br><span class="line">    &quot;enabled&quot; : false</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>_source</p>
-<p>  _source 里存储了该条记录的 JSON 源数据内容。这部分内容只是按照 ES 接收到的内容原样存储下来，并不经过索引过程。对于 ES 的请求过程来说，它不参与 Query 阶段，而只用于 Fetch 阶段。我们在 GET 或者 /_search 时看到的数据内容，都是从 _source 里获取到的。</p>
-<p>  所以，虽然 _source 也重复了一遍索引中的数据，一般我们并不建议关闭这个功能。因为一旦关闭，你搜索的结果除了一个 _id，啥都看不到。对于日志场景，意义不是很大。</p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;order&quot;: 0,		//</span><br><span class="line">    &quot;index_patterns&quot;: [</span><br><span class="line">        &quot;es_test_index_2&quot;</span><br><span class="line">    ],</span><br><span class="line">    &quot;settings&quot;: &#123;</span><br><span class="line">        &quot;index&quot;: &#123;</span><br><span class="line">            &quot;max_result_window&quot;: &quot;30000&quot;,</span><br><span class="line">            &quot;refresh_interval&quot;: &quot;60s&quot;,</span><br><span class="line">            &quot;analysis&quot;: &#123;</span><br><span class="line">                &quot;analyzer&quot;: &#123;</span><br><span class="line">                    &quot;custom_standard&quot;: &#123;</span><br><span class="line">                        &quot;type&quot;: &quot;custom&quot;,</span><br><span class="line">                        &quot;tokenizer&quot;: &quot;standard&quot;,</span><br><span class="line">                        &quot;char_filter&quot;: [</span><br><span class="line">                            &quot;my_char_filter&quot;</span><br><span class="line">                        ],</span><br><span class="line">                        &quot;filter&quot;: &quot;lowercase&quot;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;,</span><br><span class="line">                &quot;char_filter&quot;: &#123;</span><br><span class="line">                    &quot;my_char_filter&quot;: &#123;</span><br><span class="line">                        &quot;type&quot;: &quot;mapping&quot;,</span><br><span class="line">                        &quot;mappings&quot;: [</span><br><span class="line">                            &quot;· =&gt; xxDOT1xx&quot;,</span><br><span class="line">                            &quot;+ =&gt; xxPLUSxx&quot;,</span><br><span class="line">                            &quot;- =&gt; xxMINUSxx&quot;,</span><br><span class="line">                            &quot;\&quot; =&gt; xxQUOTATIONxx&quot;,</span><br><span class="line">                            &quot;（ =&gt; xxLEFTBRACKET1xx&quot;,</span><br><span class="line">                            &quot;） =&gt; xxRIGHTBRACKET1xx&quot;,</span><br><span class="line">                            &quot;&amp; =&gt; xxANDxx&quot;,</span><br><span class="line">                            &quot;| =&gt; xxVERTICALxx&quot;,</span><br><span class="line">                            &quot;—=&gt; xxUNDERLINExx&quot;,</span><br><span class="line">                            &quot;/=&gt; xxSLASHxx&quot;,</span><br><span class="line">                            &quot;！=&gt; xxEXCLAxx&quot;,</span><br><span class="line">                            &quot;•=&gt; xxDOT2xx&quot;,</span><br><span class="line">                            &quot;【=&gt;xxLEFTBRACKET2xx&quot;,</span><br><span class="line">                            &quot;】 =&gt; xxRIGHTBRACKET2xx&quot;,</span><br><span class="line">                            &quot;`=&gt;xxapostrophexx&quot;,</span><br><span class="line">                            &quot;.=&gt;xxDOT3xx&quot;,</span><br><span class="line">                            &quot;#=&gt;xxhashtagxx&quot;,</span><br><span class="line">                            &quot;，=&gt;xxcommaxx&quot;</span><br><span class="line">                        ]</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;number_of_shards&quot;: &quot;3&quot;,</span><br><span class="line">            &quot;number_of_replicas&quot;: &quot;1&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    //索引映射</span><br><span class="line">    &quot;mappings&quot;: &#123;</span><br><span class="line">        &quot;logs&quot;: &#123;</span><br><span class="line">            &quot;_all&quot;: &#123;</span><br><span class="line">                &quot;enabled&quot;: false</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;properties&quot;: &#123;</span><br><span class="line">                &quot;search_text&quot;: &#123;</span><br><span class="line">                    &quot;analyzer&quot;: &quot;custom_standard&quot;,</span><br><span class="line">                    &quot;type&quot;: &quot;text&quot;</span><br><span class="line">                &#125;,</span><br><span class="line">                &quot;search_word&quot;: &#123;</span><br><span class="line">                    &quot;type&quot;: &quot;keyword&quot;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/16/Elasticsearch （一）/" data-id="cjxebfcdv0000t0f5f2j27xkv" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-GO-Tracing" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/11/GO-Tracing/" class="article-date">
-  <time datetime="2019-03-10T16:00:00.000Z" itemprop="datePublished">2019-03-11</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/11/GO-Tracing/">基于jaeger和tracing实现 grpc调用链跟踪模块</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>#基于jaeger和tracing实现 grpc调用链跟踪模块</p>
-<p>#####Jaeger</p>
-<p><a href="&quot;https://blog.csdn.net/moxiaomomo/article/details/80723758&quot;">参考 Jaeger部署</a></p>
-<p>Jaeger是Uber推出的一款调用链追踪系统，类似于Zipkin和Dapper。 其主要用于多个服务调用过程追踪分析，图形化服务调用轨迹，便于快速准确定位问题。<br>Jaeger组成</p>
-<ul>
-<li>前端界面展示UI</li>
-<li>数据存储Cassandra</li>
-<li>数据查询Query</li>
-<li>数据收集处理Collector</li>
-<li>客户端代理Agent</li>
-<li>客户端库jaeger-client-*</li>
-</ul>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">    </span><br><span class="line">  <span class="string">仅为测试，该方式数据会存入内存，不能用于生产</span></span><br><span class="line">  </span><br><span class="line"><span class="string">docker</span> <span class="string">run</span> <span class="bullet">-d</span> <span class="bullet">--name</span> <span class="string">jaeger</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">  -</span><span class="string">e</span> <span class="string">COLLECTOR_ZIPKIN_HTTP_PORT=9411</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">  -</span><span class="string">p</span> <span class="number">5775</span><span class="string">:5775/udp</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">  -</span><span class="string">p</span> <span class="number">6831</span><span class="string">:6831/udp</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">  -</span><span class="string">p</span> <span class="number">6832</span><span class="string">:6832/udp</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">  -</span><span class="string">p</span> <span class="number">5778</span><span class="string">:5778</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">  -</span><span class="string">p</span> <span class="number">16686</span><span class="string">:16686</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">  -</span><span class="string">p</span> <span class="number">14268</span><span class="string">:14268</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">  -</span><span class="string">p</span> <span class="number">9411</span><span class="string">:9411</span> <span class="string">\</span></span><br><span class="line">  <span class="string">jaegertracing/all-in-one:1.9</span></span><br></pre></td></tr></table></figure>
-<p>#####grpc-jaeger源依赖</p>
-<pre><code>google.golang.org/grpc
-github.com/opentracing/opentracing-go
-github.com/uber/jaeger-client-go
-github.com/pkg/errors
-</code></pre><p>请参阅 <a href="https://github.com/felixyao1985/go-study/tree/master/grpc-tracing-example" title="Title" target="_blank" rel="noopener">案例分享</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/11/GO-Tracing/" data-id="cjxebfcgc0008t0f5m8vfq16a" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GO-Grpc-tracing/">GO Grpc tracing</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-GO-GRPC-GATEWAY" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/02/GO-GRPC-GATEWAY/" class="article-date">
-  <time datetime="2019-03-01T16:00:00.000Z" itemprop="datePublished">2019-03-02</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/02/GO-GRPC-GATEWAY/">GO-grpc-Gateway 的安装与编译(WIN环境)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>#grpc-gateway</p>
-<p>grpc-gateway是protoc的一个插件。它读取gRPC服务定义，并生成一个反向代理服务器，将RESTful JSON API转换为gRPC。此服务器是根据gRPC定义中的自定义选项生成的。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway</span><br><span class="line">go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger</span><br><span class="line"></span><br><span class="line">进入 github.com/grpc-ecosystem/grpc-gateway/rotoc-gen-grpc-gateway </span><br><span class="line">执行go build 然后安装 go install</span><br><span class="line">进入 github.com/grpc-ecosystem/grpc-gateway/pprotoc-gen-swagger </span><br><span class="line">执行go build 然后安装 go install</span><br><span class="line"></span><br><span class="line">**</span><br><span class="line">需要额外下载</span><br><span class="line">go get github.com/ghodss/yaml</span><br><span class="line">go get google/api/annotations.proto （被墙使用：github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis）</span><br><span class="line">git clone https://github.com/protocolbuffers/protobuf</span><br><span class="line">**</span><br></pre></td></tr></table></figure>
-<p>#####grpc-gateway-proto文件例子</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">//需要在编译的时候 指定包的路径，并且该包依赖 https://github.com/protocolbuffers/protobuf</span><br><span class="line">import &quot;google/api/annotations.proto&quot;;   </span><br><span class="line"></span><br><span class="line">service Menu &#123;</span><br><span class="line">    rpc Save (MenuModel) returns (Res) &#123;</span><br><span class="line">        option (google.api.http) = &#123;</span><br><span class="line">          post: &quot;/api/menu&quot;</span><br><span class="line">          body: &quot;*&quot;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    rpc View (RepMenuView) returns (Res) &#123;</span><br><span class="line">        option (google.api.http) = &#123;</span><br><span class="line">          get: &quot;/api/menu&quot;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>#####编译<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//生成服务端</span><br><span class="line">protoc --go_out=plugins=grpc:. role_manage.proto</span><br><span class="line"></span><br><span class="line">//生成网关使用使用部分</span><br><span class="line">protoc -I$GOPATH/src \</span><br><span class="line">  -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \</span><br><span class="line">  -I$GOPATH/src/protobuf/src/ \</span><br><span class="line">  -I$GOPATH/src/vsiapi/proto \</span><br><span class="line">  --grpc-gateway_out=logtostderr=true:. \</span><br><span class="line">  role_manage_gw.proto</span><br></pre></td></tr></table></figure></p>
-<p>####调用<br>$ curl -d ‘{“ID”:1}’ -X GET ‘<a href="http://localhost:3344/api/menu&#39;" target="_blank" rel="noopener">http://localhost:3344/api/menu&#39;</a></p>
-<p>请参阅 <a href="https://github.com/felixyao1985/rbac-grpc-interceptor" title="Title" target="_blank" rel="noopener">案例分享</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/02/GO-GRPC-GATEWAY/" data-id="cjxebfcf40003t0f5wjnadgo8" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/微服务-GRPC/">微服务 GRPC</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-GO-GRPC" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/01/GO-GRPC/" class="article-date">
-  <time datetime="2019-02-28T16:00:00.000Z" itemprop="datePublished">2019-03-01</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/01/GO-GRPC/">GO-grpc 的安装与编译(WIN环境)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="grpc-win-安装流程"><a href="#grpc-win-安装流程" class="headerlink" title="grpc win 安装流程"></a>grpc win 安装流程</h1><pre><code>google.golang.org: grpc相关组件默认获取package的路径
-</code></pre><p>1、安装Protobuf</p>
-<pre><code>https://github.com/google/protobuf/releases
-
-下载 protoc-3.5.1-win32.zip
-
-把解压后的 protoc.exe 放入到 GOPATH\BIN 中
-</code></pre><p>2、安装grpc</p>
-<pre><code>git clone https://github.com/grpc/grpc-go
-将grpc-go更名为grpc放入到google.golang.org中
-</code></pre><p>3、安装Genproto</p>
-<pre><code>git clone  https://github.com/google/go-genproto
-将clone下来的文件夹更名为genproto，放到google.golang.org下  
-</code></pre><p>4、下载text包</p>
-<pre><code>为了使包的导入方式不变，需要在src目录下面构造目录结构
-mkdir -p $GOPATH/src/golang.org/x/
-cd $GOPATH/src/golang.org/x/
-git clone https://github.com/golang/text.git    
-</code></pre><p>5、下载net包</p>
-<pre><code>为了使包的导入方式不变，需要在src目录下面构造目录结构
-mkdir -p $GOPATH/src/golang.org/x/
-cd $GOPATH/src/golang.org/x/
-
-git clone https://github.com/golang/net.git net
-go install net
-执行go install之后没有提示，就说明安装好了。    
-</code></pre><p>6、安装proto</p>
-<pre><code>go get -u github.com/golang/protobuf/proto
-</code></pre><p>7、安装protoc-gen-go</p>
-<pre><code>go get -u github.com/golang/protobuf/protoc-gen-go  
-</code></pre><p>将proto文件编译为go文件</p>
-<ul>
-<li><p>proto文件语法详解参阅：<a href="https://blog.csdn.net/u014308482/article/details/52958148" target="_blank" rel="noopener">https://blog.csdn.net/u014308482/article/details/52958148</a></p>
-<pre><code>// protoc --go_out=plugins=grpc:{输出目录}  {proto文件}
-protoc --go_out=plugins=grpc:./test/ ./test.proto
-
-//在shell下可以批量编译。但是在win cmd下会报错，无法识别通配符
-protoc --go_out=plugins=grpc:. *.proto
-</code></pre></li>
-</ul>
-<p>注意：原则上不要修改编译出来的<em>.bp.go文件的代码，因为双方接口基于同一个proto文件编译成自己的语言源码，此文件只作为接口数据处理，业务具体实现不在</em>.bp.go中。</p>
-<p>grpc+ProtoBuf所需的一些资源 </p>
-<ul>
-<li><p>1.golang.org\x\net\context</p>
-<p>对应的可访问链接：<a href="https://github.com/golang/net，里面包含context，dns，http2等一系列资源" target="_blank" rel="noopener">https://github.com/golang/net，里面包含context，dns，http2等一系列资源</a></p>
-</li>
-<li><p>2.golang.org/x/text/secure/bidirule</p>
-<p> 对应的可访问链接：<a href="https://github.com/golang/text，里面包含cmd，currency，secure等一系列资源" target="_blank" rel="noopener">https://github.com/golang/text，里面包含cmd，currency，secure等一系列资源</a></p>
-</li>
-<li><p>3.google.golang.org/grpc</p>
-<p> 对应的可访问链接：<a href="https://github.com/grpc/grpc-go，里面包含connectivity，grpclb，grpclog等一系列资源" target="_blank" rel="noopener">https://github.com/grpc/grpc-go，里面包含connectivity，grpclb，grpclog等一系列资源</a></p>
-</li>
-<li><p>4.google.golang.org/genproto</p>
-<p> 对应的可访问链接：<a href="https://github.com/google/go-genproto，里面包含googleapis，protobuf等一系列资源" target="_blank" rel="noopener">https://github.com/google/go-genproto，里面包含googleapis，protobuf等一系列资源</a>   </p>
-</li>
-</ul>
-<p>请参阅 <a href="https://github.com/felixyao1985/rbac-grpc-interceptor" title="Title" target="_blank" rel="noopener">案例分享</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/01/GO-GRPC/" data-id="cjxebfcfl0004t0f5nykpk9f7" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/微服务-GRPC/">微服务 GRPC</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/protoful/">protoful</a></li></ul>
 
     </footer>
   </div>
@@ -764,7 +960,7 @@ protoc --go_out=plugins=grpc:. *.proto
 
   <nav id="page-nav">
     
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -778,7 +974,7 @@ protoc --go_out=plugins=grpc:. *.proto
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Envoy-grpc-restful/">Envoy grpc restful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-NSQ/">GO Grpc NSQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-tracing/">GO Grpc tracing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-generate/">GO generate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-interceptor-JWT/">GO interceptor JWT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-json/">GO json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-权限管理/">GO 权限管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git-fork、pr/">Git fork、pr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Protocol-Buffer/">Protocol Buffer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gRPC/">gRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protoful/">protoful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务/">微服务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务-GRPC/">微服务 GRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/端口/">端口</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Envoy-grpc-restful/">Envoy grpc restful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-NSQ/">GO Grpc NSQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-tracing/">GO Grpc tracing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-tracing-jaeger/">GO Grpc tracing jaeger</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-generate/">GO generate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-interceptor-JWT/">GO interceptor JWT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-json/">GO json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-权限管理/">GO 权限管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git-fork、pr/">Git fork、pr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kubernetes/">Kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Protocol-Buffer/">Protocol Buffer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gRPC/">gRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protoful/">protoful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务/">微服务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务-GRPC/">微服务 GRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/端口/">端口</a></li></ul>
     </div>
   </div>
 
@@ -788,7 +984,7 @@ protoc --go_out=plugins=grpc:. *.proto
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Elasticsearch/" style="font-size: 10px;">Elasticsearch</a> <a href="/tags/Envoy-grpc-restful/" style="font-size: 10px;">Envoy grpc restful</a> <a href="/tags/GO-Grpc-NSQ/" style="font-size: 10px;">GO Grpc NSQ</a> <a href="/tags/GO-Grpc-tracing/" style="font-size: 10px;">GO Grpc tracing</a> <a href="/tags/GO-generate/" style="font-size: 10px;">GO generate</a> <a href="/tags/GO-interceptor-JWT/" style="font-size: 10px;">GO interceptor JWT</a> <a href="/tags/GO-json/" style="font-size: 10px;">GO json</a> <a href="/tags/GO-权限管理/" style="font-size: 10px;">GO 权限管理</a> <a href="/tags/Git-fork、pr/" style="font-size: 10px;">Git fork、pr</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Protocol-Buffer/" style="font-size: 10px;">Protocol Buffer</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/Redux/" style="font-size: 10px;">Redux</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/gRPC/" style="font-size: 10px;">gRPC</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/protoful/" style="font-size: 10px;">protoful</a> <a href="/tags/微服务/" style="font-size: 20px;">微服务</a> <a href="/tags/微服务-GRPC/" style="font-size: 15px;">微服务 GRPC</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a>
+      <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Elasticsearch/" style="font-size: 10px;">Elasticsearch</a> <a href="/tags/Envoy-grpc-restful/" style="font-size: 10px;">Envoy grpc restful</a> <a href="/tags/GO-Grpc-NSQ/" style="font-size: 10px;">GO Grpc NSQ</a> <a href="/tags/GO-Grpc-tracing/" style="font-size: 10px;">GO Grpc tracing</a> <a href="/tags/GO-Grpc-tracing-jaeger/" style="font-size: 10px;">GO Grpc tracing jaeger</a> <a href="/tags/GO-generate/" style="font-size: 10px;">GO generate</a> <a href="/tags/GO-interceptor-JWT/" style="font-size: 10px;">GO interceptor JWT</a> <a href="/tags/GO-json/" style="font-size: 10px;">GO json</a> <a href="/tags/GO-权限管理/" style="font-size: 10px;">GO 权限管理</a> <a href="/tags/Git-fork、pr/" style="font-size: 10px;">Git fork、pr</a> <a href="/tags/Kubernetes/" style="font-size: 15px;">Kubernetes</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/tags/Protocol-Buffer/" style="font-size: 10px;">Protocol Buffer</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/Redux/" style="font-size: 10px;">Redux</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/gRPC/" style="font-size: 10px;">gRPC</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/protoful/" style="font-size: 10px;">protoful</a> <a href="/tags/微服务/" style="font-size: 20px;">微服务</a> <a href="/tags/微服务-GRPC/" style="font-size: 15px;">微服务 GRPC</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a>
     </div>
   </div>
 
@@ -797,7 +993,7 @@ protoc --go_out=plugins=grpc:. *.proto
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li></ul>
     </div>
   </div>
 
@@ -810,23 +1006,23 @@ protoc --go_out=plugins=grpc:. *.proto
       <ul>
         
           <li>
+            <a href="/2020/05/08/docker_笔记/">docker 笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/08/Nginx 基础/">Nginx 基础</a>
+          </li>
+        
+          <li>
+            <a href="/2019/11/25/GO-jaeger-es/">使用es 来存放 jaeger</a>
+          </li>
+        
+          <li>
             <a href="/2019/04/25/Git fork、pr的开发模式/">Git fork、pr的开发模式</a>
           </li>
         
           <li>
             <a href="/2019/04/02/GO-json/">GO json的操作</a>
-          </li>
-        
-          <li>
-            <a href="/2019/03/28/浏览器避免使用之端口/">坑爹的端口集</a>
-          </li>
-        
-          <li>
-            <a href="/2019/03/16/protoful - 各种文件生成（手记）/">protoful 集中记录</a>
-          </li>
-        
-          <li>
-            <a href="/2019/03/16/GO-NSQ/">NSQ(有赞版)</a>
           </li>
         
       </ul>
@@ -841,7 +1037,7 @@ protoc --go_out=plugins=grpc:. *.proto
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2019 Felix<br>
+      &copy; 2020 Felix<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>

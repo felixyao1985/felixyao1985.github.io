@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>docker 笔记 | Felix Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Docker 笔记引自 heibaiying/Full-Stack-Notes/Docker_基础 Docker 常用命令基础命令 docker version：用于查看 docker 的版本信息 docker info：用于查看 docker 的配置信息 docker help：用于查看帮助信息  镜像相关命令1. docker search  镜像名从官方镜像仓库 Docker Hub 查找指">
+<meta name="keywords" content="docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="docker 笔记">
+<meta property="og:url" content="http://yoursite.com/2020/05/08/docker_笔记/index.html">
+<meta property="og:site_name" content="Felix Blog">
+<meta property="og:description" content="Docker 笔记引自 heibaiying/Full-Stack-Notes/Docker_基础 Docker 常用命令基础命令 docker version：用于查看 docker 的版本信息 docker info：用于查看 docker 的配置信息 docker help：用于查看帮助信息  镜像相关命令1. docker search  镜像名从官方镜像仓库 Docker Hub 查找指">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-05-08T03:03:36.575Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="docker 笔记">
+<meta name="twitter:description" content="Docker 笔记引自 heibaiying/Full-Stack-Notes/Docker_基础 Docker 常用命令基础命令 docker version：用于查看 docker 的版本信息 docker info：用于查看 docker 的配置信息 docker help：用于查看帮助信息  镜像相关命令1. docker search  镜像名从官方镜像仓库 Docker Hub 查找指">
+  
+    <link rel="alternate" href="/atom.xml" title="Felix Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Felix Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-docker_笔记" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/05/08/docker_笔记/" class="article-date">
+  <time datetime="2020-05-07T16:00:00.000Z" itemprop="datePublished">2020-05-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      docker 笔记
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Docker-笔记"><a href="#Docker-笔记" class="headerlink" title="Docker 笔记"></a>Docker 笔记</h1><p>引自 <a href="https://github.com/heibaiying/Full-Stack-Notes/blob/master/notes/Docker_%E5%9F%BA%E7%A1%80.md" target="_blank" rel="noopener">heibaiying/Full-Stack-Notes/Docker_基础</a></p>
+<h2 id="Docker-常用命令"><a href="#Docker-常用命令" class="headerlink" title="Docker 常用命令"></a>Docker 常用命令</h2><h3 id="基础命令"><a href="#基础命令" class="headerlink" title="基础命令"></a>基础命令</h3><ul>
+<li><strong>docker version</strong>：用于查看 docker 的版本信息</li>
+<li><strong>docker info</strong>：用于查看 docker 的配置信息</li>
+<li><strong>docker help</strong>：用于查看帮助信息</li>
+</ul>
+<h3 id="镜像相关命令"><a href="#镜像相关命令" class="headerlink" title="镜像相关命令"></a>镜像相关命令</h3><h4 id="1-docker-search-镜像名"><a href="#1-docker-search-镜像名" class="headerlink" title="1. docker search  镜像名"></a>1. docker search  镜像名</h4><p>从官方镜像仓库 Docker Hub 查找指定名称的镜像。常用参数为 <code>--no-trunc</code>，代表显示完整的镜像信息。</p>
+<h4 id="2-docker-images"><a href="#2-docker-images" class="headerlink" title="2. docker images"></a>2. docker images</h4><p>列出所有顶层镜像的相关信息。常用参数如下：</p>
+<ul>
+<li><strong>-a</strong> ：显示所有镜像，包括中间隐藏的镜像</li>
+<li><strong>-q</strong> ：只显示镜像 ID</li>
+<li><strong>–digests</strong> ：显示摘要信息</li>
+<li><strong>–no-trunc</strong> ：显示完整镜像信息</li>
+</ul>
+<h4 id="3-docker-pull-镜像名-TAG"><a href="#3-docker-pull-镜像名-TAG" class="headerlink" title="3. docker pull  镜像名 [:TAG]"></a>3. docker pull  镜像名 [:TAG]</h4><p>从官方仓库下载镜像，<code>:TAG</code> 为镜像版本，不加则默认下载最新版本。</p>
+<h4 id="4-docker-rmi-镜像名或ID-TAG"><a href="#4-docker-rmi-镜像名或ID-TAG" class="headerlink" title="4. docker rmi 镜像名或ID  [:TAG]"></a>4. docker rmi 镜像名或ID  [:TAG]</h4><p>删除指定版本的镜像，不加 <code>:TAG</code> 则默认删除镜像的最新版本。如果有基于该镜像的容器存在，则该镜像无法直接删除，此时可以使用参数 <code>-f</code>，代表强制删除。rmi 命令支持批量删除，多个镜像名之间使用空格分隔。如果想要删除所有镜像，则可以使用命令 <code>docker rmi -f $(docker images -qa)</code> 。</p>
+<h2 id="容器相关命令"><a href="#容器相关命令" class="headerlink" title="容器相关命令"></a>容器相关命令</h2><h4 id="1-docker-run-OPTIONS-IMAGE-COMMAND-ARG…"><a href="#1-docker-run-OPTIONS-IMAGE-COMMAND-ARG…" class="headerlink" title="1. docker run [OPTIONS] IMAGE [COMMAND] [ARG…]"></a>1. docker run [OPTIONS] IMAGE [COMMAND] [ARG…]</h4><p>run 是 docker 中最为核心的一个命令，用于新建并启动容器，其拥有众多可用参数，可以使用 <code>docker run --help</code> 查看所有可用参数。常用参数如下：</p>
+<ul>
+<li><strong>-i</strong> ：表示使用交互模式，始终保持输入流开放；</li>
+<li><strong>-t</strong> ：表示分配一个伪终端，通常和 <code>-i</code> 结合使用，表示使用伪终端与容器进行交互；</li>
+<li><strong>-d</strong> ：以后台方式运行容器；</li>
+<li><strong>–name</strong> ：指定启动容器的名字，如果不指定，则由 docker 随机分配；</li>
+<li><strong>-c</strong> ：用于给运行在容器中的所有进程分配 CPU 的 shares 值，这是一个相对权重，实际的处理速度与宿主机的 CPU 相关；</li>
+<li><strong>-m</strong> ：用于限制为容器中所有进程分配的内存总量，以 B、K、M、G 为单位；</li>
+<li><strong>-v</strong> ：挂载数据卷 volume，可以用多个 <code>-v</code> 参数同时挂载多个 volume。volume 的格式为：<code>[host-dir]:[container-dir]:[rw:ro]</code> ，<code>[rw:ro]</code> 用于指定数据卷的模式，<code>rw</code> 代表读写模式，<code>ro</code> 代表只读模式。</li>
+<li><strong>-p</strong> ：用于将容器的端口暴露给宿主机的端口，格式为：<code>hostPort:containerPort</code> ，通过端口的暴露，可以让外部主机能够访问容器内的应用。</li>
+</ul>
+<h4 id="2-docker-ps-OPTIONS"><a href="#2-docker-ps-OPTIONS" class="headerlink" title="2. docker ps [OPTIONS]"></a>2. docker ps [OPTIONS]</h4><p>列出当前所有正在运行的容器。常用参数如下：</p>
+<ul>
+<li><strong>-a</strong> ：列出所有容器，包括运行的和已经停止的所有容器</li>
+<li><strong>-n</strong> ：显示最近创建的 n 个容器</li>
+<li><strong>-q</strong> ：只显示容器编号</li>
+<li><strong>–no-trunc</strong> ：不要截断输出信息</li>
+</ul>
+<h4 id="3-启动-重启-停止-强制停止容器"><a href="#3-启动-重启-停止-强制停止容器" class="headerlink" title="3. 启动\重启\停止\强制停止容器"></a>3. 启动\重启\停止\强制停止容器</h4><p>与容器启动、停止相关的命令为：<code>docker start|restart|stop|kill 容器名或ID</code> ，start 命令用于启动已有的容器，restart 用于重启正在运行的容器，stop 用于停止正在运行的容器，kill  用于强制停止容器。</p>
+<h4 id="4-进入正在运行的容器"><a href="#4-进入正在运行的容器" class="headerlink" title="4. 进入正在运行的容器"></a>4. 进入正在运行的容器</h4><p>想要进入正在运行的容器，与容器主进程交互，有以下两种常用方法：</p>
+<ul>
+<li>docker attach 容器名或ID</li>
+<li>docker exec -it 容器名或ID /bin/bash</li>
+</ul>
+<h4 id="5-退出容器"><a href="#5-退出容器" class="headerlink" title="5. 退出容器"></a>5. 退出容器</h4><p>想要退出正在运行的容器，有以下两种常用方法：</p>
+<ul>
+<li><strong>exit</strong> ：退出并停止容器；</li>
+<li><strong>ctrl+P+Q</strong> ：退出。</li>
+</ul>
+<h4 id="6-docker-rm-容器名或ID"><a href="#6-docker-rm-容器名或ID" class="headerlink" title="6. docker rm 容器名或ID"></a>6. docker rm 容器名或ID</h4><p>删除已停止的容器，常用参数为<code>-f</code>，表示强制删除容器，即便容器还在运行。想要删除所有容器，可以使用 <code>docker rm -f $(docker ps -aq)</code> 命令。</p>
+<h4 id="7-查看容器信息"><a href="#7-查看容器信息" class="headerlink" title="7. 查看容器信息"></a>7. 查看容器信息</h4><p>可以使用 <code>docker inspect [OPTIONS] NAME|ID [NAME|ID...]</code> 查看容器或者镜像的详细信息，想要查看指定的信息，可以使用 <code>-- format</code> 参数来指定输出的模板格式，示例如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker inspect --format='&#123;&#123;.NetworkSettings&#125;&#125;'  32cb3ace3279</span><br></pre></td></tr></table></figure>
+<h4 id="8-查看容器运行日志"><a href="#8-查看容器运行日志" class="headerlink" title="8. 查看容器运行日志"></a>8. 查看容器运行日志</h4><p>可以使用 <code>docker logs [OPTIONS] CONTAINER</code> 查看容器中进程的运行日志，常用参数如下：</p>
+<ul>
+<li><strong>–details</strong> ：显示日志详情</li>
+<li><strong>-f</strong> ：跟随日志输出显示</li>
+<li><strong>–tail</strong> ：从末尾开始显示指定行的数据</li>
+<li><strong>-t</strong> ：显示时间戳</li>
+<li><strong>–since</strong> ：开始时间</li>
+<li><strong>–until</strong> ： 结束时间</li>
+</ul>
+<h2 id="DockerFile"><a href="#DockerFile" class="headerlink" title="DockerFile"></a>DockerFile</h2><p>dockerfile 是 Docker 用来构建镜像的文本文件，包含自定义的指令和格式，可以通过 build 命令从 dockerfile 中构建镜像，命令格式为：<code>docker build [OPTIONS] PATH | URL | -</code> 。</p>
+<p>dockerfile 描述了组装镜像的步骤，其中每条指令都是单独执行的。除了 FROM 指令，其他的每一条指令都会在上一条指令所生成镜像的基础上执行，执行完后会生成一个新的镜像层，新镜像层覆盖在原来的镜像之上从而形成新的镜像。为了提高镜像构建的速度， Docker Daemon 会缓存构建过程中的中间镜像。在构建镜像时，它会将 dockerfile 中下一条指令和基础镜像的所有子镜像做比较，如果有一个子镜像是由相同的指令生成的，则命中缓存，直接使用该镜像，而不用再生成一个新的镜像。常用指令如下：</p>
+<h3 id="1-FROM"><a href="#1-FROM" class="headerlink" title="1. FROM"></a>1. FROM</h3><p>FROM 指令用于指定基础镜像，因此所有的 dockerfile 都必须使用 FROM 指令开头。FROM 指令可以出现多次，这样会构建多个镜像，每个镜像创建完成后，Docker 命令行界面会输出该镜像的 ID。常用指令格式为：<code>FROM &lt;image&gt;[:&lt;tag&gt;] [AS &lt;name&gt;]</code>。</p>
+<h3 id="2-MAINTAINER"><a href="#2-MAINTAINER" class="headerlink" title="2. MAINTAINER"></a>2. MAINTAINER</h3><p>MAINTAINER 指令可以用来设置作者名称和邮箱，目前 MAINTAINER  指令被标识为废弃，官方推荐使用 LABEL 代替。</p>
+<h3 id="3-LABEL"><a href="#3-LABEL" class="headerlink" title="3. LABEL"></a>3. LABEL</h3><p>LABEL 指令可以用于指定镜像相关的元数据信息。格式为：<code>LABEL &lt;key&gt;=&lt;value&gt; &lt;key&gt;=&lt;value&gt; &lt;key&gt;=&lt;value&gt; ...</code> 。</p>
+<h3 id="4-ENV"><a href="#4-ENV" class="headerlink" title="4. ENV"></a>4. ENV</h3><p>ENV 指令用于声明环境变量，声明好的环境变量可以在后面的指令中引用，引用格式为 <code>$variable_name</code> 或 <code>${variable_name}</code> 。常用格式有以下两种：</p>
+<ul>
+<li><code>ENV &lt;key&gt; &lt;value&gt;</code> ：用于设置单个环境变量；</li>
+<li><code>ENV &lt;key&gt;=&lt;value&gt; ...</code> ：用于一次设置多个环境变量。</li>
+</ul>
+<h3 id="5-EXPOSE"><a href="#5-EXPOSE" class="headerlink" title="5. EXPOSE"></a>5. EXPOSE</h3><p>EXPOSE 用于指明容器对外暴露的端口号，格式为：<code>EXPOSE &lt;port&gt; [&lt;port&gt;/&lt;protocol&gt;...]</code> ，您可以指定端口是侦听 TCP 还是 UDP，如果未指定协议，则默认为 TCP。</p>
+<h3 id="6-WORKDIR"><a href="#6-WORKDIR" class="headerlink" title="6. WORKDIR"></a>6. WORKDIR</h3><p>WORKDIR 用于指明工作目录，它可以多次使用。如果指明的是相对路径，则它将相对于上一个WORKDIR指令的路径。示例如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">WORKDIR /a</span><br><span class="line">WORKDIR b</span><br><span class="line">WORKDIR c</span><br><span class="line">RUN pwd # 此时pwd为：/a/b/c</span><br></pre></td></tr></table></figure>
+<h3 id="7-COPY"><a href="#7-COPY" class="headerlink" title="7. COPY"></a>7. COPY</h3><p>COPY 指令的常用格式为：<code>COPY  &lt;src&gt;... &lt;dest&gt;</code>，用于将指定路径中的文件添加到新的镜像中，拷贝的目标路径可以不存在，程序会自动创建。</p>
+<h3 id="8-ADD"><a href="#8-ADD" class="headerlink" title="8. ADD"></a>8. ADD</h3><p>ADD 指令的常用格式为：<code>COPY  &lt;src&gt;... &lt;dest&gt;</code>，作用与 COPY 指令类似，但功能更为强大，例如 <code>Src</code> 支持文件的网络地址，且如果 <code>Src</code> 指向的是压缩文件，ADD 在复制完成后还会自动进行解压。</p>
+<h3 id="9-RUN"><a href="#9-RUN" class="headerlink" title="9.  RUN"></a>9.  RUN</h3><p>RUN 指令会在前一条命令创建出的镜像基础上再创建一个容器，并在容器中运行命令，在命令结束后提交该容器为新的镜像。它支持以下两种格式：</p>
+<ul>
+<li><code>RUN &lt;command&gt;</code> （<em>shell</em> 格式）</li>
+<li><code>RUN [&quot;executable&quot;, &quot;param1&quot;, &quot;param2&quot;]</code> (<em>exec</em> 格式)</li>
+</ul>
+<p>使用 shell 格式时候，命令通过 <code>/bin/sh -c</code> 运行，而当使用 exec 格式时，命令是直接运行的，容器不调用 shell 程序，这意味着不会发生正常的 shell 处理。例如，<code>RUN [&quot;echo&quot;,&quot;$HOME&quot;]</code> 不会对 <code>$HOME</code> 执行变量替换，此时正确的格式应为：<code>RUN [&quot;sh&quot;,&quot;-c&quot;,&quot;echo $HOME&quot;]</code>。下面的 CMD 指令也存在同样的问题。</p>
+<h3 id="10-CMD"><a href="#10-CMD" class="headerlink" title="10. CMD"></a>10. CMD</h3><ul>
+<li><code>CMD [&quot;executable&quot;,&quot;param1&quot;,&quot;param2&quot;]</code> (<em>exec</em> 格式, 首选)</li>
+<li><code>CMD [&quot;param1&quot;,&quot;param2&quot;]</code> (作为 <em>ENTRYPOINT</em> 的默认参数)</li>
+<li><code>CMD command param1 param2</code> (<em>shell</em> 格式)</li>
+</ul>
+<p>CMD 指令提供容器运行时的默认值，这些默认值可以是一条指令，也可以是一些参数。一个 dockerfile 中可以有多条 CMD 指令，但只有最后一条 CMD 指令有效。CMD 指令与 RUN 指令的命令格式相同，但作用不同：RUN 指令是在镜像的构建阶段用于产生新的镜像；而 CMD 指令则是在容器的启动阶段默认将 CMD 指令作为第一条执行的命令，如果用户在 docker run 时指定了新的命令参数，则会覆盖 CMD 指令中的命令。</p>
+<h3 id="11-ENTRYPOINT"><a href="#11-ENTRYPOINT" class="headerlink" title="11.  ENTRYPOINT"></a>11.  ENTRYPOINT</h3><p>ENTRYPOINT 指令 支持以下两种格式：</p>
+<ul>
+<li><code>ENTRYPOINT [&quot;executable&quot;, &quot;param1&quot;, &quot;param2&quot;]</code> (<em>exec</em> 格式，首先)</li>
+<li><code>ENTRYPOINT command param1 param2</code> (<em>shell</em> 格式)</li>
+</ul>
+<p>ENTRYPOINT 指令 和 CMD 指令类似，都可以让容器在每次启动时执行相同的命令。但不同的是 CMD 后面可以是参数也可以是命令，而 ENTRYPOINT 只能是命令；另外 docker run 命令提供的运行参数可以覆盖 CMD，但不能覆盖 ENTRYPOINT ，这意味着 ENTRYPOINT  指令上的命令一定会被执行。如下 dockerfile 片段：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ENTRYPOINT [&quot;/bin/echo&quot;, &quot;Hello&quot;]</span><br><span class="line">CMD [&quot;world&quot;]</span><br></pre></td></tr></table></figure>
+<p>当执行 <code>docker run -it image</code> 后，此时输出为 <code>hello world</code>，而当你执行 <code>docker run -it image spring</code> ，此时 CMD 中的参数会被覆盖，此时输出为<code>hello spring</code>。</p>
+<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><h3 id="部署GO项目"><a href="#部署GO项目" class="headerlink" title="部署GO项目"></a>部署GO项目</h3><p>  这里举例将GO源码，打入docker 在docker内进行编译的过程，如果在之前就已经编译，则可以选择更小的镜像，直接将编译好的文件复制到镜像即可</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 以官方仓库的golang镜像为基础开始创建</span><br><span class="line">FROM golang</span><br><span class="line"><span class="meta">#</span> 作者信息</span><br><span class="line">MAINTAINER  felix</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>工作目录</span><br><span class="line">WORKDIR $GOPATH/src/godocker</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>将文件复制到镜像中</span><br><span class="line">ADD . $GOPATH/src/godocker</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 执行操作（就跟在终端执行语句一样） </span><br><span class="line">RUN go build main.go</span><br><span class="line"></span><br><span class="line">EXPOSE 8080</span><br><span class="line"></span><br><span class="line">ENTRYPOINT ["./main"]</span><br></pre></td></tr></table></figure>
+<p>执行下面镜像构建命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker build -t go-docker:latest .</span><br><span class="line"></span><br><span class="line">docker images 查看创建的镜像</span><br></pre></td></tr></table></figure>
+<p>镜像构建完成后，可以使用以下命令进行启动：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -p 8080:8080 -d go-docker</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/05/08/docker_笔记/" data-id="ck9xwwda4000fx0f5bi5w5gyz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/">docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/05/08/Nginx 基础/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Nginx 基础</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Envoy-grpc-restful/">Envoy grpc restful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-NSQ/">GO Grpc NSQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-tracing/">GO Grpc tracing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-tracing-jaeger/">GO Grpc tracing jaeger</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-generate/">GO generate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-interceptor-JWT/">GO interceptor JWT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-json/">GO json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-权限管理/">GO 权限管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git-fork、pr/">Git fork、pr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kubernetes/">Kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Protocol-Buffer/">Protocol Buffer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gRPC/">gRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protoful/">protoful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务/">微服务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务-GRPC/">微服务 GRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/端口/">端口</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Elasticsearch/" style="font-size: 10px;">Elasticsearch</a> <a href="/tags/Envoy-grpc-restful/" style="font-size: 10px;">Envoy grpc restful</a> <a href="/tags/GO-Grpc-NSQ/" style="font-size: 10px;">GO Grpc NSQ</a> <a href="/tags/GO-Grpc-tracing/" style="font-size: 10px;">GO Grpc tracing</a> <a href="/tags/GO-Grpc-tracing-jaeger/" style="font-size: 10px;">GO Grpc tracing jaeger</a> <a href="/tags/GO-generate/" style="font-size: 10px;">GO generate</a> <a href="/tags/GO-interceptor-JWT/" style="font-size: 10px;">GO interceptor JWT</a> <a href="/tags/GO-json/" style="font-size: 10px;">GO json</a> <a href="/tags/GO-权限管理/" style="font-size: 10px;">GO 权限管理</a> <a href="/tags/Git-fork、pr/" style="font-size: 10px;">Git fork、pr</a> <a href="/tags/Kubernetes/" style="font-size: 15px;">Kubernetes</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/tags/Protocol-Buffer/" style="font-size: 10px;">Protocol Buffer</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/Redux/" style="font-size: 10px;">Redux</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/gRPC/" style="font-size: 10px;">gRPC</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/protoful/" style="font-size: 10px;">protoful</a> <a href="/tags/微服务/" style="font-size: 20px;">微服务</a> <a href="/tags/微服务-GRPC/" style="font-size: 15px;">微服务 GRPC</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/05/08/docker_笔记/">docker 笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/08/Nginx 基础/">Nginx 基础</a>
+          </li>
+        
+          <li>
+            <a href="/2019/11/25/GO-jaeger-es/">使用es 来存放 jaeger</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/25/Git fork、pr的开发模式/">Git fork、pr的开发模式</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/02/GO-json/">GO json的操作</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Felix<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

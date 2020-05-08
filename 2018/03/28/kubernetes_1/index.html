@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Kubernetes 学习笔记 （基础） | Felix Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="概况  集群采用 Master/Node的结构，Master（主节点）控制整个集群，Node（从节点）为集群提供计算能力。 Master  Master是Kubernetes集群的大脑，负责公开集群的API，调度部署和管理整个集群。集群至少有一个Master节点，如果在生产环境中要达到高可用，还需要配置Master集群。Master主要包含API Server、Scheduler、Controll">
+<meta name="keywords" content="Kubernetes">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kubernetes 学习笔记 （基础）">
+<meta property="og:url" content="http://yoursite.com/2018/03/28/kubernetes_1/index.html">
+<meta property="og:site_name" content="Felix Blog">
+<meta property="og:description" content="概况  集群采用 Master/Node的结构，Master（主节点）控制整个集群，Node（从节点）为集群提供计算能力。 Master  Master是Kubernetes集群的大脑，负责公开集群的API，调度部署和管理整个集群。集群至少有一个Master节点，如果在生产环境中要达到高可用，还需要配置Master集群。Master主要包含API Server、Scheduler、Controll">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-04-14T02:58:30.447Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kubernetes 学习笔记 （基础）">
+<meta name="twitter:description" content="概况  集群采用 Master/Node的结构，Master（主节点）控制整个集群，Node（从节点）为集群提供计算能力。 Master  Master是Kubernetes集群的大脑，负责公开集群的API，调度部署和管理整个集群。集群至少有一个Master节点，如果在生产环境中要达到高可用，还需要配置Master集群。Master主要包含API Server、Scheduler、Controll">
+  
+    <link rel="alternate" href="/atom.xml" title="Felix Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Felix Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-kubernetes_1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/03/28/kubernetes_1/" class="article-date">
+  <time datetime="2018-03-27T16:00:00.000Z" itemprop="datePublished">2018-03-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Kubernetes 学习笔记 （基础）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="概况"><a href="#概况" class="headerlink" title="概况"></a>概况</h2><p>  集群采用 Master/Node的结构，Master（主节点）控制整个集群，Node（从节点）为集群提供计算能力。</p>
+<h5 id="Master"><a href="#Master" class="headerlink" title="Master"></a>Master</h5><p>  Master是Kubernetes集群的大脑，负责公开集群的API，调度部署和管理整个集群。集群至少有一个Master节点，如果在生产环境中要达到高可用，还需要配置Master集群。Master主要包含API Server、Scheduler、Controller三个组件，需要etcd组件来保存整个集群的状态。</p>
+<ul>
+<li><p>etcd：一个高可用、强一致性的服务发现存储仓库，为Kubernetes集群提供存储服务，类似于zookeper。</p>
+</li>
+<li><p>API Server： kubernetes最重要的核心组件之一，提供资源操作的唯一入口（其他模块通过API Server查询或修改数据，只有API Server才直接操作etcd），并提供认证、授权、访问控制、API注册和发现等机制。</p>
+</li>
+<li><p>Scheduler：负责资源的调度，按照预定的调度策略将Pod（k8s中调度的基本单位）调度到相应的Node上。</p>
+</li>
+<li><p>Controller：通过API Server来监控整个集群的状态，并确保集群处于预期的工作状态，比如故障检测、自动扩展、滚动更新等。</p>
+</li>
+</ul>
+<h5 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h5><p>  Node是Kubernetes集群的工作节点，可以是物理机也可以是虚拟机。Node需要包含容器、kubelet、kube-proxy等组件。。</p>
+<ul>
+<li><p>kubelet：维护容器的生命周期，同时也负责Volume（CVI）和网络（CNI）的管理。每个节点上都会运行一个kubelet服务进程，接收并执行Master发来的指令，管理Pod及Pod中的容器。每个kubelet进程会在API Server上注册节点自身信息，定期向Master节点汇报节点的资源使用情况，并通过cAdvisor监控节点和容器的资源。</p>
+</li>
+<li><p>kube-proxy： 为 Service 提供集群内部的服务发现和负载均衡，监听 API Server 中 service和endpoint的变化情况，并通过iptables等方式来为服务配置负载均衡。</p>
+</li>
+<li><p>Docker： 每台Node上需要安装Docker来运行镜像，但是Docker不是唯一选择，Kubernetes支持多种容器，比如CoreOS公司的Rkt容器（之前称为Rocket，现更名为Rkt）。</p>
+</li>
+</ul>
+<h5 id="Pod"><a href="#Pod" class="headerlink" title="Pod"></a>Pod</h5><p>  在创建新部署时，Kubernetes会建立一个Pod来寄存你的应用实例。Pod是一个抽象的概念，它包含一个或多个容器组成的容器组，还有这些容器共享的资源，Pod就像是豌豆荚一样，它可以由一个或者多个容器组成，这些容器共享存储、网络和配置项。这些资源包括：</p>
+<ul>
+<li><p>共享的存储，例如Volume</p>
+</li>
+<li><p>网络，比如使用唯一的集群IP地址</p>
+</li>
+<li><p>如何运行容器的配置信息，比如镜像版本和容器端口</p>
+</li>
+</ul>
+<p>  Pod模型上类似于一个具有特定应用的逻辑主机，它可以包含相对紧密耦合的不同应用容器。例如，一个Pod可能既包含Node.js Web服务容器，又包含给它提供数据库服务的容器。同一个Pod里的容器共享一个IP地址和端口段，协同工作和调度，并且在同一节点上的共享环境中运行。</p>
+<p>  Pod是Kuberlnetes平台中的原子单位。在部署创建时，部署并不直接创建容器，而是创建包含了容器的Pod。Pod被分配绑定在指定的Node上，除非被停止或者删除它会一直在该Node上工作。万一出现Node宕机的情况，集群中另外一个可用的Node会马上启动运行一个完全一样的Pod</p>
+<h5 id="Pod控制器"><a href="#Pod控制器" class="headerlink" title="Pod控制器"></a>Pod控制器</h5><p>  目前Kubernetes中的业务类型可以分为长期伺服型（long-running）、批处理型（batch）、节点后台支撑型（node-daemon）和有状态应用型（stateful application）这四种类型，而这四种类型的业务又可以由不同类型的Pod控制器来完成，分别为：Deployment、Job、DaemonSet和StatefulSet。</p>
+<ul>
+<li><p>Deployment： 复制控制器（Replication Controller，RC）是集群中最早的保证Pod高可用的API对象，副本集（Replica Set，RS）是它的升级，能支持更多种类的匹配模式。部署(Deployment)又是比RS应用模式更广的API对象，以Kubernetes的发展方向，未来对所有长期伺服型的的业务的管理，都会通过Deployment来管理。</p>
+</li>
+<li><p>Service： Deployment保证了Pod的数量，但是没有解决如何访问Pod的问题，一个Pod只是一个运行服务的实例，随时可能在一个节点上停止，在另一个节点以一个新的IP启动一个新的Pod，因此不能以确定的IP和端口号提供服务。要稳定地提供服务需要服务发现和负载均衡能力，Service可以稳定为用户提供服务。</p>
+</li>
+<li><p>Job： 用来控制批处理型任务，Job管理的Pod根据用户的设置把任务成功完成就自动退出了。</p>
+</li>
+<li><p>DaemonSet： 后台支撑型服务的核心关注点在集群中的Node，要保证每个Node上都有一个此类Pod运行。比如用来收集日志的Pod。</p>
+</li>
+<li><p>StatefulSet： 不同于RC和RS，StatefulSet主要提供有状态的服务，StatefulSet中Pod的名字都是事先确定的，不能更改，每个Pod挂载自己独立的存储，如果一个Pod出现故障，从其他节点启动一个同样名字的Pod，要挂载上原来Pod的存储继续以它的状态提供服务。比如数据库服务MySQL，我们不希望一个Pod故障后，MySQL中的数据即丢失。</p>
+</li>
+</ul>
+<h5 id="API"><a href="#API" class="headerlink" title="API"></a>API</h5><p> API对象是Kubernetes集群中的管理操作单元。集群中的众多技术概念分别对应着API对象，每个API对象都有3大类属性：</p>
+<p>metadata（元数据）：用来标识API对象，包含namespace、name、uid等。</p>
+<p>spec （规范）：描述用户期望达到的理想状态，所有的操作都是声明式（Declarative）的而不是命令式（Imperative），在分布式系统中的好处是稳定，不怕丢操作或运行多次。比如设置期望3个运行Nginx的pod，运行多次也还是一个结果，而给副本数加1的操作就不是声明式的，运行多次结果就错了。</p>
+<p>status（状态）：描述系统当前实际达到的状态，比如期望3个pod，现在实际创建好了2个。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/03/28/kubernetes_1/" data-id="ck9xwwdb4000px0f5jsn4033w" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kubernetes/">Kubernetes</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/03/28/MobX/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          MobX 状态管理
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/03/28/kubernetes_2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Kubernetes 学习笔记 （kubectl）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Envoy-grpc-restful/">Envoy grpc restful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-NSQ/">GO Grpc NSQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-tracing/">GO Grpc tracing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-tracing-jaeger/">GO Grpc tracing jaeger</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-generate/">GO generate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-interceptor-JWT/">GO interceptor JWT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-json/">GO json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-权限管理/">GO 权限管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git-fork、pr/">Git fork、pr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kubernetes/">Kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Protocol-Buffer/">Protocol Buffer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gRPC/">gRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protoful/">protoful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务/">微服务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务-GRPC/">微服务 GRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/端口/">端口</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Elasticsearch/" style="font-size: 10px;">Elasticsearch</a> <a href="/tags/Envoy-grpc-restful/" style="font-size: 10px;">Envoy grpc restful</a> <a href="/tags/GO-Grpc-NSQ/" style="font-size: 10px;">GO Grpc NSQ</a> <a href="/tags/GO-Grpc-tracing/" style="font-size: 10px;">GO Grpc tracing</a> <a href="/tags/GO-Grpc-tracing-jaeger/" style="font-size: 10px;">GO Grpc tracing jaeger</a> <a href="/tags/GO-generate/" style="font-size: 10px;">GO generate</a> <a href="/tags/GO-interceptor-JWT/" style="font-size: 10px;">GO interceptor JWT</a> <a href="/tags/GO-json/" style="font-size: 10px;">GO json</a> <a href="/tags/GO-权限管理/" style="font-size: 10px;">GO 权限管理</a> <a href="/tags/Git-fork、pr/" style="font-size: 10px;">Git fork、pr</a> <a href="/tags/Kubernetes/" style="font-size: 15px;">Kubernetes</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/tags/Protocol-Buffer/" style="font-size: 10px;">Protocol Buffer</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/Redux/" style="font-size: 10px;">Redux</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/gRPC/" style="font-size: 10px;">gRPC</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/protoful/" style="font-size: 10px;">protoful</a> <a href="/tags/微服务/" style="font-size: 20px;">微服务</a> <a href="/tags/微服务-GRPC/" style="font-size: 15px;">微服务 GRPC</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/05/08/docker_笔记/">docker 笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/08/Nginx 基础/">Nginx 基础</a>
+          </li>
+        
+          <li>
+            <a href="/2019/11/25/GO-jaeger-es/">使用es 来存放 jaeger</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/25/Git fork、pr的开发模式/">Git fork、pr的开发模式</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/02/GO-json/">GO json的操作</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Felix<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

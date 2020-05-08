@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Nginx 基础 | Felix Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Nginx 基础引自 heibaiying/Full-Stack-Notes/Nginx_基础 一、Nginx 简介&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;1.1 简介&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;1.2 正向代理和反向代理二、基本命令三、配置格式&amp;nbsp;&amp;nbsp;&amp;nb">
+<meta name="keywords" content="Nginx">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx 基础">
+<meta property="og:url" content="http://yoursite.com/2020/05/08/Nginx 基础/index.html">
+<meta property="og:site_name" content="Felix Blog">
+<meta property="og:description" content="Nginx 基础引自 heibaiying/Full-Stack-Notes/Nginx_基础 一、Nginx 简介&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;1.1 简介&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;1.2 正向代理和反向代理二、基本命令三、配置格式&amp;nbsp;&amp;nbsp;&amp;nb">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2020/05/08/Nginx%20基础/pictures/nginx-plus.png">
+<meta property="og:updated_time" content="2020-05-08T03:04:41.805Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nginx 基础">
+<meta name="twitter:description" content="Nginx 基础引自 heibaiying/Full-Stack-Notes/Nginx_基础 一、Nginx 简介&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;1.1 简介&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;1.2 正向代理和反向代理二、基本命令三、配置格式&amp;nbsp;&amp;nbsp;&amp;nb">
+<meta name="twitter:image" content="http://yoursite.com/2020/05/08/Nginx%20基础/pictures/nginx-plus.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Felix Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Felix Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Nginx 基础" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/05/08/Nginx 基础/" class="article-date">
+  <time datetime="2020-05-07T16:00:00.000Z" itemprop="datePublished">2020-05-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Nginx 基础
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Nginx-基础"><a href="#Nginx-基础" class="headerlink" title="Nginx 基础"></a>Nginx 基础</h1><p>引自 <a href="https://github.com/heibaiying/Full-Stack-Notes/edit/master/notes/Nginx_%E5%9F%BA%E7%A1%80.md" target="_blank" rel="noopener">heibaiying/Full-Stack-Notes/Nginx_基础</a></p>
+<nav><br><a href="#一Nginx-简介">一、Nginx 简介</a><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#11-简介">1.1 简介</a><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#12-正向代理和反向代理">1.2 正向代理和反向代理</a><br><br><a href="#二基本命令">二、基本命令</a><br><br><a href="#三配置格式">三、配置格式</a><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#31-基本配置格式">3.1 基本配置格式</a><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#32-时间和空间单位">3.2 时间和空间单位</a><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#33-官方配置模板">3.3 官方配置模板</a><br><br><a href="#四部署静态网站">四、部署静态网站</a><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#41-增加配置">4.1 增加配置</a><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#42-检查配置">4.2 检查配置</a><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#43-重载配置">4.3 重载配置</a><br><br><a href="#五实现负载均衡">五、实现负载均衡</a><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#51-部署后台服务">5.1 部署后台服务</a><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#52-负载均衡配置">5.2 负载均衡配置</a><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#53-负载均衡策略">5.3 负载均衡策略</a><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#44-声明备用服务">4.4 声明备用服务</a><br><br><a href="#六实现动静分离">六、实现动静分离</a><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#61-动静分离配置">6.1 动静分离配置</a><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#62-常见配置异常">6.2 常见配置异常</a><br><br></nav>
+
+
+
+<h2 id="一、Nginx-简介"><a href="#一、Nginx-简介" class="headerlink" title="一、Nginx 简介"></a>一、Nginx 简介</h2><h3 id="1-1-简介"><a href="#1-1-简介" class="headerlink" title="1.1 简介"></a>1.1 简介</h3><p>Nginx（engine x）是一个免费的，开源的，高性能的 HTTP 服务器， IMAP/POP3 代理服务器 和 TCP/UDP 代理服务器，通常可以用于进行反向代理和实现基于软件的负载均衡，除此之外，它还具备以下特性：</p>
+<ul>
+<li>Nginx 在设计时遵循模块化的设计方案，可以通过组合模块来扩展实现不同的功能，具备很高的扩展性。</li>
+<li>Nginx 遵循 matser \ worker 架构，主进程负责管理一个或者多个 worker 进程，每个 worker 进程负责处理实际的连接，当某个 worker 进程出错时，主进程会迅速创建一个新的 worker 来继续处理连接请求，从而保证高可用。</li>
+<li>Nginx 在高连接数的情况下仍然可以保持极低的内存占用，从而可以支持高并发量地访问。</li>
+<li>Nginx 支持热部署和配置热加载，并支持在不停机的情况下进行版本升级。</li>
+<li>有免费的开源版本和商业版本 ( Nginx Plus )，可以按需选择或者进行二次开发。</li>
+<li>在高并发环境下，Nginx 比其他 WEB 服务器有更快的响应速度。</li>
+</ul>
+<h3 id="1-2-正向代理和反向代理"><a href="#1-2-正向代理和反向代理" class="headerlink" title="1.2 正向代理和反向代理"></a>1.2 正向代理和反向代理</h3><p>Nginx 能够同时支持正向代理和反向代理，这两种代理模式的区别如下：</p>
+<ul>
+<li>正向代理发生在客户端，是客户端主动发起的代理。如我们不能直接访问某个服务器，但可以间接通过中间的代理服务器去进行访问，然后将访问结果再返回给我们。</li>
+<li>反向代理发生在服务端，客户端并不知道发生了代理，示例如下。用户只知道将请求发送给 Nginx，但是并不知道请求被转发了，也不知道被转发给了哪一台应用服务器。实际上对于用户来说，他也没必要知道，因为请求结果都是相同的。</li>
+</ul>
+<div align="center"> <img src="/2020/05/08/Nginx 基础/pictures/nginx-plus.png"> </div>
+
+<h2 id="二、基本命令"><a href="#二、基本命令" class="headerlink" title="二、基本命令"></a>二、基本命令</h2><p>Nginx Shell 的基本使用格式如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx [-?hvVtTq] [-s signal] [-c filename] [-p prefix] [-g directives]</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>-?,-h</strong> ：显示帮助信息；</li>
+<li><strong>-v</strong>：查看版本号；</li>
+<li><strong>-V</strong>：查看版本号及配置信息；</li>
+<li><strong>-t</strong>：检测配置文件是否有语法错误；</li>
+<li><strong>-q</strong>：静默模式，在检测配置期间除了错误提示外，不输出其他消息；</li>
+<li><strong>-s signal</strong>：向 Master 进程发送信号，支持以下信号类型：stop ( 立即停止 )，quit ( 优雅停止 )，reload ( 重新加载配置文件 )，reopen (打开一个新的日志文件来继续记录日志) ； </li>
+<li><strong>-p prefix</strong> ：指定路径的前缀，默认为安装目录，如 <code>/usr/app/nginx-1.16.1/</code> ；</li>
+<li><strong>-c filename</strong> ：指定配置文件的位置， 默认值为 <code>conf/nginx.conf</code>，其实际指向的路径为 <code>prefix + filename</code>；</li>
+<li><strong>-g directives</strong>：从指定的配置文件中设置全局指令。</li>
+</ul>
+<h2 id="三、配置格式"><a href="#三、配置格式" class="headerlink" title="三、配置格式"></a>三、配置格式</h2><h3 id="3-1-基本配置格式"><a href="#3-1-基本配置格式" class="headerlink" title="3.1 基本配置格式"></a>3.1 基本配置格式</h3><p>Nginx 的配置由全局配置和局部配置（指令块）共同组成，所有的指令块都遵循相同的配置格式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;section&gt;&#123;</span><br><span class="line">    &lt;directive&gt;    &lt;parameters&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>指令块使用大括号进行划分，大括号内是独立的配置上下文，包含指令和具体的参数，每行指令以分号作为结尾。除此之外，Nginx 的配置中还支持以下操作：</p>
+<ul>
+<li>支持使用 <code>include</code> 语法来引入外部配置文件，从而可以将每个独立的配置拆分到单独的文件中；</li>
+<li>支持使用 <code>#</code> 符号来添加注释；</li>
+<li>支持使用 <code>$</code> 符号来引用变量；</li>
+<li>部分指令的参数支持使用正则表达式。</li>
+</ul>
+<h3 id="3-2-时间和空间单位"><a href="#3-2-时间和空间单位" class="headerlink" title="3.2 时间和空间单位"></a>3.2 时间和空间单位</h3><p>Nginx  的配置文件支持以下空间和时间单位：</p>
+<ul>
+<li><p><strong>空间单位</strong>：不加任何单位默认就是 bytes，除此之外还支持 k/K，m/M，g/G 等常用单位。</p>
+</li>
+<li><p><strong>空间单位</strong>：支持 ms (毫秒) ，s (秒) ，m (分钟) ，h (小时) ，d (天)，w (星期)，M (月，30天)，y (年，365天) 等常用单位，并支持组合使用，如 <code>1h 30m</code> (1小时 30分)，<code>1y 6M</code>（1年零6个月）。</p>
+</li>
+</ul>
+<h3 id="3-3-官方配置模板"><a href="#3-3-官方配置模板" class="headerlink" title="3.3 官方配置模板"></a>3.3 官方配置模板</h3><p>在安装 Nginx 后，在安装目录的 conf 目录下会有一个官方的配置样例 nginx.conf ，其内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br></pre></td><td class="code"><pre><span class="line"># 使用这个参数来配置worker进程的用户和组，如果没有指定组，则默认为指定用户所处的组，默认值为nobody</span><br><span class="line">user  nobody;</span><br><span class="line"># 指定用于处理客户端连接的worker进程的数量，通常设置为CPU的核心数。</span><br><span class="line"># 如果是为IO密集型操作进行负载，可以设置为核心数的1.5 ~ 2倍</span><br><span class="line">worker_processes  1;</span><br><span class="line"></span><br><span class="line"># 指定日志的位置和日志级别，日志级别按照由低到高的顺序如下：[debug|info|notice|warn|error|crit]</span><br><span class="line">error_log  logs/error.log;</span><br><span class="line">#error_log  logs/error.log  notice;</span><br><span class="line">#error_log  logs/error.log  info;</span><br><span class="line"></span><br><span class="line"># 指定记录主进程的ID的文件</span><br><span class="line">pid        logs/nginx.pid;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">events &#123;</span><br><span class="line">    # 指定每个工程线程的最大连接数，总的连接数 max_clients = worker_processes * worker_connections</span><br><span class="line">    worker_connections  1024;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line">    # 使用include来引用外部文件</span><br><span class="line">    include       mime.types;</span><br><span class="line">    # 指定默认MIME类型</span><br><span class="line">    default_type  application/octet-stream;</span><br><span class="line"></span><br><span class="line">    # 定义日志的输出格式，使用$来进行变量引用</span><br><span class="line">    #log_format  main  &apos;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &apos;</span><br><span class="line">    #                  &apos;$status $body_bytes_sent &quot;$http_referer&quot; &apos;</span><br><span class="line">    #                  &apos;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&apos;;</span><br><span class="line"></span><br><span class="line">    # 定义访问日志的存放位置</span><br><span class="line">    access_log  logs/access.log  main;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    # 是否开启系统调用方法sendfile(),开启后可以直接在内核空间完成文件的发送，即零拷贝</span><br><span class="line">    sendfile        on;</span><br><span class="line">    # 是否开启Socket选项,它只有在sendfile启用后才会生效</span><br><span class="line">    tcp_nopush     on;</span><br><span class="line"></span><br><span class="line">    # 连接超时时间</span><br><span class="line">    keepalive_timeout  65;</span><br><span class="line"></span><br><span class="line">    # 开启文件压缩</span><br><span class="line">       gzip  on;</span><br><span class="line"></span><br><span class="line">    # 配置nginx服务器(虚拟主机)</span><br><span class="line">    server &#123;</span><br><span class="line">        # 监听端口</span><br><span class="line">        listen       80;</span><br><span class="line">        server_name  localhost;</span><br><span class="line"></span><br><span class="line">        # 默认字符集</span><br><span class="line">        charset koi8-r;</span><br><span class="line">        # 配置当前虚拟主机的访问日志的存放位置</span><br><span class="line">        access_log  logs/host.access.log  main;</span><br><span class="line">        </span><br><span class="line">        # 虚拟主机对应的映射目录</span><br><span class="line">        location / &#123;</span><br><span class="line">            root   html;</span><br><span class="line">            index  index.html index.htm;</span><br><span class="line">        &#125;</span><br><span class="line">            </span><br><span class="line">        # 错误重定向页面</span><br><span class="line">        # error_page  404              /404.html;</span><br><span class="line">        error_page   500 502 503 504  /50x.html;</span><br><span class="line">        location = /50x.html &#123;</span><br><span class="line">            root   html;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        # 禁止访问根目录下以ht结尾的文件</span><br><span class="line">        location ~ /\.ht &#123;</span><br><span class="line">            deny  all;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    # 支持配置多台虚拟主机</span><br><span class="line">    #server &#123;</span><br><span class="line">    #    listen       8000;</span><br><span class="line">    #    listen       somename:8080;</span><br><span class="line">    #    server_name  somename  alias  another.alias;</span><br><span class="line"></span><br><span class="line">    #    location / &#123;</span><br><span class="line">    #        root   html;</span><br><span class="line">    #        index  index.html index.htm;</span><br><span class="line">    #    &#125;</span><br><span class="line">    #&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    # 配置Https服务</span><br><span class="line">    server &#123;</span><br><span class="line">        listen       443 ssl;</span><br><span class="line">        server_name  localhost;</span><br><span class="line">        </span><br><span class="line">        # 指定数字证书</span><br><span class="line">        ssl_certificate      cert.pem;</span><br><span class="line">        # 指定密匙</span><br><span class="line">        ssl_certificate_key  cert.key;</span><br><span class="line"></span><br><span class="line">        # 设置存储session的缓存类型和大小</span><br><span class="line">        ssl_session_cache    shared:SSL:1m;</span><br><span class="line">        # session缓存时间</span><br><span class="line">        ssl_session_timeout  5m;</span><br><span class="line"></span><br><span class="line">        # 返回客户端支持的密码列表</span><br><span class="line">        ssl_ciphers  HIGH:!aNULL:!MD5;</span><br><span class="line">        # 指定在使用SSLv3和TLS协议时，服务器密码应优先于客户端密码</span><br><span class="line">        ssl_prefer_server_ciphers  on;</span><br><span class="line"></span><br><span class="line">        location / &#123;</span><br><span class="line">            root   html;</span><br><span class="line">            index  index.html index.htm;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="四、部署静态网站"><a href="#四、部署静态网站" class="headerlink" title="四、部署静态网站"></a>四、部署静态网站</h2><p>Nginx 通常用作 HTTP 服务器来部署静态资源，其具体的操作步骤如下：</p>
+<h3 id="4-1-增加配置"><a href="#4-1-增加配置" class="headerlink" title="4.1 增加配置"></a>4.1 增加配置</h3><p>修改 <code>nginx.conf</code> ，并在 http 指令块中增加如下配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">   # 监听端口号</span><br><span class="line">   listen 9010;</span><br><span class="line">   # 如果有域名的话，可以在这里进行配置</span><br><span class="line">   server_name _;      </span><br><span class="line">   # 存放静态页面的目录</span><br><span class="line">   root /usr/web;</span><br><span class="line">   # 主页面</span><br><span class="line">   index index.html;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>在 <code>/usr/web</code> 目录下新建一个测试页面 index.html，内容如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!doctype html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">content</span>=<span class="string">"width=device-width, user-scalable=no, initial-scale=1.0,</span></span></span><br><span class="line"><span class="tag"><span class="string">         maximum-scale=1.0, minimum-scale=1.0"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"X-UA-Compatible"</span> <span class="attr">content</span>=<span class="string">"ie=edge"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>Nginx静态资源网站<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span> <span class="attr">style</span>=<span class="string">"text-align: center"</span>&gt;</span>Nginx静态资源网站<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="4-2-检查配置"><a href="#4-2-检查配置" class="headerlink" title="4.2 检查配置"></a>4.2 检查配置</h3><p>使用 <code>-t</code> 参数来检查配置，出现 successful 则代表配置正确：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@node1 web]# nginx -t -c conf/nginx.conf</span><br><span class="line">nginx: the configuration file /usr/app/nginx-1.16.1/conf/nginx.conf syntax is ok</span><br><span class="line">nginx: configuration file /usr/app/nginx-1.16.1/conf/nginx.conf test is successful</span><br></pre></td></tr></table></figure>
+<h3 id="4-3-重载配置"><a href="#4-3-重载配置" class="headerlink" title="4.3 重载配置"></a>4.3 重载配置</h3><p>启动 Nginx ，如果 Nginx 已经启动，可以使用如下命令重载配置：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx -s reload</span><br></pre></td></tr></table></figure>
+<p>访问 <a href="http://hostname:9010/index.html" target="_blank" rel="noopener">http://hostname:9010/index.html</a> ，即可查看到静态网站首页。</p>
+<h2 id="五、实现负载均衡"><a href="#五、实现负载均衡" class="headerlink" title="五、实现负载均衡"></a>五、实现负载均衡</h2><h3 id="5-1-部署后台服务"><a href="#5-1-部署后台服务" class="headerlink" title="5.1 部署后台服务"></a>5.1 部署后台服务</h3><p>这里我使用 Docker 来部署两个 Tomcat，之后将测试项目 WAR 包分别拷贝到 <code>/usr/webapps001</code> 和  <code>/usr/webapps002</code>  两个挂载的容器卷下，程序会自动解压并运行，两个项目的端口号分别为 8080 和 8090：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">run -d  -it --privileged=true -v /usr/webapps01:/usr/local/tomcat/webapps \</span><br><span class="line">-p 8080:8080 --name tomcat8080  96c4e536d0eb</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">run -d  -it  --privileged=true -v /usr/webapps02:/usr/local/tomcat/webapps \</span><br><span class="line">-p 8090:8080 --name tomcat8090  96c4e536d0eb</span><br></pre></td></tr></table></figure>
+<h3 id="5-2-负载均衡配置"><a href="#5-2-负载均衡配置" class="headerlink" title="5.2 负载均衡配置"></a>5.2 负载均衡配置</h3><p>修改 <code>nginx.conf</code> ，并在 http 指令块中增加如下配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># 这里指令块的名称可以随意指定，只要和下面的proxy_pass的值相同即可，通常配置为项目名</span><br><span class="line">upstream springboot &#123;</span><br><span class="line">    server 192.168.0.226:8080;</span><br><span class="line">    server 192.168.0.226:8090;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    listen 9020;</span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_pass http://springboot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>重载配置后，打开浏览器，通过 9020 端口访问项目，此时 Nginx 会以轮询的方式将请求分发到 8080 和 8090 端口上。在测试负载均衡策略的时候，最好将浏览器的缓存功能关闭，避免造成影响。</p>
+<h3 id="5-3-负载均衡策略"><a href="#5-3-负载均衡策略" class="headerlink" title="5.3 负载均衡策略"></a>5.3 负载均衡策略</h3><p>在上面的配置中，我们没有配置任何负载均衡策略，默认采用的是轮询策略，除此之外，Nginx 还支持以下负载均衡策略：</p>
+<h4 id="1-权重策略-Weighted-load-balancing"><a href="#1-权重策略-Weighted-load-balancing" class="headerlink" title="1. 权重策略 ( Weighted load balancing )"></a>1. 权重策略 ( Weighted load balancing )</h4><p>通过为不同的服务分配不同的权重来进行转发，配置示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">upstream myapp1 &#123;</span><br><span class="line">    server srv1.example.com weight=3;</span><br><span class="line">    server srv2.example.com weight=2;</span><br><span class="line">    server srv3.example.com;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="2-最少连接策略-Least-connected-load-balancing"><a href="#2-最少连接策略-Least-connected-load-balancing" class="headerlink" title="2. 最少连接策略 ( Least connected load balancing )"></a>2. 最少连接策略 ( Least connected load balancing )</h4><p>将请求转发给连接数最少的服务，配置实例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">upstream myapp1 &#123;</span><br><span class="line">    least_conn;</span><br><span class="line">    server srv1.example.com;</span><br><span class="line">    server srv2.example.com;</span><br><span class="line">    server srv3.example.com;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="3-IP-策略-IP-Hash-load-balancing"><a href="#3-IP-策略-IP-Hash-load-balancing" class="headerlink" title="3. IP 策略 ( IP Hash load balancing )"></a>3. IP 策略 ( IP Hash load balancing )</h4><p>通过对请求的 IP 地址进行哈希运算并取模来决定转发对象，配置示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">upstream myapp1 &#123;</span><br><span class="line">    ip_hash;</span><br><span class="line">    server srv1.example.com;</span><br><span class="line">    server srv2.example.com;</span><br><span class="line">    server srv3.example.com;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上是 Nginx 内置的基础的负载均衡策略，如果想要实现其他更加复杂的负载均衡策略，可以通过第三方模块来实现。</p>
+<h3 id="4-4-声明备用服务"><a href="#4-4-声明备用服务" class="headerlink" title="4.4 声明备用服务"></a>4.4 声明备用服务</h3><p>在上面任何负载均衡策略当中，都可以通过 backup 参数来添加备用服务，示例如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">server backup1.example.com:8080   backup;</span><br></pre></td></tr></table></figure>
+<p>处于备用状态下的服务并不会参与负载均衡，除非所有主服务都已宕机，此时 Nginx 才会将请求转发到备用服务上。</p>
+<h2 id="六、实现动静分离"><a href="#六、实现动静分离" class="headerlink" title="六、实现动静分离"></a>六、实现动静分离</h2><h3 id="6-1-动静分离配置"><a href="#6-1-动静分离配置" class="headerlink" title="6.1 动静分离配置"></a>6.1 动静分离配置</h3><p>Nginx 能够支持高并发的访问，并具有静态资源缓存等特性，因此相比于 Tomcat 等动态资源应用服务器，其更加适合于部署静态资源。想要实现动静分离，只需要在 server 指令块中通过正则表达式来划分静态资源，并指定其存放位置，示例如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 9020;</span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_pass http://springboot;</span><br><span class="line">    &#125;</span><br><span class="line">    # 通过正则来控制所需要分离的静态资源</span><br><span class="line">    location ~ .*\.(html|htm|gif|jpg|jpeg|bmp|png|ico|txt|js|css)$ &#123;</span><br><span class="line">        # 静态资源存放目录</span><br><span class="line">        root /usr/resources/;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="6-2-常见配置异常"><a href="#6-2-常见配置异常" class="headerlink" title="6.2 常见配置异常"></a>6.2 常见配置异常</h3><h4 id="1-No-such-file-or-directory"><a href="#1-No-such-file-or-directory" class="headerlink" title="1. No such file or directory"></a>1. No such file or directory</h4><p>第一个常见的问题是找不到静态资源，此时可以查看 logs 目录下的 <code>error.log</code> 日志，通常输出如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">2019/09/01 17:12:43 [error] 12402#0: *163 open() "/usr/resources/spring-boot-tomcat/css/show.css"</span><br><span class="line">failed (2: No such file or directory), client: 192.168.0.106, server: , </span><br><span class="line">request: "GET /spring-boot-tomcat/css/show.css HTTP/1.1", host: "192.168.0.226:9020",</span><br><span class="line">referrer: "http://192.168.0.226:9020/spring-boot-tomcat/index"</span><br></pre></td></tr></table></figure>
+<p>出现这个问题，是因为 Nginx 要求静态资源的请求路径必须和原有请求路径完全相同，这里我的项目在 Tomcat 中解压后的项目名为 <code>pring-boot-tomcat</code>，以 show.css 文件为例，其正确的存储路径应该为：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/resources/spring-boot-tomcat/css/show.css</span><br></pre></td></tr></table></figure>
+<p>即： 静态资源根目录 + 项目名 + 原有路径，通常我们在创建目录时会忽略掉项目名这一层级，从而导致异常。</p>
+<h4 id="2-Permission-denied"><a href="#2-Permission-denied" class="headerlink" title="2. Permission denied"></a>2. Permission denied</h4><p>路径正确后，另外一个常见的问题是权限不足，错误日志如下。此时需要保证配置文件中的 user 用户必须具有静态资源所处目录的访问权限，或者在创建静态资源目录时，直接使用 user 配置的用户来创建：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">2019/09/01 17:15:14 [error] 12402#0: *170 open() "/usr/resources/spring-boot-tomcat/css/show.css" </span><br><span class="line">failed (13: Permission denied), client: 192.168.0.106, server: ,</span><br><span class="line">request: "GET /spring-boot-tomcat/css/show.css HTTP/1.1", host: "192.168.0.226:9020", </span><br><span class="line">referrer: "http://192.168.0.226:9020/spring-boot-tomcat/index"</span><br></pre></td></tr></table></figure>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>官方文档：<a href="http://nginx.org/en/docs/" target="_blank" rel="noopener">nginx documentation</a> ，<a href="http://nginx.org/en/docs/http/load_balancing.html" target="_blank" rel="noopener">Using nginx as HTTP load balancer</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/05/08/Nginx 基础/" data-id="ck9xwwdab000hx0f5zmrhinol" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/05/08/docker_笔记/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          docker 笔记
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/11/25/GO-jaeger-es/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">使用es 来存放 jaeger</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Envoy-grpc-restful/">Envoy grpc restful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-NSQ/">GO Grpc NSQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-tracing/">GO Grpc tracing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-tracing-jaeger/">GO Grpc tracing jaeger</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-generate/">GO generate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-interceptor-JWT/">GO interceptor JWT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-json/">GO json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-权限管理/">GO 权限管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git-fork、pr/">Git fork、pr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kubernetes/">Kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Protocol-Buffer/">Protocol Buffer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gRPC/">gRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protoful/">protoful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务/">微服务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务-GRPC/">微服务 GRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/端口/">端口</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Elasticsearch/" style="font-size: 10px;">Elasticsearch</a> <a href="/tags/Envoy-grpc-restful/" style="font-size: 10px;">Envoy grpc restful</a> <a href="/tags/GO-Grpc-NSQ/" style="font-size: 10px;">GO Grpc NSQ</a> <a href="/tags/GO-Grpc-tracing/" style="font-size: 10px;">GO Grpc tracing</a> <a href="/tags/GO-Grpc-tracing-jaeger/" style="font-size: 10px;">GO Grpc tracing jaeger</a> <a href="/tags/GO-generate/" style="font-size: 10px;">GO generate</a> <a href="/tags/GO-interceptor-JWT/" style="font-size: 10px;">GO interceptor JWT</a> <a href="/tags/GO-json/" style="font-size: 10px;">GO json</a> <a href="/tags/GO-权限管理/" style="font-size: 10px;">GO 权限管理</a> <a href="/tags/Git-fork、pr/" style="font-size: 10px;">Git fork、pr</a> <a href="/tags/Kubernetes/" style="font-size: 15px;">Kubernetes</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/tags/Protocol-Buffer/" style="font-size: 10px;">Protocol Buffer</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/Redux/" style="font-size: 10px;">Redux</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/gRPC/" style="font-size: 10px;">gRPC</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/protoful/" style="font-size: 10px;">protoful</a> <a href="/tags/微服务/" style="font-size: 20px;">微服务</a> <a href="/tags/微服务-GRPC/" style="font-size: 15px;">微服务 GRPC</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/05/08/docker_笔记/">docker 笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/08/Nginx 基础/">Nginx 基础</a>
+          </li>
+        
+          <li>
+            <a href="/2019/11/25/GO-jaeger-es/">使用es 来存放 jaeger</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/25/Git fork、pr的开发模式/">Git fork、pr的开发模式</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/02/GO-json/">GO json的操作</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Felix<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

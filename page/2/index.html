@@ -62,6 +62,204 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-GO-Tracing" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/11/GO-Tracing/" class="article-date">
+  <time datetime="2019-03-10T16:00:00.000Z" itemprop="datePublished">2019-03-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/11/GO-Tracing/">基于jaeger和tracing实现 grpc调用链跟踪模块</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#基于jaeger和tracing实现 grpc调用链跟踪模块</p>
+<p>#####Jaeger</p>
+<p><a href="&quot;https://blog.csdn.net/moxiaomomo/article/details/80723758&quot;">参考 Jaeger部署</a></p>
+<p>Jaeger是Uber推出的一款调用链追踪系统，类似于Zipkin和Dapper。 其主要用于多个服务调用过程追踪分析，图形化服务调用轨迹，便于快速准确定位问题。<br>Jaeger组成</p>
+<ul>
+<li>前端界面展示UI</li>
+<li>数据存储Cassandra</li>
+<li>数据查询Query</li>
+<li>数据收集处理Collector</li>
+<li>客户端代理Agent</li>
+<li>客户端库jaeger-client-*</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">    </span><br><span class="line">  <span class="string">仅为测试，该方式数据会存入内存，不能用于生产</span></span><br><span class="line">  </span><br><span class="line"><span class="string">docker</span> <span class="string">run</span> <span class="bullet">-d</span> <span class="bullet">--name</span> <span class="string">jaeger</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">  -</span><span class="string">e</span> <span class="string">COLLECTOR_ZIPKIN_HTTP_PORT=9411</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">  -</span><span class="string">p</span> <span class="number">5775</span><span class="string">:5775/udp</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">  -</span><span class="string">p</span> <span class="number">6831</span><span class="string">:6831/udp</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">  -</span><span class="string">p</span> <span class="number">6832</span><span class="string">:6832/udp</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">  -</span><span class="string">p</span> <span class="number">5778</span><span class="string">:5778</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">  -</span><span class="string">p</span> <span class="number">16686</span><span class="string">:16686</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">  -</span><span class="string">p</span> <span class="number">14268</span><span class="string">:14268</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">  -</span><span class="string">p</span> <span class="number">9411</span><span class="string">:9411</span> <span class="string">\</span></span><br><span class="line">  <span class="string">jaegertracing/all-in-one:1.9</span></span><br></pre></td></tr></table></figure>
+<p>#####grpc-jaeger源依赖</p>
+<pre><code>google.golang.org/grpc
+github.com/opentracing/opentracing-go
+github.com/uber/jaeger-client-go
+github.com/pkg/errors
+</code></pre><p>请参阅 <a href="https://github.com/felixyao1985/go-study/tree/master/grpc-tracing-example" title="Title" target="_blank" rel="noopener">案例分享</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/03/11/GO-Tracing/" data-id="ck9xwwdb9000qx0f5xjmu9ifv" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GO-Grpc-tracing/">GO Grpc tracing</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-GO-GRPC-GATEWAY" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/02/GO-GRPC-GATEWAY/" class="article-date">
+  <time datetime="2019-03-01T16:00:00.000Z" itemprop="datePublished">2019-03-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/02/GO-GRPC-GATEWAY/">GO-grpc-Gateway 的安装与编译(WIN环境)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#grpc-gateway</p>
+<p>grpc-gateway是protoc的一个插件。它读取gRPC服务定义，并生成一个反向代理服务器，将RESTful JSON API转换为gRPC。此服务器是根据gRPC定义中的自定义选项生成的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway</span><br><span class="line">go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger</span><br><span class="line"></span><br><span class="line">进入 github.com/grpc-ecosystem/grpc-gateway/rotoc-gen-grpc-gateway </span><br><span class="line">执行go build 然后安装 go install</span><br><span class="line">进入 github.com/grpc-ecosystem/grpc-gateway/pprotoc-gen-swagger </span><br><span class="line">执行go build 然后安装 go install</span><br><span class="line"></span><br><span class="line">**</span><br><span class="line">需要额外下载</span><br><span class="line">go get github.com/ghodss/yaml</span><br><span class="line">go get google/api/annotations.proto （被墙使用：github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis）</span><br><span class="line">git clone https://github.com/protocolbuffers/protobuf</span><br><span class="line">**</span><br></pre></td></tr></table></figure>
+<p>#####grpc-gateway-proto文件例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">//需要在编译的时候 指定包的路径，并且该包依赖 https://github.com/protocolbuffers/protobuf</span><br><span class="line">import &quot;google/api/annotations.proto&quot;;   </span><br><span class="line"></span><br><span class="line">service Menu &#123;</span><br><span class="line">    rpc Save (MenuModel) returns (Res) &#123;</span><br><span class="line">        option (google.api.http) = &#123;</span><br><span class="line">          post: &quot;/api/menu&quot;</span><br><span class="line">          body: &quot;*&quot;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    rpc View (RepMenuView) returns (Res) &#123;</span><br><span class="line">        option (google.api.http) = &#123;</span><br><span class="line">          get: &quot;/api/menu&quot;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>#####编译<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//生成服务端</span><br><span class="line">protoc --go_out=plugins=grpc:. role_manage.proto</span><br><span class="line"></span><br><span class="line">//生成网关使用使用部分</span><br><span class="line">protoc -I$GOPATH/src \</span><br><span class="line">  -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \</span><br><span class="line">  -I$GOPATH/src/protobuf/src/ \</span><br><span class="line">  -I$GOPATH/src/vsiapi/proto \</span><br><span class="line">  --grpc-gateway_out=logtostderr=true:. \</span><br><span class="line">  role_manage_gw.proto</span><br></pre></td></tr></table></figure></p>
+<p>####调用<br>$ curl -d ‘{“ID”:1}’ -X GET ‘<a href="http://localhost:3344/api/menu&#39;" target="_blank" rel="noopener">http://localhost:3344/api/menu&#39;</a></p>
+<p>请参阅 <a href="https://github.com/felixyao1985/rbac-grpc-interceptor" title="Title" target="_blank" rel="noopener">案例分享</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/03/02/GO-GRPC-GATEWAY/" data-id="ck9xwwd8m0005x0f5afdrx2za" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/微服务-GRPC/">微服务 GRPC</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-GO-GRPC" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/01/GO-GRPC/" class="article-date">
+  <time datetime="2019-02-28T16:00:00.000Z" itemprop="datePublished">2019-03-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/01/GO-GRPC/">GO-grpc 的安装与编译(WIN环境)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="grpc-win-安装流程"><a href="#grpc-win-安装流程" class="headerlink" title="grpc win 安装流程"></a>grpc win 安装流程</h1><pre><code>google.golang.org: grpc相关组件默认获取package的路径
+</code></pre><p>1、安装Protobuf</p>
+<pre><code>https://github.com/google/protobuf/releases
+
+下载 protoc-3.5.1-win32.zip
+
+把解压后的 protoc.exe 放入到 GOPATH\BIN 中
+</code></pre><p>2、安装grpc</p>
+<pre><code>git clone https://github.com/grpc/grpc-go
+将grpc-go更名为grpc放入到google.golang.org中
+</code></pre><p>3、安装Genproto</p>
+<pre><code>git clone  https://github.com/google/go-genproto
+将clone下来的文件夹更名为genproto，放到google.golang.org下  
+</code></pre><p>4、下载text包</p>
+<pre><code>为了使包的导入方式不变，需要在src目录下面构造目录结构
+mkdir -p $GOPATH/src/golang.org/x/
+cd $GOPATH/src/golang.org/x/
+git clone https://github.com/golang/text.git    
+</code></pre><p>5、下载net包</p>
+<pre><code>为了使包的导入方式不变，需要在src目录下面构造目录结构
+mkdir -p $GOPATH/src/golang.org/x/
+cd $GOPATH/src/golang.org/x/
+
+git clone https://github.com/golang/net.git net
+go install net
+执行go install之后没有提示，就说明安装好了。    
+</code></pre><p>6、安装proto</p>
+<pre><code>go get -u github.com/golang/protobuf/proto
+</code></pre><p>7、安装protoc-gen-go</p>
+<pre><code>go get -u github.com/golang/protobuf/protoc-gen-go  
+</code></pre><p>将proto文件编译为go文件</p>
+<ul>
+<li><p>proto文件语法详解参阅：<a href="https://blog.csdn.net/u014308482/article/details/52958148" target="_blank" rel="noopener">https://blog.csdn.net/u014308482/article/details/52958148</a></p>
+<pre><code>// protoc --go_out=plugins=grpc:{输出目录}  {proto文件}
+protoc --go_out=plugins=grpc:./test/ ./test.proto
+
+//在shell下可以批量编译。但是在win cmd下会报错，无法识别通配符
+protoc --go_out=plugins=grpc:. *.proto
+</code></pre></li>
+</ul>
+<p>注意：原则上不要修改编译出来的<em>.bp.go文件的代码，因为双方接口基于同一个proto文件编译成自己的语言源码，此文件只作为接口数据处理，业务具体实现不在</em>.bp.go中。</p>
+<p>grpc+ProtoBuf所需的一些资源 </p>
+<ul>
+<li><p>1.golang.org\x\net\context</p>
+<p>对应的可访问链接：<a href="https://github.com/golang/net，里面包含context，dns，http2等一系列资源" target="_blank" rel="noopener">https://github.com/golang/net，里面包含context，dns，http2等一系列资源</a></p>
+</li>
+<li><p>2.golang.org/x/text/secure/bidirule</p>
+<p> 对应的可访问链接：<a href="https://github.com/golang/text，里面包含cmd，currency，secure等一系列资源" target="_blank" rel="noopener">https://github.com/golang/text，里面包含cmd，currency，secure等一系列资源</a></p>
+</li>
+<li><p>3.google.golang.org/grpc</p>
+<p> 对应的可访问链接：<a href="https://github.com/grpc/grpc-go，里面包含connectivity，grpclb，grpclog等一系列资源" target="_blank" rel="noopener">https://github.com/grpc/grpc-go，里面包含connectivity，grpclb，grpclog等一系列资源</a></p>
+</li>
+<li><p>4.google.golang.org/genproto</p>
+<p> 对应的可访问链接：<a href="https://github.com/google/go-genproto，里面包含googleapis，protobuf等一系列资源" target="_blank" rel="noopener">https://github.com/google/go-genproto，里面包含googleapis，protobuf等一系列资源</a>   </p>
+</li>
+</ul>
+<p>请参阅 <a href="https://github.com/felixyao1985/rbac-grpc-interceptor" title="Title" target="_blank" rel="noopener">案例分享</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/03/01/GO-GRPC/" data-id="ck9xwwd8f0004x0f5wabod9f5" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/微服务-GRPC/">微服务 GRPC</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-GO-interceptor" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/02/16/GO-interceptor/" class="article-date">
@@ -106,7 +304,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/02/16/GO-interceptor/" data-id="cjxebfcgq000bt0f5biwu61zl" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/02/16/GO-interceptor/" data-id="ck9xwwd8w0008x0f53uzh7cqr" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GO-interceptor-JWT/">GO interceptor JWT</a></li></ul>
@@ -180,7 +378,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/02/16/同一主机下的Docker 部署/" data-id="cjxebfcih000pt0f5cm26yv76" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/02/16/同一主机下的Docker 部署/" data-id="ck9xwwdc1000wx0f5e1umavt1" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/">Docker</a></li></ul>
@@ -240,193 +438,10 @@ casbin 实际比这个简单的例子要强大得多，你可以用声明的方�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/02/11/GO-casbin 随手记/" data-id="cjxebfcgh0009t0f5eedufszt" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/02/11/GO-casbin 随手记/" data-id="ck9xwwd7n0001x0f5bflytvku" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GO-权限管理/">GO 权限管理</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-mysql-json" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/03/28/mysql-json/" class="article-date">
-  <time datetime="2018-03-27T16:00:00.000Z" itemprop="datePublished">2018-03-28</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/03/28/mysql-json/">MySQL json 数据类型</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h6 id="必须要5-7以上版本才能使用"><a href="#必须要5-7以上版本才能使用" class="headerlink" title="必须要5.7以上版本才能使用"></a>必须要5.7以上版本才能使用</h6><h5 id="写在开头"><a href="#写在开头" class="headerlink" title="写在开头"></a>写在开头</h5><p>mysql json 的功能很强大，只是用来当一个储存数据的字段 就没什么意义了。</p>
-<p>使用proto做交互的话，只要JSON 写得好 用proro.Unmarshal() 就可以很方便的转换类型 可以精简很多代码</p>
-<p>JSON path 是以 $ 开头，之后就是JSON的层级使用。</p>
-<pre><code>$
-$[0].name
-$[0][1]
-//*表示所有
-$[*]
-</code></pre><h4 id="数据比较"><a href="#数据比较" class="headerlink" title="数据比较"></a>数据比较</h4><p>json中的数据可以用 =, &lt;, &lt;=, &gt;, &gt;=, &lt;&gt;, !=, and &lt;=&gt; 进行比较。</p>
-<p>json里的数据类型是多样的，在不同类型之间进行比较时，高优先级的要大于低优先级的（可以用JSON_TYPE()函数查看类型）。</p>
-<p>优先级从高到低如下：</p>
-<p>BLOB &gt; BIT &gt; OPAQUE &gt; DATETIME &gt; TIME &gt; DATE &gt; BOOLEAN &gt; ARRAY &gt; OBJECT &gt; STRING &gt; INTEGER  &gt;DOUBLE &gt; NULL</p>
-<h4 id="函数整理"><a href="#函数整理" class="headerlink" title="函数整理"></a>函数整理</h4><h5 id="创建函数"><a href="#创建函数" class="headerlink" title="创建函数"></a>创建函数</h5><ul>
-<li><p>JSON_ARRAY: JSON_ARRAY(val1,val2,val3…)</p>
-</li>
-<li><p>JSON_OBJECT: 生成一个包含指定K-V对的json object。如果有key为NULL或参数个数为奇数，则抛出异常。</p>
-</li>
-<li><p>JSON_QUOTE:JSON_QUOTE(json_val) 将json_val用””号括起来。</p>
-</li>
-<li><p>CONVERT: CONVERT(json_string,JSON)</p>
-</li>
-</ul>
-<h5 id="查询函数"><a href="#查询函数" class="headerlink" title="查询函数"></a>查询函数</h5><ul>
-<li><p>JSON_CONTAINS：JSON_CONTAINS(json_doc,var,[path])</p>
-<p>   查询json文档是否在指定path包含指定的数据，包含则返回1，否则返回0. 如果有参数为null或者path不存在则返回null</p>
-</li>
-<li><p>JSON_CONTAINS_PATH：JSON_CONTAINS_PATH(json_doc,one_or_all,path,path…..)</p>
-<p>   查询是否存在指定路径，存在则返回1，否则返回0.如果有参数为NULL，则返回NULL。</p>
-<p>   one_or_all只能取值“one”或”all”,one表示只要有一个存在即可;all表示所有的都存在才行。</p>
-</li>
-<li><p>JSON_EXTRACT：JSON_EXTRACT(json_doc, path[, path] …)</p>
-<p>  5.7.9及以上版本可以用”-&gt;”替代JSON_EXTRACT </p>
-<p>  从json文档里抽取数据。如果有参数有NULL或path不存在，则返回NULL。如果抽取出多个path，则返回的数据封闭在一个json array里。</p>
-</li>
-<li><p>JSON_UNQUOTE:表示去掉抽取结果的”号</p>
-<ul>
-<li>JSON_UNQUOTE( JSON_EXTRACT(column, path) )</li>
-<li>JSON_UNQUOTE(column -&gt; path)</li>
-<li>column-&gt;&gt;path</li>
-</ul>
-</li>
-<li><p>JSON_KEYS:JSON_KEYS(json_doc[, path])</p>
-<p>  获取json文档在指定路径下的所有键值，返回一个json array。如果有参数为NULL或path不存在，则返回NULL</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">    mysql&gt; SELECT JSON_KEYS(&apos;&#123;&quot;a&quot;: 1, &quot;b&quot;: &#123;&quot;c&quot;: 30&#125;&#125;&apos;);</span><br><span class="line">    +---------------------------------------+</span><br><span class="line">    | JSON_KEYS(&apos;&#123;&quot;a&quot;: 1, &quot;b&quot;: &#123;&quot;c&quot;: 30&#125;&#125;&apos;) |</span><br><span class="line">    +---------------------------------------+</span><br><span class="line">    | [&quot;a&quot;, &quot;b&quot;]                            |</span><br><span class="line">    +---------------------------------------+</span><br><span class="line">    mysql&gt; SELECT JSON_KEYS(&apos;&#123;&quot;a&quot;: 1, &quot;b&quot;: &#123;&quot;c&quot;: 30&#125;&#125;&apos;, &apos;$.b&apos;);</span><br><span class="line">    +----------------------------------------------+</span><br><span class="line">    | JSON_KEYS(&apos;&#123;&quot;a&quot;: 1, &quot;b&quot;: &#123;&quot;c&quot;: 30&#125;&#125;&apos;, &apos;$.b&apos;) |</span><br><span class="line">    +----------------------------------------------+</span><br><span class="line">    | [&quot;c&quot;]                                        |</span><br><span class="line">    +----------------------------------------------+</span><br><span class="line">    ```      </span><br><span class="line">- JSON_SEARCH:JSON_SEARCH(json_doc, one_or_all, search_str[, escape_char[, path] ...])</span><br><span class="line"></span><br><span class="line">   查询包含指定字符串的paths，并作为一个json array返回。如果有参数为NUL或path不存在，则返回NULL。</span><br><span class="line">    </span><br><span class="line">    one_or_all：&quot;one&quot;表示查询到一个即返回；&quot;all&quot;表示查询所有。</span><br><span class="line">    </span><br><span class="line">    search_str：要查询的字符串。 可以用LIKE里的&apos;%&apos;或‘_’匹配。</span><br><span class="line">    </span><br><span class="line">    path：在指定path下查。</span><br><span class="line">    ```mysql</span><br><span class="line">    mysql&gt; SET @j = &apos;[&quot;abc&quot;, [&#123;&quot;k&quot;: &quot;10&quot;&#125;, &quot;def&quot;], &#123;&quot;x&quot;:&quot;abc&quot;&#125;, &#123;&quot;y&quot;:&quot;bcd&quot;&#125;]&apos;;</span><br><span class="line">     </span><br><span class="line">    mysql&gt; SELECT JSON_SEARCH(@j, &apos;one&apos;, &apos;abc&apos;);</span><br><span class="line">    +-------------------------------+</span><br><span class="line">    | JSON_SEARCH(@j, &apos;one&apos;, &apos;abc&apos;) |</span><br><span class="line">    +-------------------------------+</span><br><span class="line">    | &quot;$[0]&quot;                        |</span><br><span class="line">    +-------------------------------+</span><br><span class="line">     </span><br><span class="line">    mysql&gt; SELECT JSON_SEARCH(@j, &apos;all&apos;, &apos;abc&apos;);</span><br><span class="line">    +-------------------------------+</span><br><span class="line">    | JSON_SEARCH(@j, &apos;all&apos;, &apos;abc&apos;) |</span><br><span class="line">    +-------------------------------+</span><br><span class="line">    | [&quot;$[0]&quot;, &quot;$[2].x&quot;]            |</span><br><span class="line">    +-------------------------------+</span><br><span class="line">    ```  </span><br><span class="line"></span><br><span class="line">##### 修改函数</span><br><span class="line"></span><br><span class="line">- JSON_ARRAY_APPEND:JSON_ARRAY_APPEND(json_doc, path, val[, path, val] ...) </span><br><span class="line"></span><br><span class="line">    在指定path的json array尾部追加val。如果指定path是一个json object，则将其封装成一个json array再追加。如果有参数为NULL，则返回NULL</span><br><span class="line">    ```mysql</span><br><span class="line">    mysql&gt; SET @j = &apos;[&quot;a&quot;, [&quot;b&quot;, &quot;c&quot;], &quot;d&quot;]&apos;;</span><br><span class="line">    mysql&gt; SELECT JSON_ARRAY_APPEND(@j, &apos;$[1]&apos;, 1);</span><br><span class="line">    +----------------------------------+</span><br><span class="line">    | JSON_ARRAY_APPEND(@j, &apos;$[1]&apos;, 1) |</span><br><span class="line">    +----------------------------------+</span><br><span class="line">    | [&quot;a&quot;, [&quot;b&quot;, &quot;c&quot;, 1], &quot;d&quot;]        |</span><br><span class="line">    +----------------------------------+</span><br><span class="line">    mysql&gt; SELECT JSON_ARRAY_APPEND(@j, &apos;$[0]&apos;, 2);</span><br><span class="line">    +----------------------------------+</span><br><span class="line">    | JSON_ARRAY_APPEND(@j, &apos;$[0]&apos;, 2) |</span><br><span class="line">    +----------------------------------+</span><br><span class="line">    | [[&quot;a&quot;, 2], [&quot;b&quot;, &quot;c&quot;], &quot;d&quot;]      |</span><br><span class="line">    +----------------------------------+</span><br><span class="line">    mysql&gt; SELECT JSON_ARRAY_APPEND(@j, &apos;$&apos;, &apos;z&apos;);</span><br><span class="line">    +----------------------------------+</span><br><span class="line">    | JSON_ARRAY_APPEND(@j, &apos;$&apos;, z) |</span><br><span class="line">    +----------------------------------+</span><br><span class="line">    | [&quot;a&quot;, [&quot;b&quot;, &quot;c&quot;], &quot;d&quot;,&quot;z&quot;]      |</span><br><span class="line">    +----------------------------------+</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>JSON_ARRAY_INSERT:JSON_ARRAY_INSERT(json_doc, path, val[, path, val] …)</p>
-<p>  在path指定的json array元素插入val，原位置及以右的元素顺次右移。如果path指定的数据非json array元素，则略过此val；</p>
-<p>  如果指定的元素下标超过json array的长度，则插入尾部。 </p>
-</li>
-<li><p>JSON_INSERT:JSON_INSERT(json_doc, path, val[, path, val] …)  </p>
-<p>  在指定path下插入数据，如果path已存在，则忽略此val（不存在才插入）。</p>
-</li>
-<li><p>JSON_REPLACE:JSON_REPLACE(json_doc, path, val[, path, val] …)    </p>
-<p>  替换指定路径的数据，如果某个路径不存在则略过（存在才替换）。如果有参数为NULL，则返回NULL。</p>
-</li>
-<li><p>JSON_SET :JSON_SET(json_doc, path, val[, path, val] …)</p>
-<p>  设置指定路径的数据（不管是否存在）。如果有参数为NULL，则返回NULL。</p>
-</li>
-<li><p>JSON_MERGE:JSON_MERGE(json_doc, json_doc[, json_doc] …)</p>
-<ul>
-<li>如果都是json array，则结果自动merge为一个json array；</li>
-<li>如果都是json object，则结果自动merge为一个json object；</li>
-<li>如果有多种类型，则将非json array的元素封装成json array再按照规则一进行mege。</li>
-</ul>
-</li>
-<li><p>JSON_REMOVE: JSON_REMOVE(json_doc, path[, path] …)   </p>
-<p>  移除指定路径的数据，如果某个路径不存在则略过此路径。如果有参数为NULL，则返回NULL。</p>
-</li>
-</ul>
-<h5 id="特性查询"><a href="#特性查询" class="headerlink" title="特性查询"></a>特性查询</h5><ul>
-<li><p>JSON_DEPTH:JSON_DEPTH(json_doc)</p>
-<p>  获取json文档的深度。如果参数为NULL，则返回NULL。</p>
-<p>  空的json array、json object或标量的深度为1。</p>
-</li>
-<li><p>JSON_LENGTH: JSON_LENGTH(json_doc[, path])</p>
-<p>  获取指定路径下的长度。如果参数为NULL，则返回NULL。</p>
-<ul>
-<li>标量的长度为1</li>
-<li>json array的长度为元素的个数</li>
-<li>json object的长度为key的个数</li>
-</ul>
-</li>
-<li><p>JSON_TYPE: JSON_TYPE(json_val)</p>
-<p>  获取json文档的具体类型。如果参数为NULL，则返回NULL。</p>
-</li>
-<li><p>JSON_VALID: JSON_VALID(val)</p>
-<p>  判断val是否为有效的json格式，是为1，不是为0。如果参数为NUL，则返回NULL。</p>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/28/mysql-json/" data-id="cjxebfci3000lt0f54pryw6uw" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/json/">json</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-微服务架构(选型方案）" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/03/28/微服务架构(选型方案）/" class="article-date">
-  <time datetime="2018-03-27T16:00:00.000Z" itemprop="datePublished">2018-03-28</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/03/28/微服务架构(选型方案）/">微服务架构(选型方案)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="微服务选型方案"><a href="#微服务选型方案" class="headerlink" title="微服务选型方案"></a>微服务选型方案</h1><h3 id="微服务架构的定义："><a href="#微服务架构的定义：" class="headerlink" title="微服务架构的定义："></a>微服务架构的定义：</h3><p>1、一些列的独立的服务共同组成系统<br>2、单独部署，跑在自己的进程中<br>3、每个服务为独立的业务开发<br>4、分布式管理<br>5、非常强调隔离性</p>
-<h3 id="其标准是："><a href="#其标准是：" class="headerlink" title="其标准是："></a>其标准是：</h3><p>1、分布式服务组成的系统<br>2、按照业务，而不是技术来划分组织<br>3、做有生命的产品而不是项目<br>4、强服务个体和弱通信（ Smart endpoints and dumb pipes ）<br>5、自动化运维（ DevOps ）<br>6、高度容错性<br>7、快速演化和迭代</p>
-<p>我们现在的业务很复杂，系统项目也很多。而微服务的学习和落地拥有一定的成本，所以我这边将实施分为三个阶段</p>
-<h6 id="1、准备："><a href="#1、准备：" class="headerlink" title="1、准备："></a>1、准备：</h6><p>①选择切入点<br>②技术选型</p>
-<h6 id="2、开始："><a href="#2、开始：" class="headerlink" title="2、开始："></a>2、开始：</h6><p>①解决客户端如何访问这些服务<br>②每个服务之间的通信<br>③解决服务的容器管理，水平部署，负载均衡等</p>
-<h6 id="3、管理："><a href="#3、管理：" class="headerlink" title="3、管理："></a>3、管理：</h6><p>①优化填坑<br>②自动部署、自动发布、自动注册、自动发现<br>③监控服务<br>④应急机制</p>
-<h3 id="准备："><a href="#准备：" class="headerlink" title="准备："></a>准备：</h3><p>微服务架构有七个关键点：<br>服务框架<br>运行时支撑服务<br>服务安全<br>后台服务<br>服务容错<br>服务监控<br>服务部署平台<br>我们需要选择几个关键点进行研究，以“最小可用”为目标开始，逐步优化架构已完成所有微服务架构指标。</p>
-<h4 id="服务框架"><a href="#服务框架" class="headerlink" title="服务框架"></a>服务框架</h4><p>gRPC：是谷歌近年新推的一套 RPC 框架，基于 protobuf 的强契约编程模型，能自动生成各种语言客户端，且保证互操作。支持 HTTP2 是 gRPC 的一大亮点，通讯层性能比 HTTP 有很大改进。</p>
-<p>Protobuf： 是 Google 的一种数据交换的格式，是一套结构数据序列化机制。用户通过编写 proto 文件来定义 protobuf 的数据结构，一个简单的 proto 文件是由一个 message 结构体和一个 service 结构体组成。</p>
-<h5 id="运行时支撑服务"><a href="#运行时支撑服务" class="headerlink" title="运行时支撑服务"></a>运行时支撑服务</h5><p>服务注册中心:在Docker技术的基础上，为容器化的应用提供部署运行、资源调度、服务发现和动态伸缩等一系列完整功能，提高了大规模容器集群管理的便捷性。<br>Etcd：一个高可用，分布式，一致的key-value存储，用来共享配置和服务发现（把缓存服务器和数据库从docker分离出去）<br>k8s：具有完备的集群管理能力，多扩多层次的安全防护和准入机制、多租户应用支撑能力、透明的服务注册和发现机制、內建智能负载均衡器、强大的故障发现和自我修复能力、服务滚动升级和在线扩容能力、可扩展的资源自动调度机制以及多粒度的资源配额管理能力。（做微服务的管理）</p>
-<h5 id="服务路由网管"><a href="#服务路由网管" class="headerlink" title="服务路由网管"></a>服务路由网管</h5><h6 id="建立服务网关"><a href="#建立服务网关" class="headerlink" title="建立服务网关"></a>建立服务网关</h6><pre><code>服务网关 = 路由转发 + 过滤器
-</code></pre><p>1、路由转发：接收一切外界请求，转发到后端的微服务上去；<br>2、过滤器：在服务网关中可以完成一系列的横切功能，例如权限校验、限流以及监控等，这些都可以通过过滤器完成（其实路由转发也是通过过滤器实现的）</p>
-<h6 id="集中式配置中心"><a href="#集中式配置中心" class="headerlink" title="集中式配置中心"></a>集中式配置中心</h6><p>选型一个合格的配置中心，至少需要满足如下4个核心需求：<br>1.非开发环境下应用配置的保密性，避免将关键配置写入源代码<br>2.不同部署环境下应用配置的隔离性，比如非生产环境的配置不能用于生产环境<br>3.同一部署环境下的服务器应用配置的一致性，即所有服务器使用同一份配置<br>4.分布式环境下应用配置的可管理性，即提供远程管理配置的能力<br>该部分有很多方法达成，比如jenkins的环境部署，docker配置文件等等，所以在一开始不需要考虑这部分</p>
-<h6 id="服务监控"><a href="#服务监控" class="headerlink" title="服务监控"></a>服务监控</h6><p>主要包括日志监控，调用链监控，Metrics 监控，健康检查和告警通知等。<br>服务容错<br>①重试机制<br>②限流<br>③熔断机制<br>④负载均衡<br>⑤降级（本地缓存）<br>后台服务<br>后台服务主要包括消息系统，分布式缓存，分布式数据访问层和任务调度系统。<br>服务安全选型<br>1．使用支持 OAuth 2.0 和 OpenID Connect 标准协议的授权服务器（个人建议定制自研）；<br>2．使用 API 网关作为单一访问入口，统一实现安全治理；<br>3．客户在访问微服务之前，先通过授权服务器登录获取 access token，然后将 access token 和请求一起发送到网关；<br>4．网关获取 access token，通过授权服务器校验 token，同时做 token 转换获取 JWT token。<br>5．网关将 JWT Token 和请求一起转发到后台微服务；<br>6．JWT 中可以存储用户会话信息，该信息可以传递给后台的微服务，也可以在微服务之间传递，用作认证授权等用途；<br>7．每个微服务包含 JWT 客户端，能够解密 JWT 并获取其中的用户会话信息。<br>8．整个方案中，access token 是一种 by reference token，不包含用户信息可以直接暴露在公网上；JWT token 是一种 by value token，可以包含用户信息但不暴露在公网上。</p>
-<h5 id="服务部署平台选型"><a href="#服务部署平台选型" class="headerlink" title="### 服务部署平台选型"></a>### 服务部署平台选型</h5><p>容器已经被社区接受为交付微服务的一种理想手段，可以实现不可变（immutable）发布模式。<br>一个轻量级的基于容器的服务部署平台主要包括容器资源调度，发布系统，镜像治理，资源治理和 IAM 等模块。<br>1.简化发布流程如下：<br>2.应用通过 CI 集成后生成镜像，用户将镜像推到镜像治理中心；<br>3.用户在资产治理中心申请发布，填报应用，发布和配额相关信息，然后等待审批通过；<br>4.发布审批通过，开发人员通过发布控制台发布应用；<br>5.发布系统通过查询资产治理中心获取发布规格信息；<br>6.发布系统向容器云发出启动容器实例指令；<br>7.容器云从镜像治理中心拉取镜像并启动容器；<br>8.容器内服务启动后自注册到服务注册中心，并保持定期心跳；<br>9.用户通过发布系统调用服务注册中心调拨流量，实现蓝绿，金丝雀或灰度发布等机制；<br>10.网关和内部微服务客户端定期同步服务注册中心上的服务路由表，将流量按负载均衡策略分发到新的服务实例上。</p>
-<p>另外，持续交付流水线（CD Pipeline）也是微服务发布重要环节，这块主要和研发流程相关，一般需要企业定制，下面是一个可供参考的流水线模型，在镜像治理中心上封装一些轻量级的治理流程，例如只有通过测试环境测试的镜像才能升级发布到 UAT 环境，只有通过 UAT 环境测试的镜像才能升级发布到生产环境，通过在流水线上设置一些质量门，保障应用高质量交付到生产。</p>
-<h3 id="开始："><a href="#开始：" class="headerlink" title="开始："></a>开始：</h3><p>使用 Kubernetes来管理 Docker 集群，当 Kubernetes 满足不了需求时，可在部署平台开发相应的功能来满足开发查看日志、监控和报警等需求，尽量避免登录主机和容器。<br>实现了基于Docker集群的部署系统，便于开发者便捷地部署自己的应用程序。最终达到部署环境干净一致，可重复部署、迅速扩容和回滚。<br>容器管理平台构架图<br>容器管理平台主要功能有集群管理和状态展示、灰度发布和代码回退、组件模板、应用管理、镜像仓库和权限管理等。它采用前后端分离的架构，前端使用 JS 渲染，后端使用 Python 提供 API。这样开发者可以快速的进行发布和回退操作。<br>容器管理平台在应用发布流程，集群调度策略，k8s节点网络架构，阿里云支持，基础监控指标等方面进行了优化改进。</p>
-<p>应用发布流程<br>新的发布系统是用户提交代码后，在发布系统选择要部署的commit，点击构建以后，系统会自动编译，打包成镜像，推送镜像仓库。如果构建成功，用户点击发布新版本的实例，灰度没有问题，全量，下线老版本的实例。回退时代码不需要构建，直接发布老版本实例。在某段时间内，新老版本是同时存在的。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/28/微服务架构(选型方案）/" data-id="cjxebfcij000qt0f51ymdgkpm" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/微服务/">微服务</a></li></ul>
 
     </footer>
   </div>
@@ -470,7 +485,7 @@ $[*]
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/28/MobX/" data-id="cjxebfchu000ht0f542akxhcg" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/03/28/MobX/" data-id="ck9xwwd9x000dx0f52jk97o7u" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redux/">Redux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Vue/">Vue</a></li></ul>
@@ -482,9 +497,9 @@ $[*]
 
 
   
-    <article id="post-微服务架构(初探)" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-kubernetes_1" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/03/28/微服务架构(初探)/" class="article-date">
+    <a href="/2018/03/28/kubernetes_1/" class="article-date">
   <time datetime="2018-03-27T16:00:00.000Z" itemprop="datePublished">2018-03-28</time>
 </a>
     
@@ -496,7 +511,7 @@ $[*]
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/03/28/微服务架构(初探)/">微服务架构(初探)</a>
+      <a class="article-title" href="/2018/03/28/kubernetes_1/">Kubernetes 学习笔记 （基础）</a>
     </h1>
   
 
@@ -504,35 +519,125 @@ $[*]
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="微服务架构-一"><a href="#微服务架构-一" class="headerlink" title="微服务架构(一)"></a>微服务架构(一)</h1><h3 id="WHY？"><a href="#WHY？" class="headerlink" title="WHY？"></a>WHY？</h3><p>服务拆解，每个服务拆解成之做自己的业务事物，形成高度内聚的自治性。<br>2.0+采用模块化的分层式架构，所有的业务逻辑代码最终会打进一个代码库中统一部署。<br>目前遇到的问题<br>1、全部开发人员会共享一个代码库，不同模块的边界模糊，实现高内聚、松耦合极其困难。（我们现在发版经常遇到要选择部分功能上线 GIT分支合并上传就会很麻烦）<br>2、处理遗留系统，尝试去做重构改进时，会动一发而牵全身。<br>3、模块的边界轻易被穿透。</p>
-<h4 id="微服务的主要特性"><a href="#微服务的主要特性" class="headerlink" title="微服务的主要特性"></a>微服务的主要特性</h4><p>微服务架构强调每个服务一个进程。<br>独立开发与演进,隔离代码库至少让同一应用系统不同层次的开发人员享有自己完全自治的领地，每个微服务都有一个掌控者。<br>通过分解巨大单体式应用为多个服务方法解决了复杂性问题。<br>在功能不变的情况下，应用被分解为多个可管理的分支或服务。<br>微服务架构模式是每个微服务独立的部署。<br>开发者不再需要协调其它服务部署对本服务的影响。<br>这种改变可以加快部署速度。UI 团队可以采用 AB 测试，快速的部署变化。<br>微服务架构模式使得持续化部署成为可能。<br>你可以根据每个服务的规模来部署满足需求的规模。甚至于，你可以使用更适合于服务资源需求的硬件。<br>微服务架构模式使得每个服务独立扩展。</p>
-<h6 id="成本"><a href="#成本" class="headerlink" title="成本"></a>成本</h6><p>把 1 个应用进程部署到 1 台主机，部署复杂度是 1 x 1 = 1，我们有 200 台主机，那么部署复杂度是 1 x 200 = 200。<br>把 1 个应用进程拆分成了 50 个微服务进程，则部署复杂度变成了 50 x 200 = 10000。<br>部署变得复杂和麻烦多了，同时监控的进程数也大幅增加，监控的复杂度也上升了很多。<br>所以实施微服务架构是有很高成本的，只有系统的规模到了一定程度才适合。<br>微服务推崇一切自动化的文化，这也是因为其运维复杂度的乘数级飙升，<br>从开发之后的构建、测试、部署都需要一个高度自动化的环境来支撑才能有效降低边际成本。</p>
-<h6 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h6><p>每个微服务都很小，这样能聚焦一个指定的业务功能或业务需求。<br>微服务能够被小团队单独开发，这个小团队是2到5人的开发人员组成。<br>微服务是松耦合的，是有功能意义的服务，无论是在开发阶段或部署阶段都是独立的。<br>微服务能使用不同的语言开发。<br>微服务允许容易且灵活的方式集成自动部署，通过持续集成工具，如Jenkins, bamboo 。<br>一个团队的新成员能够更快投入生产。<br>微服务易于被一个开发人员理解，修改和维护，这样小团队能够更关注自己的工作成果。无需通过合作才能体现价值。<br>微服务允许你利用融合最新技术。<br>微服务只是业务逻辑的代码，不会和HTML,CSS 或其他界面组件混合。<br>微服务能够即时被要求扩展。<br>微服务能部署中低端配置的服务器上。<br>易于和第三方集成。<br>每个微服务都有自己的存储能力，可以有自己的数据库。也可以有统一数据库。</p>
-<h6 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h6><p>微服务架构可能带来过多的操作。<br>需要DevOps技巧 (<a href="http://en.wikipedia.org/wiki/DevOps)" target="_blank" rel="noopener">http://en.wikipedia.org/wiki/DevOps)</a>.</p>
-<ol>
-<li>开发（软件工程）、技术运营和质量保障（QA）三者的交集。</li>
-<li>是一组过程、方法与系统的统称，用于促进开发（应用程序/软件工程）、技术运营和质量保障（QA）部门之间的沟通、协作与整合。它的出现是由于软件行业日益清晰地认识到：为了按时交付软件产品和服务，开发和运营工作必须紧密合作。[1]</li>
-</ol>
-<p>可能双倍的努力。<br>分布式系统可能复杂难以管理。<br>因为分布部署跟踪问题难。<br>当服务数量增加，管理复杂性增加。</p>
-<h4 id="实施要点"><a href="#实施要点" class="headerlink" title="实施要点"></a>实施要点</h4><p>1.自动化文化与环境：自动构建、自动测试、自动部署。<br>2.围绕业务能力建模服务，松耦合、高内聚、暴露接口而隐藏实现细节。<br>3.服务协作模型：中心化（乐队模型：中心指挥）和去中心化（舞蹈模型：群舞自组织），各自场景不同。<br>4.服务交互方式：RPC/REST/WS 技术很多但考虑统一。<br>5.服务部署的独立性、失败隔离性、可监控性。<br>6.服务流控：降级、限流<br>7.服务恢复：多考虑故障发生如何快速恢复而非如何避免发生故障。<br>8.服务发布：灰度。<br>9.服务部署：一服务一主机模型，需要虚拟化(Hypervisor)、容器化(LXC, Docker)等技术支持，实现硬件资源隔离。<br>10.服务配置：中心化配置服务支持<br>11.康威定律：任何设计系统的组织，最终产生的设计等同于组织之内、之间的沟通结构。系统架构的设计符合组织沟通结构取得的收益最大。<br>12.伯斯塔尔法则：服务健壮性原则 —— 发送时要保守，接收时要开放。</p>
-<h3 id="网关"><a href="#网关" class="headerlink" title="网关"></a>网关</h3><p>实现一个API网关作为所有客户端的唯一入口。API网关有两种方式来处理请求。有些请求被简单地代理/路由到合适的服务上，其他的请求被转给到一组服务。</p>
-<p>相比于提供普适的API，API网关根据不同的客户端开放不同的API。比如，Netflix API网关运行着客户端特定的适配器代码，会向客户端提供最适合其需求的API。<br>API网关也可以实现安全性，比如验证客户端是否被授权进行某请求。</p>
-<h3 id="需要考虑的问题"><a href="#需要考虑的问题" class="headerlink" title="需要考虑的问题"></a>需要考虑的问题</h3><p>单个微服务代码量小，易修改和维护。但是，系统复杂度的总量是不变的，每个服务代码少了，但服务的个数肯定就多了。就跟拼图游戏一样，切的越碎，越难拼出整幅图。一个系统被拆分成零碎的微服务，最后要集成为一个完整的系统，其复杂度肯定比大块的功能集成要高很多。<br>单个微服务数据独立，可独立部署和运行。虽然微服务本身是可以独立部署和运行的，但仍然避免不了业务上的你来我往，这就涉及到要对外通信，当微服务的数量达到一定量级的时候，如何提供一个高效的集群通信机制成为一个问题。<br>单个微服务拥有自己的进程，进程本身就可以动态的启停，为无缝升级的打好了基础，但谁来启动和停止进程，什么时机，选择在哪台设备上做这件事情才是无缝升级的关键。这个能力并不是微服务本身提供的，而是需要背后强大的版本管理和部署能力。<br>多个相同的微服务可以做负载均衡，提高性能和可靠性。正是因为相同微服务可以有多个不同实例，让服务按需动态伸缩成为可能，在高峰期可以启动更多的相同的微服务实例为更多用户服务，以此提高响应速度。同时这种机制也提供了高可靠性，在某个微服务故障后，其他相同的微服务可以接替其工作，对外表现为某个设备故障后业务不中断。同样的道理，微服务本身是不会去关心系统负载的，那么什么时候应该启动更多的微服务，多个微服务的流量应该如何调度和分发，这背后也有一套复杂的负载监控和均衡的系统在起作用。<br>微服务可以独立部署和对外提供服务，微服务的业务上线和下线是动态的，当一个新的微服务上线时，用户是如何访问到这种新的服务？这就需要有一个统一的入口，新的服务可以动态的注册到这个入口上，用户每次访问时可以从这个入口拿到系统所有服务的访问地址。这个统一的系统入口并不是微服务本身的一部分，所以这种能力需要系统单独提供。<br>还有一些企业级关注的系统问题，比如，安全策略如何集中管理？系统故障如何快速审计和跟踪到具体服务？整个系统状态如何监控？服务之间的依赖关系如何管理？等等这些问题都不是单个微服务考虑的范畴，而需要有一个系统性的考虑和设计，让每个微服务都能够按照系统性的要求和约束提供对应的安全性，可靠性，可维护性的能力。<br>服务容错：当企业微服务化以后，服务之间会有错综复杂的依赖关系，例如，一个前端请求一般会依赖于多个后端服务，技术上称为1 -&gt; N扇出. 在实际生产环境中，服务往往不是百分百可靠，服务可能会出错或者产生延迟，如果一个应用不能对其依赖的故障进行容错和隔离，那么该应用本身就处在被拖垮的风险中。在一个高流量的网站中，某个单一后端一旦发生延迟，可能在数秒内导致所有应用资源(线程，队列等)被耗尽，造成所谓的雪崩效应(Cascading Failure)，严重时可致整个网站瘫痪。</p>
-<p>服务依赖</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>微服务的实施是有一定的先决条件：基础的运维能力（如监控、快速配置、快速部署）需提前构建，否则就会陷入如我们般被动的局面。推荐采用基础设施及代码的实践，通过代码来描述计算和网络基础设施的方法，使得图案度i可以快速安全的搭建和处理由新的配置代替的服务器，服务器之间可以拥有更高的一致性，降低了在“我的环境工作，而你的环境不工作”的可能，也是为后续的发布策略和运维提供更好的支撑。<br>其他要点<br>系统支撑</p>
-<h4 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h4><p>日志和审计，主要是日志的汇总，分类和查询<br>监控和告警，主要是监控每个服务的状态，必要时产生告警<br>消息总线，轻量级的MQ或HTTP<br>注册发现<br>负载均衡<br>部署和升级<br>事件调度机制<br>资源管理，如：底层的虚拟机，物理机和网络管理</p>
-<h4 id="画龙点睛"><a href="#画龙点睛" class="headerlink" title="画龙点睛"></a>画龙点睛</h4><p>认证和鉴权<br>微服务统一代码框架，支持多种编程语言<br>统一服务构建和打包<br>统一服务测试<br>微服务CI/CD流水线<br>服务依赖关系管理<br>统一问题跟踪调试框架，俗称调用链<br>灰度发布<br>蓝绿部署</p>
-<h4 id="容器（Docker）与微服务"><a href="#容器（Docker）与微服务" class="headerlink" title="容器（Docker）与微服务"></a>容器（Docker）与微服务</h4><p>•容器够小<br>–解决微服务对机器数量的诉求<br>•容器独立<br>–解决多语言问题<br>•开发环境与生产环境相同<br>–单机开发、提升效率<br>•容器效率高<br>–省钱<br>•代码/image一体化<br>–可复用管理系统<br>•容器的横向与纵向扩容<br>–可复制<br>–可动态调节CPU与内存<br>•Image管理<br>•系统安全管理<br>•授权管理<br>•系统成熟度<br>•社区成熟度<br>由于Docker引入，不同的微服务可以使用不同的技术架构，比如Node.js Java PHP Python等，这些单个的服务都可以独立完成交付生命周期<br>微服务+API + 平台的开发模式，容器化微服务的持续交付概念。 </p>
-<p>首先需要考虑构建DevOps能力，这是保证微服务架构在持续交付和应对复杂运维问题的动力之源；<br>其次保持服务持续演进，使之能够快速、低成本地被拆分和合并，以快速响应业务的变化；<br>同时要保持团队和架构对齐。微服务貌似是技术层面的变革，但它对团队结构和组织文化有很强的要求和影响。识别和构建匹配架构的团队是解决问题的另一大支柱。<br>最后，打造持续改进的自组织文化是实施微服务的关键基石。只有持续改进，持续学习和反馈，持续打造这样一个文化氛围和团队，微服务架构才能持续发展下去，保持新鲜的生命力，从而实现我们的初衷。</p>
-<p>参考资料<br>1、微服务架构下的开发部署实践<br><a href="https://zhuanlan.zhihu.com/p/21563604" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/21563604</a><br>2、微服务与SOA：与其重用+不如抓住敏捷性<a href="http://www.searchsoa.com.cn/showcontent_88178.htm" target="_blank" rel="noopener">http://www.searchsoa.com.cn/showcontent_88178.htm</a><br>3、Red Hat：API层是微服务架构成功的关键<a href="https://searchcloudcomputing.techtarget.com.cn/5-11978/" target="_blank" rel="noopener">https://searchcloudcomputing.techtarget.com.cn/5-11978/</a><br>4、SOA和微服务架构的区别<br><a href="https://www.zhihu.com/question/37808426" target="_blank" rel="noopener">https://www.zhihu.com/question/37808426</a><br>5、解析微服务架构<br><a href="https://kb.cnblogs.com/page/520922/" target="_blank" rel="noopener">https://kb.cnblogs.com/page/520922/</a></p>
+        <h2 id="概况"><a href="#概况" class="headerlink" title="概况"></a>概况</h2><p>  集群采用 Master/Node的结构，Master（主节点）控制整个集群，Node（从节点）为集群提供计算能力。</p>
+<h5 id="Master"><a href="#Master" class="headerlink" title="Master"></a>Master</h5><p>  Master是Kubernetes集群的大脑，负责公开集群的API，调度部署和管理整个集群。集群至少有一个Master节点，如果在生产环境中要达到高可用，还需要配置Master集群。Master主要包含API Server、Scheduler、Controller三个组件，需要etcd组件来保存整个集群的状态。</p>
+<ul>
+<li><p>etcd：一个高可用、强一致性的服务发现存储仓库，为Kubernetes集群提供存储服务，类似于zookeper。</p>
+</li>
+<li><p>API Server： kubernetes最重要的核心组件之一，提供资源操作的唯一入口（其他模块通过API Server查询或修改数据，只有API Server才直接操作etcd），并提供认证、授权、访问控制、API注册和发现等机制。</p>
+</li>
+<li><p>Scheduler：负责资源的调度，按照预定的调度策略将Pod（k8s中调度的基本单位）调度到相应的Node上。</p>
+</li>
+<li><p>Controller：通过API Server来监控整个集群的状态，并确保集群处于预期的工作状态，比如故障检测、自动扩展、滚动更新等。</p>
+</li>
+</ul>
+<h5 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h5><p>  Node是Kubernetes集群的工作节点，可以是物理机也可以是虚拟机。Node需要包含容器、kubelet、kube-proxy等组件。。</p>
+<ul>
+<li><p>kubelet：维护容器的生命周期，同时也负责Volume（CVI）和网络（CNI）的管理。每个节点上都会运行一个kubelet服务进程，接收并执行Master发来的指令，管理Pod及Pod中的容器。每个kubelet进程会在API Server上注册节点自身信息，定期向Master节点汇报节点的资源使用情况，并通过cAdvisor监控节点和容器的资源。</p>
+</li>
+<li><p>kube-proxy： 为 Service 提供集群内部的服务发现和负载均衡，监听 API Server 中 service和endpoint的变化情况，并通过iptables等方式来为服务配置负载均衡。</p>
+</li>
+<li><p>Docker： 每台Node上需要安装Docker来运行镜像，但是Docker不是唯一选择，Kubernetes支持多种容器，比如CoreOS公司的Rkt容器（之前称为Rocket，现更名为Rkt）。</p>
+</li>
+</ul>
+<h5 id="Pod"><a href="#Pod" class="headerlink" title="Pod"></a>Pod</h5><p>  在创建新部署时，Kubernetes会建立一个Pod来寄存你的应用实例。Pod是一个抽象的概念，它包含一个或多个容器组成的容器组，还有这些容器共享的资源，Pod就像是豌豆荚一样，它可以由一个或者多个容器组成，这些容器共享存储、网络和配置项。这些资源包括：</p>
+<ul>
+<li><p>共享的存储，例如Volume</p>
+</li>
+<li><p>网络，比如使用唯一的集群IP地址</p>
+</li>
+<li><p>如何运行容器的配置信息，比如镜像版本和容器端口</p>
+</li>
+</ul>
+<p>  Pod模型上类似于一个具有特定应用的逻辑主机，它可以包含相对紧密耦合的不同应用容器。例如，一个Pod可能既包含Node.js Web服务容器，又包含给它提供数据库服务的容器。同一个Pod里的容器共享一个IP地址和端口段，协同工作和调度，并且在同一节点上的共享环境中运行。</p>
+<p>  Pod是Kuberlnetes平台中的原子单位。在部署创建时，部署并不直接创建容器，而是创建包含了容器的Pod。Pod被分配绑定在指定的Node上，除非被停止或者删除它会一直在该Node上工作。万一出现Node宕机的情况，集群中另外一个可用的Node会马上启动运行一个完全一样的Pod</p>
+<h5 id="Pod控制器"><a href="#Pod控制器" class="headerlink" title="Pod控制器"></a>Pod控制器</h5><p>  目前Kubernetes中的业务类型可以分为长期伺服型（long-running）、批处理型（batch）、节点后台支撑型（node-daemon）和有状态应用型（stateful application）这四种类型，而这四种类型的业务又可以由不同类型的Pod控制器来完成，分别为：Deployment、Job、DaemonSet和StatefulSet。</p>
+<ul>
+<li><p>Deployment： 复制控制器（Replication Controller，RC）是集群中最早的保证Pod高可用的API对象，副本集（Replica Set，RS）是它的升级，能支持更多种类的匹配模式。部署(Deployment)又是比RS应用模式更广的API对象，以Kubernetes的发展方向，未来对所有长期伺服型的的业务的管理，都会通过Deployment来管理。</p>
+</li>
+<li><p>Service： Deployment保证了Pod的数量，但是没有解决如何访问Pod的问题，一个Pod只是一个运行服务的实例，随时可能在一个节点上停止，在另一个节点以一个新的IP启动一个新的Pod，因此不能以确定的IP和端口号提供服务。要稳定地提供服务需要服务发现和负载均衡能力，Service可以稳定为用户提供服务。</p>
+</li>
+<li><p>Job： 用来控制批处理型任务，Job管理的Pod根据用户的设置把任务成功完成就自动退出了。</p>
+</li>
+<li><p>DaemonSet： 后台支撑型服务的核心关注点在集群中的Node，要保证每个Node上都有一个此类Pod运行。比如用来收集日志的Pod。</p>
+</li>
+<li><p>StatefulSet： 不同于RC和RS，StatefulSet主要提供有状态的服务，StatefulSet中Pod的名字都是事先确定的，不能更改，每个Pod挂载自己独立的存储，如果一个Pod出现故障，从其他节点启动一个同样名字的Pod，要挂载上原来Pod的存储继续以它的状态提供服务。比如数据库服务MySQL，我们不希望一个Pod故障后，MySQL中的数据即丢失。</p>
+</li>
+</ul>
+<h5 id="API"><a href="#API" class="headerlink" title="API"></a>API</h5><p> API对象是Kubernetes集群中的管理操作单元。集群中的众多技术概念分别对应着API对象，每个API对象都有3大类属性：</p>
+<p>metadata（元数据）：用来标识API对象，包含namespace、name、uid等。</p>
+<p>spec （规范）：描述用户期望达到的理想状态，所有的操作都是声明式（Declarative）的而不是命令式（Imperative），在分布式系统中的好处是稳定，不怕丢操作或运行多次。比如设置期望3个运行Nginx的pod，运行多次也还是一个结果，而给副本数加1的操作就不是声明式的，运行多次结果就错了。</p>
+<p>status（状态）：描述系统当前实际达到的状态，比如期望3个pod，现在实际创建好了2个。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/28/微服务架构(初探)/" data-id="cjxebfck8001lt0f5h6uk6w9c" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/03/28/kubernetes_1/" data-id="ck9xwwdb4000px0f5jsn4033w" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/微服务/">微服务</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kubernetes/">Kubernetes</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-kubernetes_2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/03/28/kubernetes_2/" class="article-date">
+  <time datetime="2018-03-27T16:00:00.000Z" itemprop="datePublished">2018-03-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/03/28/kubernetes_2/">Kubernetes 学习笔记 （kubectl）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="指令"><a href="#指令" class="headerlink" title="指令"></a>指令</h4><ul>
+<li>kubectl get 展示资源</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">获取命名空间</span><br><span class="line">kubectl get namespaces</span><br><span class="line"></span><br><span class="line">获取Pods</span><br><span class="line">kubectl get pods</span><br><span class="line"></span><br><span class="line">查看服务状态</span><br><span class="line">kubectl get services</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>kubectl describe 资源详情</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">获取Pods详细信息</span><br><span class="line">kubectl describe pods</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>kubectl logs 打印容器日志</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl logs $POD_NAME</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>kubectl exec 在容器上执行命令</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">在Pod中执行命令</span><br><span class="line">kubectl exec $POD_NAME env</span><br><span class="line"></span><br><span class="line">启动容器中的bash</span><br><span class="line">kubectl exec -ti $POD_NAME bash</span><br></pre></td></tr></table></figure>
+<ul>
+<li>其他指令</li>
+</ul>
+<p>– 对外部暴露服务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">kubectl expose deployment/kubernetes-bootcamp --type=&quot;NodePort&quot; --port 8080 service &quot;kubernetes-bootcamp&quot; exposed</span><br><span class="line">$ kubectl get servicesNAME                  TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)     AGE</span><br><span class="line">kubernetes            ClusterIP   10.96.0.1       &lt;none&gt;        443/TCP     2m</span><br><span class="line">kubernetes-bootcamp   NodePort    10.99.175.225   &lt;none&gt;        8080:32172/TCP   5s</span><br></pre></td></tr></table></figure></p>
+<p>– 通过标签查询Pod和Service</p>
+<p>$ kubectl get pods -l run=kubernetes-bootcamp<br>NAME                                   READY     STATUS    RESTARTS   AGE<br>kubernetes-bootcamp-5c69669756-hmc69   1/1       Running   0          8m<br>$ kubectl get services -l = run=kubernetes-bootcamp<br>error: name cannot be provided when a selector is specified<br>$ kubectl get services -l run=kubernetes-bootcamp<br>NAME                  TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE<br>kubernetes-bootcamp   NodePort   10.99.175.225   <none>        8080:32172/TCP   6m</none></p>
+<p>tl label pod $POD_NAME app=v1 pod “kubernetes-bootcamp-5c69669756-hmc69” labeled<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">-- 新增标签</span><br></pre></td></tr></table></figure></p>
+<p>$ kubectl label pod $POD_NAME app=v1<br>pod “kubernetes-bootcamp-5c69669756-hmc69” labeled<br>$ kubectl describe pods $POD_NAME<br>Name:           kubernetes-bootcamp-5c69669756-hmc69<br>Namespace:      default<br>Node:           minikube/172.17.0.11<br>Start Time:     Tue, 17 Jul 2018 05:20:35 +0000<br>Labels:         app=v1<br>                pod-template-hash=1725225312<br>                run=kubernetes-bootcamp<br>$ kubectl get pods -l app=v1<br>NAME                                   READY     STATUS    RESTARTS   AGE<br>kubernetes-bootcamp-5c69669756-hmc69   1/1       Running   0          11m<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">-- 删除服务</span><br></pre></td></tr></table></figure></p>
+<p>$ kubectl get services<br>NAME                  TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)     AGE<br>kubernetes            ClusterIP   10.96.0.1       <none>        443/TCP     12m<br>kubernetes-bootcamp   NodePort    10.99.175.225   <none>        8080:32172/TCP   10m<br>$ kubectl delete service -l run=kubernetes-bootcamp<br>service “kubernetes-bootcamp” deleted<br>$ kubectl get services<br>NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE<br>kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   12m<br><code>`</code></none></none></none></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/03/28/kubernetes_2/" data-id="ck9xwwdbf000tx0f5mn8owq1s" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kubernetes/">Kubernetes</a></li></ul>
 
     </footer>
   </div>
@@ -670,63 +775,10 @@ $[*]
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/28/微服务框架技术栈之Protocol Buffer/" data-id="cjxebfckc001mt0f5qr5qnkbw" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/03/28/微服务框架技术栈之Protocol Buffer/" data-id="ck9xwwdbo000ux0f524kfq6br" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Protocol-Buffer/">Protocol Buffer</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gRPC/">gRPC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/微服务/">微服务</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/04/02/hello-world/" class="article-date">
-  <time datetime="2017-04-01T16:00:00.000Z" itemprop="datePublished">2017-04-02</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/02/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<h3 id="图片"><a href="#图片" class="headerlink" title="图片"></a>图片</h3><p>1.首先把blog（hexo）目录下的_config.yml里的psot_asset_folder:设置为true</p>
-<p>2.在blog（hexo）目录下执行:</p>
-<p>npm install hexo-asset-image –save</p>
-<p>3.在blog（hexo）目录下Git Bash Here，运行hexo n “博客名”来生成md博客时，会在_post目录下看到一个与博客同名的文件夹。</p>
-<p>4.将想要上传的图片先扔到文件夹下，然后在博客中使用markdown的格式引入图片：</p>
-<p><img src="/2017/04/02/hello-world/图片名.jpg" alt="你想要输入的替代文字"></p>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/04/02/hello-world/" data-id="cjxebfchz000jt0f52vrakagz" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GO-generate/">GO generate</a></li></ul>
 
     </footer>
   </div>
@@ -739,7 +791,7 @@ $[*]
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -753,7 +805,7 @@ $[*]
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Envoy-grpc-restful/">Envoy grpc restful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-NSQ/">GO Grpc NSQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-tracing/">GO Grpc tracing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-generate/">GO generate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-interceptor-JWT/">GO interceptor JWT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-json/">GO json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-权限管理/">GO 权限管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git-fork、pr/">Git fork、pr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Protocol-Buffer/">Protocol Buffer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gRPC/">gRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protoful/">protoful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务/">微服务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务-GRPC/">微服务 GRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/端口/">端口</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Envoy-grpc-restful/">Envoy grpc restful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-NSQ/">GO Grpc NSQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-tracing/">GO Grpc tracing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-tracing-jaeger/">GO Grpc tracing jaeger</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-generate/">GO generate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-interceptor-JWT/">GO interceptor JWT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-json/">GO json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-权限管理/">GO 权限管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git-fork、pr/">Git fork、pr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kubernetes/">Kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Protocol-Buffer/">Protocol Buffer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gRPC/">gRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protoful/">protoful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务/">微服务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务-GRPC/">微服务 GRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/端口/">端口</a></li></ul>
     </div>
   </div>
 
@@ -763,7 +815,7 @@ $[*]
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Elasticsearch/" style="font-size: 10px;">Elasticsearch</a> <a href="/tags/Envoy-grpc-restful/" style="font-size: 10px;">Envoy grpc restful</a> <a href="/tags/GO-Grpc-NSQ/" style="font-size: 10px;">GO Grpc NSQ</a> <a href="/tags/GO-Grpc-tracing/" style="font-size: 10px;">GO Grpc tracing</a> <a href="/tags/GO-generate/" style="font-size: 10px;">GO generate</a> <a href="/tags/GO-interceptor-JWT/" style="font-size: 10px;">GO interceptor JWT</a> <a href="/tags/GO-json/" style="font-size: 10px;">GO json</a> <a href="/tags/GO-权限管理/" style="font-size: 10px;">GO 权限管理</a> <a href="/tags/Git-fork、pr/" style="font-size: 10px;">Git fork、pr</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Protocol-Buffer/" style="font-size: 10px;">Protocol Buffer</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/Redux/" style="font-size: 10px;">Redux</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/gRPC/" style="font-size: 10px;">gRPC</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/protoful/" style="font-size: 10px;">protoful</a> <a href="/tags/微服务/" style="font-size: 20px;">微服务</a> <a href="/tags/微服务-GRPC/" style="font-size: 15px;">微服务 GRPC</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a>
+      <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Elasticsearch/" style="font-size: 10px;">Elasticsearch</a> <a href="/tags/Envoy-grpc-restful/" style="font-size: 10px;">Envoy grpc restful</a> <a href="/tags/GO-Grpc-NSQ/" style="font-size: 10px;">GO Grpc NSQ</a> <a href="/tags/GO-Grpc-tracing/" style="font-size: 10px;">GO Grpc tracing</a> <a href="/tags/GO-Grpc-tracing-jaeger/" style="font-size: 10px;">GO Grpc tracing jaeger</a> <a href="/tags/GO-generate/" style="font-size: 10px;">GO generate</a> <a href="/tags/GO-interceptor-JWT/" style="font-size: 10px;">GO interceptor JWT</a> <a href="/tags/GO-json/" style="font-size: 10px;">GO json</a> <a href="/tags/GO-权限管理/" style="font-size: 10px;">GO 权限管理</a> <a href="/tags/Git-fork、pr/" style="font-size: 10px;">Git fork、pr</a> <a href="/tags/Kubernetes/" style="font-size: 15px;">Kubernetes</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/tags/Protocol-Buffer/" style="font-size: 10px;">Protocol Buffer</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/Redux/" style="font-size: 10px;">Redux</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/gRPC/" style="font-size: 10px;">gRPC</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/protoful/" style="font-size: 10px;">protoful</a> <a href="/tags/微服务/" style="font-size: 20px;">微服务</a> <a href="/tags/微服务-GRPC/" style="font-size: 15px;">微服务 GRPC</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a>
     </div>
   </div>
 
@@ -772,7 +824,7 @@ $[*]
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li></ul>
     </div>
   </div>
 
@@ -785,23 +837,23 @@ $[*]
       <ul>
         
           <li>
+            <a href="/2020/05/08/docker_笔记/">docker 笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/08/Nginx 基础/">Nginx 基础</a>
+          </li>
+        
+          <li>
+            <a href="/2019/11/25/GO-jaeger-es/">使用es 来存放 jaeger</a>
+          </li>
+        
+          <li>
             <a href="/2019/04/25/Git fork、pr的开发模式/">Git fork、pr的开发模式</a>
           </li>
         
           <li>
             <a href="/2019/04/02/GO-json/">GO json的操作</a>
-          </li>
-        
-          <li>
-            <a href="/2019/03/28/浏览器避免使用之端口/">坑爹的端口集</a>
-          </li>
-        
-          <li>
-            <a href="/2019/03/16/protoful - 各种文件生成（手记）/">protoful 集中记录</a>
-          </li>
-        
-          <li>
-            <a href="/2019/03/16/GO-NSQ/">NSQ(有赞版)</a>
           </li>
         
       </ul>
@@ -816,7 +868,7 @@ $[*]
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2019 Felix<br>
+      &copy; 2020 Felix<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>

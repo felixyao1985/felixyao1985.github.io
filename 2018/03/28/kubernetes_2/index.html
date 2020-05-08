@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Kubernetes 学习笔记 （kubectl） | Felix Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="指令 kubectl get 展示资源  12345678获取命名空间kubectl get namespaces获取Podskubectl get pods查看服务状态kubectl get services  kubectl describe 资源详情 123获取Pods详细信息kubectl describe pods  kubectl logs 打印容器日志 1kubectl logs $">
+<meta name="keywords" content="Kubernetes">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kubernetes 学习笔记 （kubectl）">
+<meta property="og:url" content="http://yoursite.com/2018/03/28/kubernetes_2/index.html">
+<meta property="og:site_name" content="Felix Blog">
+<meta property="og:description" content="指令 kubectl get 展示资源  12345678获取命名空间kubectl get namespaces获取Podskubectl get pods查看服务状态kubectl get services  kubectl describe 资源详情 123获取Pods详细信息kubectl describe pods  kubectl logs 打印容器日志 1kubectl logs $">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-04-15T02:32:20.793Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kubernetes 学习笔记 （kubectl）">
+<meta name="twitter:description" content="指令 kubectl get 展示资源  12345678获取命名空间kubectl get namespaces获取Podskubectl get pods查看服务状态kubectl get services  kubectl describe 资源详情 123获取Pods详细信息kubectl describe pods  kubectl logs 打印容器日志 1kubectl logs $">
+  
+    <link rel="alternate" href="/atom.xml" title="Felix Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Felix Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-kubernetes_2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/03/28/kubernetes_2/" class="article-date">
+  <time datetime="2018-03-27T16:00:00.000Z" itemprop="datePublished">2018-03-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Kubernetes 学习笔记 （kubectl）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="指令"><a href="#指令" class="headerlink" title="指令"></a>指令</h4><ul>
+<li>kubectl get 展示资源</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">获取命名空间</span><br><span class="line">kubectl get namespaces</span><br><span class="line"></span><br><span class="line">获取Pods</span><br><span class="line">kubectl get pods</span><br><span class="line"></span><br><span class="line">查看服务状态</span><br><span class="line">kubectl get services</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>kubectl describe 资源详情</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">获取Pods详细信息</span><br><span class="line">kubectl describe pods</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>kubectl logs 打印容器日志</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl logs $POD_NAME</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>kubectl exec 在容器上执行命令</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">在Pod中执行命令</span><br><span class="line">kubectl exec $POD_NAME env</span><br><span class="line"></span><br><span class="line">启动容器中的bash</span><br><span class="line">kubectl exec -ti $POD_NAME bash</span><br></pre></td></tr></table></figure>
+<ul>
+<li>其他指令</li>
+</ul>
+<p>– 对外部暴露服务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">kubectl expose deployment/kubernetes-bootcamp --type=&quot;NodePort&quot; --port 8080 service &quot;kubernetes-bootcamp&quot; exposed</span><br><span class="line">$ kubectl get servicesNAME                  TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)     AGE</span><br><span class="line">kubernetes            ClusterIP   10.96.0.1       &lt;none&gt;        443/TCP     2m</span><br><span class="line">kubernetes-bootcamp   NodePort    10.99.175.225   &lt;none&gt;        8080:32172/TCP   5s</span><br></pre></td></tr></table></figure></p>
+<p>– 通过标签查询Pod和Service</p>
+<p>$ kubectl get pods -l run=kubernetes-bootcamp<br>NAME                                   READY     STATUS    RESTARTS   AGE<br>kubernetes-bootcamp-5c69669756-hmc69   1/1       Running   0          8m<br>$ kubectl get services -l = run=kubernetes-bootcamp<br>error: name cannot be provided when a selector is specified<br>$ kubectl get services -l run=kubernetes-bootcamp<br>NAME                  TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE<br>kubernetes-bootcamp   NodePort   10.99.175.225   <none>        8080:32172/TCP   6m</none></p>
+<p>tl label pod $POD_NAME app=v1 pod “kubernetes-bootcamp-5c69669756-hmc69” labeled<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">-- 新增标签</span><br></pre></td></tr></table></figure></p>
+<p>$ kubectl label pod $POD_NAME app=v1<br>pod “kubernetes-bootcamp-5c69669756-hmc69” labeled<br>$ kubectl describe pods $POD_NAME<br>Name:           kubernetes-bootcamp-5c69669756-hmc69<br>Namespace:      default<br>Node:           minikube/172.17.0.11<br>Start Time:     Tue, 17 Jul 2018 05:20:35 +0000<br>Labels:         app=v1<br>                pod-template-hash=1725225312<br>                run=kubernetes-bootcamp<br>$ kubectl get pods -l app=v1<br>NAME                                   READY     STATUS    RESTARTS   AGE<br>kubernetes-bootcamp-5c69669756-hmc69   1/1       Running   0          11m<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">-- 删除服务</span><br></pre></td></tr></table></figure></p>
+<p>$ kubectl get services<br>NAME                  TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)     AGE<br>kubernetes            ClusterIP   10.96.0.1       <none>        443/TCP     12m<br>kubernetes-bootcamp   NodePort    10.99.175.225   <none>        8080:32172/TCP   10m<br>$ kubectl delete service -l run=kubernetes-bootcamp<br>service “kubernetes-bootcamp” deleted<br>$ kubectl get services<br>NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE<br>kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   12m<br><code>`</code></none></none></none></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/03/28/kubernetes_2/" data-id="ck9xwwdbf000tx0f5mn8owq1s" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kubernetes/">Kubernetes</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/03/28/kubernetes_1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Kubernetes 学习笔记 （基础）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/03/28/微服务框架技术栈之Protocol Buffer/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">微服务框架技术栈之Protocol Buffer</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Envoy-grpc-restful/">Envoy grpc restful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-NSQ/">GO Grpc NSQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-tracing/">GO Grpc tracing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-tracing-jaeger/">GO Grpc tracing jaeger</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-generate/">GO generate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-interceptor-JWT/">GO interceptor JWT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-json/">GO json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-权限管理/">GO 权限管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git-fork、pr/">Git fork、pr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kubernetes/">Kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Protocol-Buffer/">Protocol Buffer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gRPC/">gRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protoful/">protoful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务/">微服务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务-GRPC/">微服务 GRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/端口/">端口</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Elasticsearch/" style="font-size: 10px;">Elasticsearch</a> <a href="/tags/Envoy-grpc-restful/" style="font-size: 10px;">Envoy grpc restful</a> <a href="/tags/GO-Grpc-NSQ/" style="font-size: 10px;">GO Grpc NSQ</a> <a href="/tags/GO-Grpc-tracing/" style="font-size: 10px;">GO Grpc tracing</a> <a href="/tags/GO-Grpc-tracing-jaeger/" style="font-size: 10px;">GO Grpc tracing jaeger</a> <a href="/tags/GO-generate/" style="font-size: 10px;">GO generate</a> <a href="/tags/GO-interceptor-JWT/" style="font-size: 10px;">GO interceptor JWT</a> <a href="/tags/GO-json/" style="font-size: 10px;">GO json</a> <a href="/tags/GO-权限管理/" style="font-size: 10px;">GO 权限管理</a> <a href="/tags/Git-fork、pr/" style="font-size: 10px;">Git fork、pr</a> <a href="/tags/Kubernetes/" style="font-size: 15px;">Kubernetes</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/tags/Protocol-Buffer/" style="font-size: 10px;">Protocol Buffer</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/Redux/" style="font-size: 10px;">Redux</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/gRPC/" style="font-size: 10px;">gRPC</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/protoful/" style="font-size: 10px;">protoful</a> <a href="/tags/微服务/" style="font-size: 20px;">微服务</a> <a href="/tags/微服务-GRPC/" style="font-size: 15px;">微服务 GRPC</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/05/08/docker_笔记/">docker 笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/08/Nginx 基础/">Nginx 基础</a>
+          </li>
+        
+          <li>
+            <a href="/2019/11/25/GO-jaeger-es/">使用es 来存放 jaeger</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/25/Git fork、pr的开发模式/">Git fork、pr的开发模式</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/02/GO-json/">GO json的操作</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Felix<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
