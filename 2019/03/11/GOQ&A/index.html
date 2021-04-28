@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>记录一些GO的常见问题 | Felix Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="###空struct{} 的使用 空结构体 struct{} 可以用来节省内存 空结构体的特点:1、不占用内存；2、地址不变  如果使用的是map，而且map又很长，通常会节省不少资源  空struct{}也在向别人表明，这里并不需要一个值   比较####结构体的比较  如果结构体的所有成员变量都是可比较的，那么结构体就可比较  如果结构体中存在不可比较的成员变量，那么结构体就不能比较   ##">
+<meta name="keywords" content="GO Q&amp;A">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记录一些GO的常见问题">
+<meta property="og:url" content="http://yoursite.com/2019/03/11/GOQ&A/index.html">
+<meta property="og:site_name" content="Felix Blog">
+<meta property="og:description" content="###空struct{} 的使用 空结构体 struct{} 可以用来节省内存 空结构体的特点:1、不占用内存；2、地址不变  如果使用的是map，而且map又很长，通常会节省不少资源  空struct{}也在向别人表明，这里并不需要一个值   比较####结构体的比较  如果结构体的所有成员变量都是可比较的，那么结构体就可比较  如果结构体中存在不可比较的成员变量，那么结构体就不能比较   ##">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-12-30T01:24:46.485Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="记录一些GO的常见问题">
+<meta name="twitter:description" content="###空struct{} 的使用 空结构体 struct{} 可以用来节省内存 空结构体的特点:1、不占用内存；2、地址不变  如果使用的是map，而且map又很长，通常会节省不少资源  空struct{}也在向别人表明，这里并不需要一个值   比较####结构体的比较  如果结构体的所有成员变量都是可比较的，那么结构体就可比较  如果结构体中存在不可比较的成员变量，那么结构体就不能比较   ##">
+  
+    <link rel="alternate" href="/atom.xml" title="Felix Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Felix Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-GOQ&amp;A" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/11/GOQ&A/" class="article-date">
+  <time datetime="2019-03-10T16:00:00.000Z" itemprop="datePublished">2019-03-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      记录一些GO的常见问题
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>###空struct{} 的使用</p>
+<h6 id="空结构体-struct-可以用来节省内存"><a href="#空结构体-struct-可以用来节省内存" class="headerlink" title="空结构体 struct{} 可以用来节省内存"></a>空结构体 struct{} 可以用来节省内存</h6><ul>
+<li><p>空结构体的特点:1、不占用内存；2、地址不变</p>
+</li>
+<li><p>如果使用的是map，而且map又很长，通常会节省不少资源</p>
+</li>
+<li><p>空struct{}也在向别人表明，这里并不需要一个值</p>
+</li>
+</ul>
+<h3 id="比较"><a href="#比较" class="headerlink" title="比较"></a>比较</h3><p>####结构体的比较</p>
+<ul>
+<li><p>如果结构体的所有成员变量都是可比较的，那么结构体就可比较</p>
+</li>
+<li><p>如果结构体中存在不可比较的成员变量，那么结构体就不能比较</p>
+</li>
+</ul>
+<p>####struct可以作为map的key么？</p>
+<ul>
+<li>struct必须是可比较的，才能作为key，否则编译时报错</li>
+</ul>
+<p>####interface的比较</p>
+<ul>
+<li>接口值可以用 == 和 != 相比较。两个接口值相等，仅当他们都是nil，或者他们动态类型相同，并且动态的值也根据这个动态类型的==相等。</li>
+</ul>
+<h4 id="Golang不可以比较类型："><a href="#Golang不可以比较类型：" class="headerlink" title="Golang不可以比较类型："></a>Golang不可以比较类型：</h4><ul>
+<li>slice（切片）、map（key-value集合）、func（函数），当接口的原始类型是这三个的时候，比较会报panic。</li>
+</ul>
+<h3 id="TCP和UDP的区别及应用场景"><a href="#TCP和UDP的区别及应用场景" class="headerlink" title="TCP和UDP的区别及应用场景"></a>TCP和UDP的区别及应用场景</h3><ul>
+<li>tcp有流量控制，udp没有</li>
+<li>tcp的头部比20bytes，udp8byres</li>
+</ul>
+<h5 id="面向连接VS无连接"><a href="#面向连接VS无连接" class="headerlink" title="面向连接VS无连接"></a>面向连接VS无连接</h5><ul>
+<li>TCP建立一个连接需要3次握手IP数据包，断开连接需要4次握手。另外断开连接时发起方可能进入TIME_WAIT状态长达数分钟（视系统设置，windows一般为120秒），在此状态下连接（端口）无法被释放。</li>
+<li>UDP不需要建立连接，可以直接发起。</li>
+</ul>
+<h5 id="可靠VS不可靠"><a href="#可靠VS不可靠" class="headerlink" title="可靠VS不可靠"></a>可靠VS不可靠</h5><p>TCP利用握手、ACK和重传机制，udp没有。</p>
+<ul>
+<li>校验和（校验数据是否损坏）；</li>
+<li>定时器（分组丢失则重传）；</li>
+<li>序列号（用于检测丢失的分组和重复的分组）；</li>
+<li>确认应答ACK（接收方告知发送方正确接收分组以及期望的下一个分组）；</li>
+<li>否定确认（接收方通知发送方未被正确接收的分组）；</li>
+<li>窗口和流水线（用于增加信道的吞吐量）。（窗口大小：无需等待确认应答而可以继续发送数据的最大值）</li>
+</ul>
+<h4 id="有序性"><a href="#有序性" class="headerlink" title="有序性"></a>有序性</h4><ul>
+<li>TCP利用seq序列号对包进行排序，udp没有。</li>
+</ul>
+<h4 id="面向字节流vs面向报文"><a href="#面向字节流vs面向报文" class="headerlink" title="面向字节流vs面向报文"></a>面向字节流vs面向报文</h4><ul>
+<li><p>面向报文的传输方式是应用层交给UDP多长的报文，UDP就照样发送，即一次发送一个报文。因此，应用程序必须选择合适大小的报文。若报文太长，则IP层需要分片。UDP对应用层交下来的报文，既不合并，也不拆分，而是保留这些报文的边界。这也就是说，应用层交给UDP多长的报文，UDP就照样发送，即一次发送一个报文。（一个upd的最大报文长度2^16-1-20-8,20是ip报文头，8是udp报文头）</p>
+</li>
+<li><p>面向字节流的话，虽然应用程序和TCP的交互是一次一个数据块（大小不等），但TCP把应用程序看成是一连串的无结构的字节流。TCP有一个缓冲，当应用程序传送的数据块太长，TCP就可以把它划分短一些再传送。如果应用程序一次只发送一个字节，TCP也可以等待积累有足够多的字节后再构成报文段发送出去。</p>
+</li>
+</ul>
+<h4 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h4><ul>
+<li><p>TCP：效率要求相对低，但对准确性要求相对高的场景。因为传输中需要对数据确认、重发、排序等操作，相比之下效率没有UDP高。举几个例子：文件传输（准确高要求高、但是速度可以相对慢）、接受邮件、远程登录。</p>
+</li>
+<li><p>UDP：效率要求相对高，对准确性要求相对低的场景。举几个例子：QQ聊天、在线视频、网络语音电话（即时通讯，速度要求高，但是出现偶尔断续不是太大问题，并且此处完全不可以使用重发机制）、广播通信（广播、多播）。</p>
+</li>
+</ul>
+<h5 id="select是随机的还是顺序的？"><a href="#select是随机的还是顺序的？" class="headerlink" title="select是随机的还是顺序的？"></a>select是随机的还是顺序的？</h5><p>select会随机选择一个可用通道做收发操作</p>
+<h5 id="Go语言局部变量分配在栈还是堆？"><a href="#Go语言局部变量分配在栈还是堆？" class="headerlink" title="Go语言局部变量分配在栈还是堆？"></a>Go语言局部变量分配在栈还是堆？</h5><p>Go语言编译器会自动决定把一个变量放在栈还是放在堆，编译器会做逃逸分析，当发现变量的作用域没有跑出函数范围，就可以在栈上，反之则必须分配在堆。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/03/11/GOQ&A/" data-id="cko188a66002fi8f59deki6d7" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GO-Q-A/">GO Q&A</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/03/11/GO-Tracing/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          基于jaeger和tracing实现 grpc调用链跟踪模块
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/03/02/GO-GRPC-GATEWAY/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">GO-grpc-Gateway 的安装与编译(WIN环境)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch-logstash/">Elasticsearch logstash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Envoy-grpc-restful/">Envoy grpc restful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-NSQ/">GO Grpc NSQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-tracing/">GO Grpc tracing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-tracing-jaeger/">GO Grpc tracing jaeger</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Q-A/">GO Q&A</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-generate/">GO generate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-interceptor-JWT/">GO interceptor JWT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-json/">GO json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-权限管理/">GO 权限管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git-fork、pr/">Git fork、pr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kubernetes/">Kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Protocol-Buffer/">Protocol Buffer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gRPC/">gRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/istio/">istio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protoful/">protoful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务/">微服务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务-GRPC/">微服务 GRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/端口/">端口</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Elasticsearch/" style="font-size: 10px;">Elasticsearch</a> <a href="/tags/Elasticsearch-logstash/" style="font-size: 10px;">Elasticsearch logstash</a> <a href="/tags/Envoy-grpc-restful/" style="font-size: 10px;">Envoy grpc restful</a> <a href="/tags/GO-Grpc-NSQ/" style="font-size: 10px;">GO Grpc NSQ</a> <a href="/tags/GO-Grpc-tracing/" style="font-size: 10px;">GO Grpc tracing</a> <a href="/tags/GO-Grpc-tracing-jaeger/" style="font-size: 10px;">GO Grpc tracing jaeger</a> <a href="/tags/GO-Q-A/" style="font-size: 10px;">GO Q&A</a> <a href="/tags/GO-generate/" style="font-size: 10px;">GO generate</a> <a href="/tags/GO-interceptor-JWT/" style="font-size: 10px;">GO interceptor JWT</a> <a href="/tags/GO-json/" style="font-size: 10px;">GO json</a> <a href="/tags/GO-权限管理/" style="font-size: 10px;">GO 权限管理</a> <a href="/tags/Git-fork、pr/" style="font-size: 10px;">Git fork、pr</a> <a href="/tags/Kubernetes/" style="font-size: 15px;">Kubernetes</a> <a href="/tags/MySQL/" style="font-size: 15px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/tags/Protocol-Buffer/" style="font-size: 10px;">Protocol Buffer</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/Redux/" style="font-size: 10px;">Redux</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/gRPC/" style="font-size: 10px;">gRPC</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/json/" style="font-size: 15px;">json</a> <a href="/tags/protoful/" style="font-size: 10px;">protoful</a> <a href="/tags/微服务/" style="font-size: 20px;">微服务</a> <a href="/tags/微服务-GRPC/" style="font-size: 15px;">微服务 GRPC</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/04/28/mysql-practice/">MySQL 记录一些祖传SQL脚本</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/08/Nginx 基础/">Nginx 基础</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/08/docker_笔记/">docker 笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2019/11/25/GO-jaeger-es/">使用es 来存放 jaeger</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/25/Git fork、pr的开发模式/">Git fork、pr的开发模式</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Felix<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Elasticsearch （二） | Felix Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="logstashlogstash基本语法组成logstash主要由三部分组成：input、filter、output。 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747">
+<meta name="keywords" content="Elasticsearch logstash">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Elasticsearch （二）">
+<meta property="og:url" content="http://yoursite.com/2019/03/16/Elasticsearch （二）/index.html">
+<meta property="og:site_name" content="Felix Blog">
+<meta property="og:description" content="logstashlogstash基本语法组成logstash主要由三部分组成：input、filter、output。 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-05-12T07:17:11.245Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Elasticsearch （二）">
+<meta name="twitter:description" content="logstashlogstash基本语法组成logstash主要由三部分组成：input、filter、output。 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747">
+  
+    <link rel="alternate" href="/atom.xml" title="Felix Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Felix Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Elasticsearch （二）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/16/Elasticsearch （二）/" class="article-date">
+  <time datetime="2019-03-15T16:00:00.000Z" itemprop="datePublished">2019-03-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Elasticsearch （二）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="logstash"><a href="#logstash" class="headerlink" title="logstash"></a>logstash</h2><h4 id="logstash基本语法组成"><a href="#logstash基本语法组成" class="headerlink" title="logstash基本语法组成"></a>logstash基本语法组成</h4><p>logstash主要由三部分组成：input、filter、output。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br></pre></td><td class="code"><pre><span class="line">//输入插件</span><br><span class="line">input&#123;</span><br><span class="line"></span><br><span class="line">    //文件类型</span><br><span class="line">    file&#123;</span><br><span class="line">	#path属性接受的参数是一个数组，其含义是标明需要读取的文件位置</span><br><span class="line">	path =&gt; [‘pathA’，‘pathB’]</span><br><span class="line"></span><br><span class="line">	#表示多就去path路径下查看是够有新的文件产生。默认是15秒检查一次。</span><br><span class="line">	discover_interval =&gt; 15</span><br><span class="line"></span><br><span class="line">	#排除那些文件，也就是不去读取那些文件</span><br><span class="line">	exclude =&gt; [‘fileName1’,‘fileNmae2’]</span><br><span class="line"></span><br><span class="line">	#被监听的文件多久没更新后断开连接不在监听，默认是一个小时。</span><br><span class="line">	close_older =&gt; 3600</span><br><span class="line"></span><br><span class="line">	#在每次检查文件列 表的时候， 如果一个文件的最后 修改时间 超过这个值， 就忽略这个文件。 默认一天。</span><br><span class="line">	ignore_older =&gt; 86400</span><br><span class="line"></span><br><span class="line">	#logstash 每隔多 久检查一次被监听文件状态（ 是否有更新） ， 默认是 1 秒。</span><br><span class="line">	stat_interval =&gt; 1</span><br><span class="line"></span><br><span class="line">	#sincedb记录数据上一次的读取位置的一个index</span><br><span class="line">	sincedb_path =&gt; ’$HOME/. sincedb‘</span><br><span class="line"></span><br><span class="line">	#logstash 从什么 位置开始读取文件数据， 默认是结束位置 也可以设置为：beginning 从头开始</span><br><span class="line">	start_position =&gt; ‘beginning’</span><br><span class="line"></span><br><span class="line">	#注意：这里需要提醒大家的是，如果你需要每次都从同开始读取文件的话，关设置start_position =&gt; beginning是没有用的，你可以选择sincedb_path 定义为 /dev/null</span><br><span class="line">    &#125;  </span><br><span class="line">    </span><br><span class="line">    //数据库类型</span><br><span class="line">    jdbc&#123;</span><br><span class="line">	#jdbc sql server 驱动,各个数据库都有对应的驱动，需自己下载</span><br><span class="line">	jdbc_driver_library =&gt; &quot;/etc/logstash/driver.d/sqljdbc_2.0/enu/sqljdbc4.jar&quot;</span><br><span class="line"></span><br><span class="line">	#jdbc class 不同数据库有不同的 class 配置</span><br><span class="line">	jdbc_driver_class =&gt; &quot;com.microsoft.sqlserver.jdbc.SQLServerDriver&quot;</span><br><span class="line"></span><br><span class="line">	#配置数据库连接 ip 和端口，以及数据库    </span><br><span class="line">	jdbc_connection_string =&gt; &quot;jdbc:sqlserver://200.200.0.18:1433;databaseName=test_db&quot;</span><br><span class="line"></span><br><span class="line">	#配置数据库用户名</span><br><span class="line">	jdbc_user =&gt;   </span><br><span class="line"></span><br><span class="line">	#配置数据库密码</span><br><span class="line">	jdbc_password =&gt;</span><br><span class="line"></span><br><span class="line">	#上面这些都不重要，要是这些都看不懂的话，你的老板估计要考虑换人了。重要的是接下来的内容。</span><br><span class="line">	# 定时器 多久执行一次SQL，默认是一分钟</span><br><span class="line">	# schedule =&gt; 分 时 天 月 年  </span><br><span class="line">	# schedule =&gt; * 22  *  *  * 表示每天22点执行一次</span><br><span class="line">	schedule =&gt; &quot;* * * * *&quot;</span><br><span class="line"></span><br><span class="line">	#是否清除 last_run_metadata_path 的记录,如果为真那么每次都相当于从头开始查询所有的数据库记录</span><br><span class="line">	clean_run =&gt; false</span><br><span class="line"></span><br><span class="line">	#是否需要记录某个column 的值,如果 record_last_run 为真,可以自定义我们需要表的字段名称，</span><br><span class="line">	#此时该参数就要为 true. 否则默认 track 的是 timestamp 的值.</span><br><span class="line">	use_column_value =&gt; true</span><br><span class="line"></span><br><span class="line">	#如果 use_column_value 为真,需配置此参数. 这个参数就是数据库给出的一个字段名称。当然该字段必须是递增的，可以是 数据库的数据时间这类的</span><br><span class="line">	tracking_column =&gt; create_time</span><br><span class="line"></span><br><span class="line">	#是否记录上次执行结果, 如果为真,将会把上次执行到的 tracking_column 字段的值记录下来,保存到 last_run_metadata_path 指定的文件中</span><br><span class="line">	record_last_run =&gt; true</span><br><span class="line"></span><br><span class="line">	#们只需要在 SQL 语句中 WHERE MY_ID &gt; :last_sql_value 即可. 其中 :last_sql_value 取得就是该文件中的值</span><br><span class="line">	last_run_metadata_path =&gt; &quot;/etc/logstash/run_metadata.d/my_info&quot;</span><br><span class="line"></span><br><span class="line">	#是否将字段名称转小写。</span><br><span class="line">	#这里有个小的提示，如果你这前就处理过一次数据，并且在Kibana中有对应的搜索需求的话，还是改为true，</span><br><span class="line">	#因为默认是true，并且Kibana是大小写区分的。准确的说应该是ES大小写区分</span><br><span class="line">	lowercase_column_names =&gt; false</span><br><span class="line"></span><br><span class="line">	#你的SQL的位置，当然，你的SQL也可以直接写在这里。</span><br><span class="line">	#statement =&gt; SELECT * FROM tabeName t WHERE  t.creat_time &gt; :last_sql_value</span><br><span class="line">	statement_filepath =&gt; &quot;/etc/logstash/statement_file.d/my_info.sql&quot;</span><br><span class="line"></span><br><span class="line">	#数据类型，标明你属于那一方势力。单了ES哪里好给你安排不同的山头。</span><br><span class="line">	type =&gt; &quot;my_info&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    #注意：外载的SQL文件就是一个文本文件就可以了，还有需要注意的是，一个jdbc&#123;&#125;插件就只能处理一个SQL语句，</span><br><span class="line">    #如果你有多个SQL需要处理的话，只能在重新建立一个jdbc&#123;&#125;插件。</span><br><span class="line"></span><br><span class="line">    //redis</span><br><span class="line">    redis &#123;</span><br><span class="line">	codec =&gt;             #可选项，默认是plain，可设置其他编码方式。</span><br><span class="line"></span><br><span class="line">	discover_interval =&gt; #可选项，logstash多久检查一下path下有新文件，默认15s。</span><br><span class="line"></span><br><span class="line">	exclude =&gt;           #可选项，排除path下不想监听的文件。</span><br><span class="line"></span><br><span class="line">	sincedb_path =&gt;      #可选项，记录文件以及文件读取信息位置的数据文件。~/.sincedb_xxxx</span><br><span class="line"></span><br><span class="line">	sincedb_write_interval =&gt; #可选项，logstash多久写一次sincedb文件，默认15s.</span><br><span class="line"></span><br><span class="line">	stat_interval =&gt;          #可选项，logstash多久检查一次被监听文件的变化，默认1s。</span><br><span class="line"></span><br><span class="line">	start_position =&gt;         #可选项，logstash从哪个位置读取文件数据，默认从尾部，值为：end。初次导入，设置为：beginning。</span><br><span class="line"></span><br><span class="line">	path =&gt;                   #必选项，配置文件路径，可定义多个。</span><br><span class="line"></span><br><span class="line">	tags =&gt;                   #可选项，在数据处理过程中，由具体的插件来添加或者删除的标记。</span><br><span class="line"></span><br><span class="line">	type =&gt;                   #可选项，自定义处理时间类型。比如nginxlog。</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">filter&#123;</span><br><span class="line">	过滤器插件</span><br><span class="line">	过滤器提供的并不单单是过滤的功能，还可以对进入过滤器的原始数据进行复杂的逻辑处理，甚至添加独特的新事件到后续流程中</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">outer&#123;</span><br><span class="line"></span><br><span class="line">　　输出插件</span><br><span class="line">    elasticsearch &#123;</span><br><span class="line">        id =&gt; &quot;log&quot;</span><br><span class="line">        hosts =&gt; [&quot;elasticsearch:9200&quot;]</span><br><span class="line">        index =&gt; &quot;logstash-%&#123;type&#125;-%&#123;+YYYY.MM.dd&#125;&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/03/16/Elasticsearch （二）/" data-id="cko188a1u000ui8f54095skh5" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Elasticsearch-logstash/">Elasticsearch logstash</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/03/16/Elasticsearch （一）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Elasticsearch （一）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/03/16/protoful - 各种文件生成（手记）/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">protoful 集中记录</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch-logstash/">Elasticsearch logstash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Envoy-grpc-restful/">Envoy grpc restful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-NSQ/">GO Grpc NSQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-tracing/">GO Grpc tracing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-tracing-jaeger/">GO Grpc tracing jaeger</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Q-A/">GO Q&A</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-generate/">GO generate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-interceptor-JWT/">GO interceptor JWT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-json/">GO json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-权限管理/">GO 权限管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git-fork、pr/">Git fork、pr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kubernetes/">Kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Protocol-Buffer/">Protocol Buffer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gRPC/">gRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/istio/">istio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protoful/">protoful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务/">微服务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务-GRPC/">微服务 GRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/端口/">端口</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Elasticsearch/" style="font-size: 10px;">Elasticsearch</a> <a href="/tags/Elasticsearch-logstash/" style="font-size: 10px;">Elasticsearch logstash</a> <a href="/tags/Envoy-grpc-restful/" style="font-size: 10px;">Envoy grpc restful</a> <a href="/tags/GO-Grpc-NSQ/" style="font-size: 10px;">GO Grpc NSQ</a> <a href="/tags/GO-Grpc-tracing/" style="font-size: 10px;">GO Grpc tracing</a> <a href="/tags/GO-Grpc-tracing-jaeger/" style="font-size: 10px;">GO Grpc tracing jaeger</a> <a href="/tags/GO-Q-A/" style="font-size: 10px;">GO Q&A</a> <a href="/tags/GO-generate/" style="font-size: 10px;">GO generate</a> <a href="/tags/GO-interceptor-JWT/" style="font-size: 10px;">GO interceptor JWT</a> <a href="/tags/GO-json/" style="font-size: 10px;">GO json</a> <a href="/tags/GO-权限管理/" style="font-size: 10px;">GO 权限管理</a> <a href="/tags/Git-fork、pr/" style="font-size: 10px;">Git fork、pr</a> <a href="/tags/Kubernetes/" style="font-size: 15px;">Kubernetes</a> <a href="/tags/MySQL/" style="font-size: 15px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/tags/Protocol-Buffer/" style="font-size: 10px;">Protocol Buffer</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/Redux/" style="font-size: 10px;">Redux</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/gRPC/" style="font-size: 10px;">gRPC</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/json/" style="font-size: 15px;">json</a> <a href="/tags/protoful/" style="font-size: 10px;">protoful</a> <a href="/tags/微服务/" style="font-size: 20px;">微服务</a> <a href="/tags/微服务-GRPC/" style="font-size: 15px;">微服务 GRPC</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/04/28/mysql-practice/">MySQL 记录一些祖传SQL脚本</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/08/Nginx 基础/">Nginx 基础</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/08/docker_笔记/">docker 笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2019/11/25/GO-jaeger-es/">使用es 来存放 jaeger</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/25/Git fork、pr的开发模式/">Git fork、pr的开发模式</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Felix<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

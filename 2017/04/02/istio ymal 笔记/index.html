@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>istio ymal笔记 | Felix Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="唯一性判断apiVersion + kind + name + namespace 指令:对资源进行配置12kubectl apply -f dashboard.yamlkubectl delete -f dashboard.yaml YAML配置文件管理对象1234567891011121314151617181920212223242526272829对象管理：# 创建deployment资源">
+<meta name="keywords" content="istio">
+<meta property="og:type" content="article">
+<meta property="og:title" content="istio ymal笔记">
+<meta property="og:url" content="http://yoursite.com/2017/04/02/istio ymal 笔记/index.html">
+<meta property="og:site_name" content="Felix Blog">
+<meta property="og:description" content="唯一性判断apiVersion + kind + name + namespace 指令:对资源进行配置12kubectl apply -f dashboard.yamlkubectl delete -f dashboard.yaml YAML配置文件管理对象1234567891011121314151617181920212223242526272829对象管理：# 创建deployment资源">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2021-03-19T06:12:00.785Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="istio ymal笔记">
+<meta name="twitter:description" content="唯一性判断apiVersion + kind + name + namespace 指令:对资源进行配置12kubectl apply -f dashboard.yamlkubectl delete -f dashboard.yaml YAML配置文件管理对象1234567891011121314151617181920212223242526272829对象管理：# 创建deployment资源">
+  
+    <link rel="alternate" href="/atom.xml" title="Felix Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Felix Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-istio ymal 笔记" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/02/istio ymal 笔记/" class="article-date">
+  <time datetime="2017-04-01T16:00:00.000Z" itemprop="datePublished">2017-04-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      istio ymal笔记
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h5 id="唯一性判断"><a href="#唯一性判断" class="headerlink" title="唯一性判断"></a>唯一性判断</h5><p>apiVersion + kind + name + namespace</p>
+<h5 id="指令"><a href="#指令" class="headerlink" title="指令:"></a>指令:</h5><h6 id="对资源进行配置"><a href="#对资源进行配置" class="headerlink" title="对资源进行配置"></a>对资源进行配置</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f dashboard.yaml</span><br><span class="line">kubectl delete -f dashboard.yaml</span><br></pre></td></tr></table></figure>
+<h6 id="YAML配置文件管理对象"><a href="#YAML配置文件管理对象" class="headerlink" title="YAML配置文件管理对象"></a>YAML配置文件管理对象</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">对象管理：</span><br><span class="line"># 创建deployment资源</span><br><span class="line">kubectl create -f nginx-deployment.yaml</span><br><span class="line"># 查看deployment</span><br><span class="line">kubectl get deploy</span><br><span class="line"># 查看ReplicaSet</span><br><span class="line">kubectl get rs</span><br><span class="line"># 查看pods所有标签</span><br><span class="line">kubectl get pods --show-labels</span><br><span class="line"># 根据标签查看pods</span><br><span class="line">kubectl get pods -l app=nginx</span><br><span class="line"># 滚动更新镜像</span><br><span class="line">kubectl set image deployment/nginx-deployment nginx=nginx:1.11</span><br><span class="line">或者</span><br><span class="line">kubectl edit deployment/nginx-deployment</span><br><span class="line">或者</span><br><span class="line">kubectl apply -f nginx-deployment.yaml</span><br><span class="line"># 实时观察发布状态：</span><br><span class="line">kubectl rollout status deployment/nginx-deployment</span><br><span class="line"># 查看deployment历史修订版本</span><br><span class="line">kubectl rollout history deployment/nginx-deployment</span><br><span class="line">kubectl rollout history deployment/nginx-deployment --revision=3</span><br><span class="line"># 回滚到以前版本</span><br><span class="line">kubectl rollout undo deployment/nginx-deployment</span><br><span class="line">kubectl rollout undo deployment/nginx-deployment --to-revision=3</span><br><span class="line"># 扩容deployment的Pod副本数量</span><br><span class="line">kubectl scale deployment nginx-deployment --replicas=10</span><br><span class="line"># 设置启动扩容/缩容</span><br><span class="line">kubectl autoscale deployment nginx-deployment --min=10 --max=15 --cpu-percent=80</span><br></pre></td></tr></table></figure>
+<h5 id="（流量管理-配置服务在网关上的路由）"><a href="#（流量管理-配置服务在网关上的路由）" class="headerlink" title="（流量管理/配置服务在网关上的路由）"></a>（流量管理/配置服务在网关上的路由）</h5><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">networking.istio.io/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">VirtualService</span>     <span class="comment"># virtualservice（流量管理/配置服务在网关上的路由）</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">admin-asset</span>      <span class="comment"># 注册的服务名称</span></span><br><span class="line"><span class="attr">  namespace:</span> <span class="string">$NS</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  hosts:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">"*"</span>                <span class="comment"># kubernetes下对应的service</span></span><br><span class="line"><span class="attr">  gateways:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">istio-system/api-gateway</span>  <span class="comment"># 选择网关</span></span><br><span class="line"><span class="attr">  http:</span></span><br><span class="line"><span class="attr">    - match:</span>                    <span class="comment"># 定义服务匹配模式</span></span><br><span class="line"><span class="attr">        - uri:</span>                  <span class="comment"># 以uri的方式</span></span><br><span class="line"><span class="attr">            prefix:</span> <span class="string">"/admin/device"</span>  <span class="comment"># prefix代表前缀，可以匹配到二级子目录上 (exact代表绝对路径，只能匹配定义的字段)</span></span><br><span class="line"><span class="attr">      route:</span></span><br><span class="line"><span class="attr">        - destination:</span></span><br><span class="line"><span class="attr">            host:</span> <span class="string">admin-asset</span></span><br><span class="line"><span class="attr">            port:</span></span><br><span class="line"><span class="attr">              number:</span> <span class="number">80</span></span><br><span class="line"><span class="attr">    - match:</span></span><br><span class="line"><span class="attr">        - uri:</span>                 </span><br><span class="line"><span class="attr">            prefix:</span> <span class="string">"/admin.AssetService"</span></span><br><span class="line"><span class="attr">        - uri:</span></span><br><span class="line"><span class="attr">            prefix:</span> <span class="string">"/admin.DeviceService"</span></span><br><span class="line"><span class="attr">        - uri:</span></span><br><span class="line"><span class="attr">            prefix:</span> <span class="string">"/admin.SpaceService"</span></span><br><span class="line"><span class="attr">        - uri:</span></span><br><span class="line"><span class="attr">            prefix:</span> <span class="string">"/admin.UsageService"</span></span><br><span class="line"><span class="attr">        - uri:</span></span><br><span class="line"><span class="attr">            prefix:</span> <span class="string">"/admin.AccessService"</span></span><br><span class="line"><span class="attr">      route:</span>                         <span class="comment"># 选择路由的服务</span></span><br><span class="line"><span class="attr">        - destination:</span></span><br><span class="line"><span class="attr">            host:</span> <span class="string">admin-asset</span>        <span class="comment"># 已注册istio服务</span></span><br><span class="line"><span class="attr">            port:</span></span><br><span class="line"><span class="attr">              number:</span> <span class="number">6443</span></span><br><span class="line"><span class="attr">      retries:</span></span><br><span class="line"><span class="attr">        attempts:</span> <span class="number">3</span></span><br><span class="line"><span class="attr">        perTryTimeout:</span> <span class="number">60</span><span class="string">s</span></span><br><span class="line"><span class="attr">        retryOn:</span> <span class="string">unavailable,reset</span></span><br><span class="line"><span class="attr">      corsPolicy:</span></span><br><span class="line"><span class="attr">        allowOrigin:</span></span><br><span class="line"><span class="bullet">          -</span> <span class="string">"*"</span></span><br><span class="line"><span class="attr">        allowMethods:</span></span><br><span class="line"><span class="bullet">          -</span> <span class="string">POST</span></span><br><span class="line"><span class="bullet">          -</span> <span class="string">GET</span></span><br><span class="line"><span class="bullet">          -</span> <span class="string">OPTIONS</span></span><br><span class="line"><span class="bullet">          -</span> <span class="string">PUT</span></span><br><span class="line"><span class="bullet">          -</span> <span class="string">DELETE</span></span><br><span class="line"><span class="attr">        allowHeaders:</span></span><br><span class="line"><span class="bullet">          -</span> <span class="string">grpc-timeout</span></span><br><span class="line"><span class="bullet">          -</span> <span class="string">content-type</span></span><br><span class="line"><span class="bullet">          -</span> <span class="string">keep-alive</span></span><br><span class="line"><span class="bullet">          -</span> <span class="string">user-agent</span></span><br><span class="line"><span class="bullet">          -</span> <span class="string">cache-control</span></span><br><span class="line"><span class="bullet">          -</span> <span class="string">content-type</span></span><br><span class="line"><span class="bullet">          -</span> <span class="string">content-transfer-encoding</span></span><br><span class="line"><span class="bullet">          -</span> <span class="string">custom-header-1</span></span><br><span class="line"><span class="bullet">          -</span> <span class="string">x-accept-content-transfer-encoding</span></span><br><span class="line"><span class="bullet">          -</span> <span class="string">x-accept-response-streaming</span></span><br><span class="line"><span class="bullet">          -</span> <span class="string">x-user-agent</span></span><br><span class="line"><span class="bullet">          -</span> <span class="string">x-grpc-web</span></span><br><span class="line"><span class="bullet">          -</span> <span class="string">x-auth-token</span></span><br><span class="line"><span class="bullet">          -</span> <span class="string">x-org</span></span><br><span class="line"><span class="attr">        maxAge:</span> <span class="number">24</span><span class="string">h</span></span><br><span class="line"><span class="attr">        exposeHeaders:</span></span><br><span class="line"><span class="bullet">          -</span> <span class="string">custom-header-1</span></span><br><span class="line"><span class="bullet">          -</span> <span class="string">grpc-status</span></span><br><span class="line"><span class="bullet">          -</span> <span class="string">grpc-message</span></span><br><span class="line"><span class="bullet">          -</span> <span class="string">x-request-id</span></span><br><span class="line"><span class="bullet">          -</span> <span class="string">x-err-code</span></span><br><span class="line"><span class="attr">        allowCredentials:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<h4 id="EnvoyFilter扩展Istio"><a href="#EnvoyFilter扩展Istio" class="headerlink" title="EnvoyFilter扩展Istio"></a>EnvoyFilter扩展Istio</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># https://www.envoyproxy.io/docs/envoy/v1.12.2/api-v2/config/filter/network/http_connection_manager/v2/http_connection_manager.proto.html</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">networking.istio.io/v1alpha3</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">EnvoyFilter</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">custom-istio-conn</span></span><br><span class="line"><span class="attr">  namespace:</span> <span class="string">istio-system</span> <span class="comment"># as defined in meshConfig resource.</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  configPatches:</span></span><br><span class="line"><span class="attr">    - applyTo:</span> <span class="string">NETWORK_FILTER</span></span><br><span class="line"><span class="attr">      match:</span></span><br><span class="line"><span class="attr">        context:</span> <span class="string">GATEWAY</span></span><br><span class="line"><span class="attr">        listener:</span></span><br><span class="line"><span class="attr">          filterChain:</span></span><br><span class="line"><span class="attr">            filter:</span></span><br><span class="line"><span class="attr">              name:</span> <span class="string">envoy.http_connection_manager</span></span><br><span class="line"><span class="attr">      patch:</span></span><br><span class="line"><span class="attr">        operation:</span> <span class="string">MERGE</span></span><br><span class="line"><span class="attr">        value:</span></span><br><span class="line"><span class="attr">          typed_config:</span></span><br><span class="line">            <span class="string">"@type"</span><span class="string">:</span> <span class="string">"type.googleapis.com/envoy.config.filter.network.http_connection_manager.v2.HttpConnectionManager"</span></span><br><span class="line"><span class="attr">            server_name:</span> <span class="string">envoy</span></span><br><span class="line"><span class="attr">            preserve_external_request_id:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/04/02/istio ymal 笔记/" data-id="cko188a6m002ii8f5aashxpgi" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/istio/">istio</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/04/02/hello-world/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Hello World
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch-logstash/">Elasticsearch logstash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Envoy-grpc-restful/">Envoy grpc restful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-NSQ/">GO Grpc NSQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-tracing/">GO Grpc tracing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-tracing-jaeger/">GO Grpc tracing jaeger</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Q-A/">GO Q&A</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-generate/">GO generate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-interceptor-JWT/">GO interceptor JWT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-json/">GO json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-权限管理/">GO 权限管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git-fork、pr/">Git fork、pr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kubernetes/">Kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Protocol-Buffer/">Protocol Buffer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gRPC/">gRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/istio/">istio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protoful/">protoful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务/">微服务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务-GRPC/">微服务 GRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/端口/">端口</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Elasticsearch/" style="font-size: 10px;">Elasticsearch</a> <a href="/tags/Elasticsearch-logstash/" style="font-size: 10px;">Elasticsearch logstash</a> <a href="/tags/Envoy-grpc-restful/" style="font-size: 10px;">Envoy grpc restful</a> <a href="/tags/GO-Grpc-NSQ/" style="font-size: 10px;">GO Grpc NSQ</a> <a href="/tags/GO-Grpc-tracing/" style="font-size: 10px;">GO Grpc tracing</a> <a href="/tags/GO-Grpc-tracing-jaeger/" style="font-size: 10px;">GO Grpc tracing jaeger</a> <a href="/tags/GO-Q-A/" style="font-size: 10px;">GO Q&A</a> <a href="/tags/GO-generate/" style="font-size: 10px;">GO generate</a> <a href="/tags/GO-interceptor-JWT/" style="font-size: 10px;">GO interceptor JWT</a> <a href="/tags/GO-json/" style="font-size: 10px;">GO json</a> <a href="/tags/GO-权限管理/" style="font-size: 10px;">GO 权限管理</a> <a href="/tags/Git-fork、pr/" style="font-size: 10px;">Git fork、pr</a> <a href="/tags/Kubernetes/" style="font-size: 15px;">Kubernetes</a> <a href="/tags/MySQL/" style="font-size: 15px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/tags/Protocol-Buffer/" style="font-size: 10px;">Protocol Buffer</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/Redux/" style="font-size: 10px;">Redux</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/gRPC/" style="font-size: 10px;">gRPC</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/json/" style="font-size: 15px;">json</a> <a href="/tags/protoful/" style="font-size: 10px;">protoful</a> <a href="/tags/微服务/" style="font-size: 20px;">微服务</a> <a href="/tags/微服务-GRPC/" style="font-size: 15px;">微服务 GRPC</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/04/28/mysql-practice/">MySQL 记录一些祖传SQL脚本</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/08/Nginx 基础/">Nginx 基础</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/08/docker_笔记/">docker 笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2019/11/25/GO-jaeger-es/">使用es 来存放 jaeger</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/25/Git fork、pr的开发模式/">Git fork、pr的开发模式</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Felix<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

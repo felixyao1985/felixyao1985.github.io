@@ -62,6 +62,89 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Elasticsearch （二）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/16/Elasticsearch （二）/" class="article-date">
+  <time datetime="2019-03-15T16:00:00.000Z" itemprop="datePublished">2019-03-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/16/Elasticsearch （二）/">Elasticsearch （二）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="logstash"><a href="#logstash" class="headerlink" title="logstash"></a>logstash</h2><h4 id="logstash基本语法组成"><a href="#logstash基本语法组成" class="headerlink" title="logstash基本语法组成"></a>logstash基本语法组成</h4><p>logstash主要由三部分组成：input、filter、output。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br></pre></td><td class="code"><pre><span class="line">//输入插件</span><br><span class="line">input&#123;</span><br><span class="line"></span><br><span class="line">    //文件类型</span><br><span class="line">    file&#123;</span><br><span class="line">	#path属性接受的参数是一个数组，其含义是标明需要读取的文件位置</span><br><span class="line">	path =&gt; [‘pathA’，‘pathB’]</span><br><span class="line"></span><br><span class="line">	#表示多就去path路径下查看是够有新的文件产生。默认是15秒检查一次。</span><br><span class="line">	discover_interval =&gt; 15</span><br><span class="line"></span><br><span class="line">	#排除那些文件，也就是不去读取那些文件</span><br><span class="line">	exclude =&gt; [‘fileName1’,‘fileNmae2’]</span><br><span class="line"></span><br><span class="line">	#被监听的文件多久没更新后断开连接不在监听，默认是一个小时。</span><br><span class="line">	close_older =&gt; 3600</span><br><span class="line"></span><br><span class="line">	#在每次检查文件列 表的时候， 如果一个文件的最后 修改时间 超过这个值， 就忽略这个文件。 默认一天。</span><br><span class="line">	ignore_older =&gt; 86400</span><br><span class="line"></span><br><span class="line">	#logstash 每隔多 久检查一次被监听文件状态（ 是否有更新） ， 默认是 1 秒。</span><br><span class="line">	stat_interval =&gt; 1</span><br><span class="line"></span><br><span class="line">	#sincedb记录数据上一次的读取位置的一个index</span><br><span class="line">	sincedb_path =&gt; ’$HOME/. sincedb‘</span><br><span class="line"></span><br><span class="line">	#logstash 从什么 位置开始读取文件数据， 默认是结束位置 也可以设置为：beginning 从头开始</span><br><span class="line">	start_position =&gt; ‘beginning’</span><br><span class="line"></span><br><span class="line">	#注意：这里需要提醒大家的是，如果你需要每次都从同开始读取文件的话，关设置start_position =&gt; beginning是没有用的，你可以选择sincedb_path 定义为 /dev/null</span><br><span class="line">    &#125;  </span><br><span class="line">    </span><br><span class="line">    //数据库类型</span><br><span class="line">    jdbc&#123;</span><br><span class="line">	#jdbc sql server 驱动,各个数据库都有对应的驱动，需自己下载</span><br><span class="line">	jdbc_driver_library =&gt; &quot;/etc/logstash/driver.d/sqljdbc_2.0/enu/sqljdbc4.jar&quot;</span><br><span class="line"></span><br><span class="line">	#jdbc class 不同数据库有不同的 class 配置</span><br><span class="line">	jdbc_driver_class =&gt; &quot;com.microsoft.sqlserver.jdbc.SQLServerDriver&quot;</span><br><span class="line"></span><br><span class="line">	#配置数据库连接 ip 和端口，以及数据库    </span><br><span class="line">	jdbc_connection_string =&gt; &quot;jdbc:sqlserver://200.200.0.18:1433;databaseName=test_db&quot;</span><br><span class="line"></span><br><span class="line">	#配置数据库用户名</span><br><span class="line">	jdbc_user =&gt;   </span><br><span class="line"></span><br><span class="line">	#配置数据库密码</span><br><span class="line">	jdbc_password =&gt;</span><br><span class="line"></span><br><span class="line">	#上面这些都不重要，要是这些都看不懂的话，你的老板估计要考虑换人了。重要的是接下来的内容。</span><br><span class="line">	# 定时器 多久执行一次SQL，默认是一分钟</span><br><span class="line">	# schedule =&gt; 分 时 天 月 年  </span><br><span class="line">	# schedule =&gt; * 22  *  *  * 表示每天22点执行一次</span><br><span class="line">	schedule =&gt; &quot;* * * * *&quot;</span><br><span class="line"></span><br><span class="line">	#是否清除 last_run_metadata_path 的记录,如果为真那么每次都相当于从头开始查询所有的数据库记录</span><br><span class="line">	clean_run =&gt; false</span><br><span class="line"></span><br><span class="line">	#是否需要记录某个column 的值,如果 record_last_run 为真,可以自定义我们需要表的字段名称，</span><br><span class="line">	#此时该参数就要为 true. 否则默认 track 的是 timestamp 的值.</span><br><span class="line">	use_column_value =&gt; true</span><br><span class="line"></span><br><span class="line">	#如果 use_column_value 为真,需配置此参数. 这个参数就是数据库给出的一个字段名称。当然该字段必须是递增的，可以是 数据库的数据时间这类的</span><br><span class="line">	tracking_column =&gt; create_time</span><br><span class="line"></span><br><span class="line">	#是否记录上次执行结果, 如果为真,将会把上次执行到的 tracking_column 字段的值记录下来,保存到 last_run_metadata_path 指定的文件中</span><br><span class="line">	record_last_run =&gt; true</span><br><span class="line"></span><br><span class="line">	#们只需要在 SQL 语句中 WHERE MY_ID &gt; :last_sql_value 即可. 其中 :last_sql_value 取得就是该文件中的值</span><br><span class="line">	last_run_metadata_path =&gt; &quot;/etc/logstash/run_metadata.d/my_info&quot;</span><br><span class="line"></span><br><span class="line">	#是否将字段名称转小写。</span><br><span class="line">	#这里有个小的提示，如果你这前就处理过一次数据，并且在Kibana中有对应的搜索需求的话，还是改为true，</span><br><span class="line">	#因为默认是true，并且Kibana是大小写区分的。准确的说应该是ES大小写区分</span><br><span class="line">	lowercase_column_names =&gt; false</span><br><span class="line"></span><br><span class="line">	#你的SQL的位置，当然，你的SQL也可以直接写在这里。</span><br><span class="line">	#statement =&gt; SELECT * FROM tabeName t WHERE  t.creat_time &gt; :last_sql_value</span><br><span class="line">	statement_filepath =&gt; &quot;/etc/logstash/statement_file.d/my_info.sql&quot;</span><br><span class="line"></span><br><span class="line">	#数据类型，标明你属于那一方势力。单了ES哪里好给你安排不同的山头。</span><br><span class="line">	type =&gt; &quot;my_info&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    #注意：外载的SQL文件就是一个文本文件就可以了，还有需要注意的是，一个jdbc&#123;&#125;插件就只能处理一个SQL语句，</span><br><span class="line">    #如果你有多个SQL需要处理的话，只能在重新建立一个jdbc&#123;&#125;插件。</span><br><span class="line"></span><br><span class="line">    //redis</span><br><span class="line">    redis &#123;</span><br><span class="line">	codec =&gt;             #可选项，默认是plain，可设置其他编码方式。</span><br><span class="line"></span><br><span class="line">	discover_interval =&gt; #可选项，logstash多久检查一下path下有新文件，默认15s。</span><br><span class="line"></span><br><span class="line">	exclude =&gt;           #可选项，排除path下不想监听的文件。</span><br><span class="line"></span><br><span class="line">	sincedb_path =&gt;      #可选项，记录文件以及文件读取信息位置的数据文件。~/.sincedb_xxxx</span><br><span class="line"></span><br><span class="line">	sincedb_write_interval =&gt; #可选项，logstash多久写一次sincedb文件，默认15s.</span><br><span class="line"></span><br><span class="line">	stat_interval =&gt;          #可选项，logstash多久检查一次被监听文件的变化，默认1s。</span><br><span class="line"></span><br><span class="line">	start_position =&gt;         #可选项，logstash从哪个位置读取文件数据，默认从尾部，值为：end。初次导入，设置为：beginning。</span><br><span class="line"></span><br><span class="line">	path =&gt;                   #必选项，配置文件路径，可定义多个。</span><br><span class="line"></span><br><span class="line">	tags =&gt;                   #可选项，在数据处理过程中，由具体的插件来添加或者删除的标记。</span><br><span class="line"></span><br><span class="line">	type =&gt;                   #可选项，自定义处理时间类型。比如nginxlog。</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">filter&#123;</span><br><span class="line">	过滤器插件</span><br><span class="line">	过滤器提供的并不单单是过滤的功能，还可以对进入过滤器的原始数据进行复杂的逻辑处理，甚至添加独特的新事件到后续流程中</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">outer&#123;</span><br><span class="line"></span><br><span class="line">　　输出插件</span><br><span class="line">    elasticsearch &#123;</span><br><span class="line">        id =&gt; &quot;log&quot;</span><br><span class="line">        hosts =&gt; [&quot;elasticsearch:9200&quot;]</span><br><span class="line">        index =&gt; &quot;logstash-%&#123;type&#125;-%&#123;+YYYY.MM.dd&#125;&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/03/16/Elasticsearch （二）/" data-id="cko188a1u000ui8f54095skh5" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Elasticsearch-logstash/">Elasticsearch logstash</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-protoful - 各种文件生成（手记）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/16/protoful - 各种文件生成（手记）/" class="article-date">
+  <time datetime="2019-03-15T16:00:00.000Z" itemprop="datePublished">2019-03-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/16/protoful - 各种文件生成（手记）/">protoful 集中记录</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">生成GO </span><br><span class="line">protoc -I$GOPATH/src \</span><br><span class="line">  -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \</span><br><span class="line">  -I$GOPATH/src/protobuf/src/ \</span><br><span class="line">  -I$GOPATH/src/datacenter/proto \</span><br><span class="line">  --go_out=plugins=grpc:. \</span><br><span class="line">  adverse_event.proto</span><br><span class="line"></span><br><span class="line">生成envoy 翻译器 descriptor.pb </span><br><span class="line">protoc -I$GOPATH/src \</span><br><span class="line">    -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \</span><br><span class="line">    -I$GOPATH/src/protobuf/src/ \</span><br><span class="line">    -I$GOPATH/src/datacenter/proto \</span><br><span class="line">    --include_imports \</span><br><span class="line">    --include_source_info \</span><br><span class="line">    --descriptor_set_out=../build/envoy/descriptor.pb \</span><br><span class="line">    *.proto</span><br><span class="line"></span><br><span class="line">生成grpc-webJS</span><br><span class="line">protoc -I$GOPATH/src \</span><br><span class="line">    -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \</span><br><span class="line">    -I$GOPATH/src/protobuf/src/ \</span><br><span class="line">    -I$GOPATH/src/datacenter/proto \</span><br><span class="line">    --js_out=import_style=commonjs:. \</span><br><span class="line">    --grpc-web_out=import_style=commonjs,mode=grpcwebtext:. *.proto</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">生成protoc-gen-swagger</span><br><span class="line">protoc -I$GOPATH/src \</span><br><span class="line">-I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \</span><br><span class="line">-I$GOPATH/src/protobuf/src/ \</span><br><span class="line">-I$GOPATH/src/proto-doc/proto \</span><br><span class="line">--swagger_out=logtostderr=true:. \</span><br><span class="line">adverse_event.proto</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">交叉编译</span><br><span class="line">set GOARCH=amd64</span><br><span class="line"></span><br><span class="line">set GOOS=linux</span><br><span class="line"></span><br><span class="line">go build xx.go</span><br></pre></td></tr></table></figure>
+<p>GO mod的使用 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">打开</span><br><span class="line">GO111MODULE=on</span><br><span class="line"></span><br><span class="line">Usage:</span><br><span class="line"></span><br><span class="line">	go mod &lt;command&gt; [arguments]</span><br><span class="line"></span><br><span class="line">The commands are:</span><br><span class="line"></span><br><span class="line">	download    download modules to local cache</span><br><span class="line">	edit        edit go.mod from tools or scripts</span><br><span class="line">	graph       print module requirement graph</span><br><span class="line">	init        initialize new module in current directory</span><br><span class="line">	tidy        add missing and remove unused modules</span><br><span class="line">	vendor      make vendored copy of dependencies</span><br><span class="line">	verify      verify dependencies have expected content</span><br><span class="line">	why         explain why packages or modules are needed</span><br><span class="line"></span><br><span class="line">Use &quot;go help mod &lt;command&gt;&quot; for more information about a command.</span><br><span class="line"></span><br><span class="line">GO111MODULE=on go mod init</span><br><span class="line">GO111MODULE=on go mod tidy</span><br></pre></td></tr></table></figure>
+<p>内网穿透工具</p>
+<p><a href="https://dashboard.ngrok.com/get-started" target="_blank" rel="noopener">https://dashboard.ngrok.com/get-started</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ngrok http 80</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/03/16/protoful - 各种文件生成（手记）/" data-id="cko188a6c002gi8f5mzoxeief" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/protoful/">protoful</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-GO-Tracing" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/03/11/GO-Tracing/" class="article-date">
@@ -107,10 +190,109 @@ github.com/pkg/errors
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/11/GO-Tracing/" data-id="ck9xwwdb9000qx0f5xjmu9ifv" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/03/11/GO-Tracing/" data-id="cko1889yy0004i8f55b4ik0an" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GO-Grpc-tracing/">GO Grpc tracing</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-GOQ&amp;A" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/11/GOQ&A/" class="article-date">
+  <time datetime="2019-03-10T16:00:00.000Z" itemprop="datePublished">2019-03-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/11/GOQ&A/">记录一些GO的常见问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>###空struct{} 的使用</p>
+<h6 id="空结构体-struct-可以用来节省内存"><a href="#空结构体-struct-可以用来节省内存" class="headerlink" title="空结构体 struct{} 可以用来节省内存"></a>空结构体 struct{} 可以用来节省内存</h6><ul>
+<li><p>空结构体的特点:1、不占用内存；2、地址不变</p>
+</li>
+<li><p>如果使用的是map，而且map又很长，通常会节省不少资源</p>
+</li>
+<li><p>空struct{}也在向别人表明，这里并不需要一个值</p>
+</li>
+</ul>
+<h3 id="比较"><a href="#比较" class="headerlink" title="比较"></a>比较</h3><p>####结构体的比较</p>
+<ul>
+<li><p>如果结构体的所有成员变量都是可比较的，那么结构体就可比较</p>
+</li>
+<li><p>如果结构体中存在不可比较的成员变量，那么结构体就不能比较</p>
+</li>
+</ul>
+<p>####struct可以作为map的key么？</p>
+<ul>
+<li>struct必须是可比较的，才能作为key，否则编译时报错</li>
+</ul>
+<p>####interface的比较</p>
+<ul>
+<li>接口值可以用 == 和 != 相比较。两个接口值相等，仅当他们都是nil，或者他们动态类型相同，并且动态的值也根据这个动态类型的==相等。</li>
+</ul>
+<h4 id="Golang不可以比较类型："><a href="#Golang不可以比较类型：" class="headerlink" title="Golang不可以比较类型："></a>Golang不可以比较类型：</h4><ul>
+<li>slice（切片）、map（key-value集合）、func（函数），当接口的原始类型是这三个的时候，比较会报panic。</li>
+</ul>
+<h3 id="TCP和UDP的区别及应用场景"><a href="#TCP和UDP的区别及应用场景" class="headerlink" title="TCP和UDP的区别及应用场景"></a>TCP和UDP的区别及应用场景</h3><ul>
+<li>tcp有流量控制，udp没有</li>
+<li>tcp的头部比20bytes，udp8byres</li>
+</ul>
+<h5 id="面向连接VS无连接"><a href="#面向连接VS无连接" class="headerlink" title="面向连接VS无连接"></a>面向连接VS无连接</h5><ul>
+<li>TCP建立一个连接需要3次握手IP数据包，断开连接需要4次握手。另外断开连接时发起方可能进入TIME_WAIT状态长达数分钟（视系统设置，windows一般为120秒），在此状态下连接（端口）无法被释放。</li>
+<li>UDP不需要建立连接，可以直接发起。</li>
+</ul>
+<h5 id="可靠VS不可靠"><a href="#可靠VS不可靠" class="headerlink" title="可靠VS不可靠"></a>可靠VS不可靠</h5><p>TCP利用握手、ACK和重传机制，udp没有。</p>
+<ul>
+<li>校验和（校验数据是否损坏）；</li>
+<li>定时器（分组丢失则重传）；</li>
+<li>序列号（用于检测丢失的分组和重复的分组）；</li>
+<li>确认应答ACK（接收方告知发送方正确接收分组以及期望的下一个分组）；</li>
+<li>否定确认（接收方通知发送方未被正确接收的分组）；</li>
+<li>窗口和流水线（用于增加信道的吞吐量）。（窗口大小：无需等待确认应答而可以继续发送数据的最大值）</li>
+</ul>
+<h4 id="有序性"><a href="#有序性" class="headerlink" title="有序性"></a>有序性</h4><ul>
+<li>TCP利用seq序列号对包进行排序，udp没有。</li>
+</ul>
+<h4 id="面向字节流vs面向报文"><a href="#面向字节流vs面向报文" class="headerlink" title="面向字节流vs面向报文"></a>面向字节流vs面向报文</h4><ul>
+<li><p>面向报文的传输方式是应用层交给UDP多长的报文，UDP就照样发送，即一次发送一个报文。因此，应用程序必须选择合适大小的报文。若报文太长，则IP层需要分片。UDP对应用层交下来的报文，既不合并，也不拆分，而是保留这些报文的边界。这也就是说，应用层交给UDP多长的报文，UDP就照样发送，即一次发送一个报文。（一个upd的最大报文长度2^16-1-20-8,20是ip报文头，8是udp报文头）</p>
+</li>
+<li><p>面向字节流的话，虽然应用程序和TCP的交互是一次一个数据块（大小不等），但TCP把应用程序看成是一连串的无结构的字节流。TCP有一个缓冲，当应用程序传送的数据块太长，TCP就可以把它划分短一些再传送。如果应用程序一次只发送一个字节，TCP也可以等待积累有足够多的字节后再构成报文段发送出去。</p>
+</li>
+</ul>
+<h4 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h4><ul>
+<li><p>TCP：效率要求相对低，但对准确性要求相对高的场景。因为传输中需要对数据确认、重发、排序等操作，相比之下效率没有UDP高。举几个例子：文件传输（准确高要求高、但是速度可以相对慢）、接受邮件、远程登录。</p>
+</li>
+<li><p>UDP：效率要求相对高，对准确性要求相对低的场景。举几个例子：QQ聊天、在线视频、网络语音电话（即时通讯，速度要求高，但是出现偶尔断续不是太大问题，并且此处完全不可以使用重发机制）、广播通信（广播、多播）。</p>
+</li>
+</ul>
+<h5 id="select是随机的还是顺序的？"><a href="#select是随机的还是顺序的？" class="headerlink" title="select是随机的还是顺序的？"></a>select是随机的还是顺序的？</h5><p>select会随机选择一个可用通道做收发操作</p>
+<h5 id="Go语言局部变量分配在栈还是堆？"><a href="#Go语言局部变量分配在栈还是堆？" class="headerlink" title="Go语言局部变量分配在栈还是堆？"></a>Go语言局部变量分配在栈还是堆？</h5><p>Go语言编译器会自动决定把一个变量放在栈还是放在堆，编译器会做逃逸分析，当发现变量的作用域没有跑出函数范围，就可以在栈上，反之则必须分配在堆。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/03/11/GOQ&A/" data-id="cko188a66002fi8f59deki6d7" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GO-Q-A/">GO Q&A</a></li></ul>
 
     </footer>
   </div>
@@ -153,7 +335,7 @@ github.com/pkg/errors
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/02/GO-GRPC-GATEWAY/" data-id="ck9xwwd8m0005x0f5afdrx2za" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/03/02/GO-GRPC-GATEWAY/" data-id="cko1889xf0000i8f53fzepded" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/微服务-GRPC/">微服务 GRPC</a></li></ul>
@@ -248,7 +430,7 @@ protoc --go_out=plugins=grpc:. *.proto
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/01/GO-GRPC/" data-id="ck9xwwd8f0004x0f5wabod9f5" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/03/01/GO-GRPC/" data-id="cko1889yw0003i8f5wsfyy4k7" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/微服务-GRPC/">微服务 GRPC</a></li></ul>
@@ -304,7 +486,7 @@ protoc --go_out=plugins=grpc:. *.proto
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/02/16/GO-interceptor/" data-id="ck9xwwd8w0008x0f53uzh7cqr" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/02/16/GO-interceptor/" data-id="cko1889z00005i8f5kg6of83h" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GO-interceptor-JWT/">GO interceptor JWT</a></li></ul>
@@ -378,7 +560,7 @@ protoc --go_out=plugins=grpc:. *.proto
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/02/16/同一主机下的Docker 部署/" data-id="ck9xwwdc1000wx0f5e1umavt1" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/02/16/同一主机下的Docker 部署/" data-id="cko188a280012i8f57ig0bb4t" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/">Docker</a></li></ul>
@@ -438,57 +620,10 @@ casbin 实际比这个简单的例子要强大得多，你可以用声明的方�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/02/11/GO-casbin 随手记/" data-id="ck9xwwd7n0001x0f5bflytvku" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/02/11/GO-casbin 随手记/" data-id="cko1889z40008i8f58rupkh1j" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GO-权限管理/">GO 权限管理</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-MobX" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/03/28/MobX/" class="article-date">
-  <time datetime="2018-03-27T16:00:00.000Z" itemprop="datePublished">2018-03-28</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/03/28/MobX/">MobX 状态管理</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="&quot;https://github.com/mobxjs&quot;">Github 项目</a></p>
-<p>一直以来Vue的状态管理就一直让人很混乱，多人合作开发的大项目对状态管理会让人很烦躁。<br>无意间发现了Mobx这个项目，他能很好的解决此部分问题。<br>使Vue变成单纯的视图层工具，将数据状态剥离出框架，以便更好的管理与切换前端技术栈。</p>
-<p>建议使用Mobx 前需要对 vue-class-component 和 装饰器 有所了解。（虽然也支持传统写法）<br>有同事吐槽过 这样结合把VUE变成了react，但是本人倾向于各部分只专注做一件事，把数据层完全和UI层玻璃出来，会大大降低维护成本与代码可读性<br>这样 vue 就只是一个单纯的动态模板渲染引擎，就像 react 一样。</p>
-<p>安装</p>
-<p>npm i mobx-vue -S</p>
-<p>定义ViewModel</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">import &#123; action, computed, observable &#125; from &quot;mobx&quot;;</span><br><span class="line">export default class ViewModel &#123;</span><br><span class="line">    @observable age = 10;</span><br><span class="line">    @observable users = [];</span><br><span class="line"></span><br><span class="line">    @computed get computedAge() &#123;</span><br><span class="line">        return this.age + 1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @action.bound setAge() &#123;</span><br><span class="line">        this.age++;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @action.bound async fetchUsers() &#123;</span><br><span class="line">    	this.users = await http.get(&apos;/users&apos;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>使用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;section&gt;</span><br><span class="line">        &lt;p v-text=&quot;state.age&quot;&gt;&lt;/p&gt;</span><br><span class="line">        &lt;p v-text=&quot;state.computedAge&quot;&gt;&lt;/p&gt;</span><br><span class="line">        &lt;p v-for=&quot;user in state.users&quot; :key=&quot;user.name&quot;&gt;&#123;&#123;user.name&#125;&#125;&lt;/p&gt;</span><br><span class="line">        &lt;button @click=&quot;state.setAge&quot;&gt;&lt;/button&gt;</span><br><span class="line">    &lt;/section&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script lang=&quot;ts&quot;&gt;</span><br><span class="line">	import Vue from &quot;vue&quot;;</span><br><span class="line">	import Component from &quot;vue-class-component&quot;;</span><br><span class="line">	import &#123; Observer &#125; from &quot;mobx-vue&quot;;</span><br><span class="line">	import ViewModel from &quot;./ViewModel&quot;;</span><br><span class="line"></span><br><span class="line">	@Observer</span><br><span class="line">	@Component</span><br><span class="line">	export default class App extends Vue &#123;</span><br><span class="line">		state = new ViewModel()</span><br><span class="line">		mounted() &#123; </span><br><span class="line">		    this.state.fetchUsers();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">或者</span><br><span class="line">&lt;script lang=&quot;ts&quot;&gt;</span><br><span class="line">	@Connect(new ViewModel())</span><br><span class="line">	@Component()</span><br><span class="line">	export default class App extends Vue &#123;</span><br><span class="line"></span><br><span class="line">		mounted() &#123; </span><br><span class="line">			this.fetchUsers();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/28/MobX/" data-id="ck9xwwd9x000dx0f52jk97o7u" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redux/">Redux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Vue/">Vue</a></li></ul>
 
     </footer>
   </div>
@@ -572,213 +707,10 @@ casbin 实际比这个简单的例子要强大得多，你可以用声明的方�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/28/kubernetes_1/" data-id="ck9xwwdb4000px0f5jsn4033w" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/03/28/kubernetes_1/" data-id="cko188a1j000pi8f54jaehkqn" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kubernetes/">Kubernetes</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-kubernetes_2" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/03/28/kubernetes_2/" class="article-date">
-  <time datetime="2018-03-27T16:00:00.000Z" itemprop="datePublished">2018-03-28</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/03/28/kubernetes_2/">Kubernetes 学习笔记 （kubectl）</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="指令"><a href="#指令" class="headerlink" title="指令"></a>指令</h4><ul>
-<li>kubectl get 展示资源</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">获取命名空间</span><br><span class="line">kubectl get namespaces</span><br><span class="line"></span><br><span class="line">获取Pods</span><br><span class="line">kubectl get pods</span><br><span class="line"></span><br><span class="line">查看服务状态</span><br><span class="line">kubectl get services</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>kubectl describe 资源详情</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">获取Pods详细信息</span><br><span class="line">kubectl describe pods</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>kubectl logs 打印容器日志</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl logs $POD_NAME</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>kubectl exec 在容器上执行命令</p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">在Pod中执行命令</span><br><span class="line">kubectl exec $POD_NAME env</span><br><span class="line"></span><br><span class="line">启动容器中的bash</span><br><span class="line">kubectl exec -ti $POD_NAME bash</span><br></pre></td></tr></table></figure>
-<ul>
-<li>其他指令</li>
-</ul>
-<p>– 对外部暴露服务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">kubectl expose deployment/kubernetes-bootcamp --type=&quot;NodePort&quot; --port 8080 service &quot;kubernetes-bootcamp&quot; exposed</span><br><span class="line">$ kubectl get servicesNAME                  TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)     AGE</span><br><span class="line">kubernetes            ClusterIP   10.96.0.1       &lt;none&gt;        443/TCP     2m</span><br><span class="line">kubernetes-bootcamp   NodePort    10.99.175.225   &lt;none&gt;        8080:32172/TCP   5s</span><br></pre></td></tr></table></figure></p>
-<p>– 通过标签查询Pod和Service</p>
-<p>$ kubectl get pods -l run=kubernetes-bootcamp<br>NAME                                   READY     STATUS    RESTARTS   AGE<br>kubernetes-bootcamp-5c69669756-hmc69   1/1       Running   0          8m<br>$ kubectl get services -l = run=kubernetes-bootcamp<br>error: name cannot be provided when a selector is specified<br>$ kubectl get services -l run=kubernetes-bootcamp<br>NAME                  TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE<br>kubernetes-bootcamp   NodePort   10.99.175.225   <none>        8080:32172/TCP   6m</none></p>
-<p>tl label pod $POD_NAME app=v1 pod “kubernetes-bootcamp-5c69669756-hmc69” labeled<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">-- 新增标签</span><br></pre></td></tr></table></figure></p>
-<p>$ kubectl label pod $POD_NAME app=v1<br>pod “kubernetes-bootcamp-5c69669756-hmc69” labeled<br>$ kubectl describe pods $POD_NAME<br>Name:           kubernetes-bootcamp-5c69669756-hmc69<br>Namespace:      default<br>Node:           minikube/172.17.0.11<br>Start Time:     Tue, 17 Jul 2018 05:20:35 +0000<br>Labels:         app=v1<br>                pod-template-hash=1725225312<br>                run=kubernetes-bootcamp<br>$ kubectl get pods -l app=v1<br>NAME                                   READY     STATUS    RESTARTS   AGE<br>kubernetes-bootcamp-5c69669756-hmc69   1/1       Running   0          11m<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">-- 删除服务</span><br></pre></td></tr></table></figure></p>
-<p>$ kubectl get services<br>NAME                  TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)     AGE<br>kubernetes            ClusterIP   10.96.0.1       <none>        443/TCP     12m<br>kubernetes-bootcamp   NodePort    10.99.175.225   <none>        8080:32172/TCP   10m<br>$ kubectl delete service -l run=kubernetes-bootcamp<br>service “kubernetes-bootcamp” deleted<br>$ kubectl get services<br>NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE<br>kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   12m<br><code>`</code></none></none></none></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/28/kubernetes_2/" data-id="ck9xwwdbf000tx0f5mn8owq1s" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kubernetes/">Kubernetes</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-微服务框架技术栈之Protocol Buffer" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/03/28/微服务框架技术栈之Protocol Buffer/" class="article-date">
-  <time datetime="2018-03-27T16:00:00.000Z" itemprop="datePublished">2018-03-28</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/03/28/微服务框架技术栈之Protocol Buffer/">微服务框架技术栈之Protocol Buffer</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="微服务框架技术栈之Protocol-Buffer"><a href="#微服务框架技术栈之Protocol-Buffer" class="headerlink" title="微服务框架技术栈之Protocol Buffer"></a>微服务框架技术栈之Protocol Buffer</h1><blockquote>
-<p>本文主要介绍 Protocol Buffers 的安装使用，以及语法结构，并结合 gRPC 来讲解如何应用 .proto 文件</p>
-</blockquote>
-<h2 id="一-简介"><a href="#一-简介" class="headerlink" title="一. 简介"></a>一. 简介</h2><p><a href="https://github.com/google/protobuf" target="_blank" rel="noopener">Protocol Buffer</a> 是 google 的一种数据交换的格式，它独立于语言，独立于平台。google 提供了多种语言的实现：java、c#、c++、go 和 python，每一种实现都包含了相应语言的编译器以及库文件。由于它是一种二进制的格式，比使用 xml 进行数据交换快许多。可以把它用于分布式应用之间的数据通信或者异构环境下的数据交换。作为一种效率和兼容性都很优秀的二进制数据传输格式，可以用于诸如网络传输、配置文件、数据存储等诸多领域。</p>
-<h2 id="二-为什么使用Protocol-Buffer"><a href="#二-为什么使用Protocol-Buffer" class="headerlink" title="二. 为什么使用Protocol Buffer"></a>二. 为什么使用Protocol Buffer</h2><p>除了我们在前面讲到的 protobuf 拥有非常好的性能之外，还有以下几个优点：</p>
-<ol>
-<li>gRPC 使用 protobuf 非常高效，允许使用 protobuf 定义服务以及使用 protobuf 进行数据交换。</li>
-<li>通过 protobuf 定义的 .proto 文件，允许通过 protobuf 编译器生成不同编程语言的代码来读写这个数据结构，目前 protobuf  提供了多种编程语言的支持。</li>
-</ol>
-<blockquote>
-<p>总结：由于微服务架构的跨平台特性，以及 gRPC 对其的良好支持，所以使用 protobuf 可以作为微服务之间进行数据交换的标准之一</p>
-</blockquote>
-<h2 id="三-编写-proto-文件"><a href="#三-编写-proto-文件" class="headerlink" title="三. 编写 .proto 文件"></a>三. 编写 .proto 文件</h2><blockquote>
-<p>由于 gRPC 仅支持 proto3，所以本文以 proto3 版本来进行讲解</p>
-</blockquote>
-<h3 id="文件名"><a href="#文件名" class="headerlink" title="文件名"></a>文件名</h3><p>一个比较好的习惯是认真对待 proto 文件的文件名。比如将命名规则定于如下：</p>
-<p><code>{packageName}.{MessageName}.proto</code></p>
-<h3 id="结构体"><a href="#结构体" class="headerlink" title="结构体"></a>结构体</h3><p>Protocol Buffer 中有两种结构体。</p>
-<h4 id="1-Message-结构体"><a href="#1-Message-结构体" class="headerlink" title="1. Message 结构体"></a>1. Message 结构体</h4><p>可以使用 Message 定义程序中需要处理的结构化数据。类似 java 和 C 语言的数据定义。</p>
-<figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">syntax = <span class="string">"proto3"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> book;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">message</span> <span class="title">BookStruct</span> </span></span><br><span class="line"><span class="class"></span>&#123; </span><br><span class="line">	<span class="built_in">int64</span> isbn = <span class="number">1</span>;</span><br><span class="line">    <span class="built_in">string</span> title = <span class="number">2</span>;</span><br><span class="line">    <span class="built_in">string</span> author = <span class="number">3</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在上例中，package 名字叫做 book，定义了一个结构体 BookStruct，该消息有三个成员，类型为 int64 的 isbn，一个类型为 string 的 title，还有一个类型未 string 的 author。这三个成员都是可选的。</p>
-<blockquote>
-<p>只有 proto2 版本才允许通过 required 和 optional 配置成员是否可选。</p>
-</blockquote>
-<h4 id="2-Service结构体（定义一个-RPC-接口）"><a href="#2-Service结构体（定义一个-RPC-接口）" class="headerlink" title="2. Service结构体（定义一个 RPC 接口）"></a>2. Service结构体（定义一个 RPC 接口）</h4><p>如果想要将消息类型用在RPC中，可以在 .proto 文件中定义一个 RPC 服务接口，protobuf 编译器将会根据所选择的不同语言生成对应语言的接口代码以及Stub。</p>
-<figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">service</span> <span class="title">BookService</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">rpc</span> PostBook (BookStruct) <span class="keyword">returns</span> (BookStruct) &#123;&#125;</span></span><br><span class="line"><span class="function">&#125;</span></span><br></pre></td></tr></table></figure>
-<h4 id="3-Service结构体（定义一个-HTTP-接口）"><a href="#3-Service结构体（定义一个-HTTP-接口）" class="headerlink" title="3. Service结构体（定义一个 HTTP 接口）"></a>3. Service结构体（定义一个 HTTP 接口）</h4><p>在实际应用中，我们不但需要定义 RPC 接口，还需要定义 HTTP 接口。</p>
-<p>通过 Google 提供的标准接口 <code>google/api/annotations.proto</code> ，我们可以对 protobuf 服务描述其相应的 HTTP接口形式。通过使用 proto 编译器可以生成相应的 HTTP JSON 的接口实现。</p>
-<figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"google/api/annotations.proto"</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">service</span> <span class="title">BookService</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">rpc</span> PostBookApi (BookStruct) <span class="keyword">returns</span> (BookStruct) &#123;</span></span><br><span class="line"><span class="function">        option (google.api.http) = &#123;</span></span><br><span class="line"><span class="function">            post: "/v1/postBook"</span></span><br><span class="line"><span class="function">            body: "*"</span></span><br><span class="line"><span class="function">        &#125;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://raw.githubusercontent.com/niklaus0823/niklaus0823.github.io/master/_posts/images/2018-03-28-01.png" alt="gRPC-Gateway"></p>
-<h3 id="更多参考"><a href="#更多参考" class="headerlink" title="更多参考"></a>更多参考</h3><p><a href="http://colobu.com/2017/03/16/Protobuf3-language-guide/" target="_blank" rel="noopener">Protobuf3 语法指南</a></p>
-<p><a href="https://www.ibm.com/developerworks/cn/linux/l-cn-gpb/" target="_blank" rel="noopener">Google Protocol Buffer 的使用和原理</a></p>
-<h2 id="四-编译-proto-文件，生成代码"><a href="#四-编译-proto-文件，生成代码" class="headerlink" title="四. 编译 .proto 文件，生成代码"></a>四. 编译 .proto 文件，生成代码</h2><p>###安装 protoc 编译器</p>
-<p>随 Google Protocol Buffer 源代码一起发布的编译器 protoc，支持多种编程语言。但使用 Google Protocol Buffer 的 Compiler 包，您可以开发出支持其他语言的新的编译器。</p>
-<table>
-<thead>
-<tr>
-<th>Language</th>
-<th>Source</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>C++ (include C++ runtime and protoc)</td>
-<td><a href="https://github.com/google/protobuf/blob/master/src" target="_blank" rel="noopener">src</a></td>
-</tr>
-<tr>
-<td>Java</td>
-<td><a href="https://github.com/google/protobuf/blob/master/java" target="_blank" rel="noopener">java</a></td>
-</tr>
-<tr>
-<td>Python</td>
-<td><a href="https://github.com/google/protobuf/blob/master/python" target="_blank" rel="noopener">python</a></td>
-</tr>
-<tr>
-<td>Objective-C</td>
-<td><a href="https://github.com/google/protobuf/blob/master/objectivec" target="_blank" rel="noopener">objectivec</a></td>
-</tr>
-<tr>
-<td>C#</td>
-<td><a href="https://github.com/google/protobuf/blob/master/csharp" target="_blank" rel="noopener">csharp</a></td>
-</tr>
-<tr>
-<td>JavaScript</td>
-<td><a href="https://github.com/google/protobuf/blob/master/js" target="_blank" rel="noopener">js</a></td>
-</tr>
-<tr>
-<td>Ruby</td>
-<td><a href="https://github.com/google/protobuf/blob/master/ruby" target="_blank" rel="noopener">ruby</a></td>
-</tr>
-<tr>
-<td>Go</td>
-<td><a href="https://github.com/golang/protobuf" target="_blank" rel="noopener">golang/protobuf</a></td>
-</tr>
-<tr>
-<td>PHP</td>
-<td><a href="https://github.com/google/protobuf/blob/master/php" target="_blank" rel="noopener">php</a></td>
-</tr>
-<tr>
-<td>Dart</td>
-<td><a href="https://github.com/dart-lang/protobuf" target="_blank" rel="noopener">dart-lang/protobuf</a></td>
-</tr>
-</tbody>
-</table>
-<h4 id="Protoc-命令"><a href="#Protoc-命令" class="headerlink" title="Protoc 命令"></a>Protoc 命令</h4><p>安装好 protoc 编译器后，就可以使用 protoc 命令了。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">protoc -h</span><br><span class="line">Usage: /usr/bin/protoc [OPTION] PROTO_FILES</span><br><span class="line">Parse PROTO_FILES and generate output based on the options given:</span><br><span class="line">  -IPATH, --proto_path=PATH   Specify the directory <span class="keyword">in</span> <span class="built_in">which</span> to search <span class="keyword">for</span></span><br><span class="line">                              imports.  May be specified multiple <span class="built_in">times</span>;</span><br><span class="line">                              directories will be searched <span class="keyword">in</span> order.  If not</span><br><span class="line">                              given, the current working directory is used.</span><br><span class="line">  --version                   Show version info and <span class="built_in">exit</span>.</span><br><span class="line">  -h, --<span class="built_in">help</span>                  Show this text and <span class="built_in">exit</span>.</span><br><span class="line">  --encode=MESSAGE_TYPE       Read a text-format message of the given <span class="built_in">type</span></span><br><span class="line">                              from standard input and write it <span class="keyword">in</span> binary</span><br><span class="line">                              to standard output.  The message <span class="built_in">type</span> must</span><br><span class="line">                              be defined <span class="keyword">in</span> PROTO_FILES or their imports.</span><br><span class="line">  --decode=MESSAGE_TYPE       Read a binary message of the given <span class="built_in">type</span> from</span><br><span class="line">                              standard input and write it <span class="keyword">in</span> text format</span><br><span class="line">                              to standard output.  The message <span class="built_in">type</span> must</span><br><span class="line">                              be defined <span class="keyword">in</span> PROTO_FILES or their imports.</span><br><span class="line">  --decode_raw                Read an arbitrary protocol message from</span><br><span class="line">                              standard input and write the raw tag/value</span><br><span class="line">                              pairs <span class="keyword">in</span> text format to standard output.  No</span><br><span class="line">                              PROTO_FILES should be given when using this</span><br><span class="line">                              flag.</span><br><span class="line">  --descriptor_set_in=FILES   Specifies a delimited list of FILES</span><br><span class="line">                              each containing a FileDescriptorSet (a</span><br><span class="line">                              protocol buffer defined <span class="keyword">in</span> descriptor.proto).</span><br><span class="line">                              The FileDescriptor <span class="keyword">for</span> each of the PROTO_FILES</span><br><span class="line">                              provided will be loaded from these</span><br><span class="line">                              FileDescriptorSets. If a FileDescriptor</span><br><span class="line">                              appears multiple <span class="built_in">times</span>, the first occurrence</span><br><span class="line">                              will be used.</span><br><span class="line">  -oFILE,                     Writes a FileDescriptorSet (a protocol buffer,</span><br><span class="line">    --descriptor_set_out=FILE defined <span class="keyword">in</span> descriptor.proto) containing all of</span><br><span class="line">                              the input files to FILE.</span><br><span class="line">  --include_imports           When using --descriptor_set_out, also include</span><br><span class="line">                              all dependencies of the input files <span class="keyword">in</span> the</span><br><span class="line">                              <span class="built_in">set</span>, so that the <span class="built_in">set</span> is self-contained.</span><br><span class="line">  --include_source_info       When using --descriptor_set_out, <span class="keyword">do</span> not strip</span><br><span class="line">                              SourceCodeInfo from the FileDescriptorProto.</span><br><span class="line">                              This results <span class="keyword">in</span> vastly larger descriptors that</span><br><span class="line">                              include information about the original</span><br><span class="line">                              location of each decl <span class="keyword">in</span> the <span class="built_in">source</span> file as</span><br><span class="line">                              well as surrounding comments.</span><br><span class="line">  --dependency_out=FILE       Write a dependency output file <span class="keyword">in</span> the format</span><br><span class="line">                              expected by make. This writes the transitive</span><br><span class="line">                              <span class="built_in">set</span> of input file paths to FILE</span><br><span class="line">  --error_format=FORMAT       Set the format <span class="keyword">in</span> <span class="built_in">which</span> to <span class="built_in">print</span> errors.</span><br><span class="line">                              FORMAT may be <span class="string">'gcc'</span> (the default) or <span class="string">'msvs'</span></span><br><span class="line">                              (Microsoft Visual Studio format).</span><br><span class="line">  --print_free_field_numbers  Print the free field numbers of the messages</span><br><span class="line">                              defined <span class="keyword">in</span> the given proto files. Groups share</span><br><span class="line">                              the same field number space with the parent</span><br><span class="line">                              message. Extension ranges are counted as</span><br><span class="line">                              occupied fields numbers.</span><br><span class="line"></span><br><span class="line">  --plugin=EXECUTABLE         Specifies a plugin executable to use.</span><br><span class="line">                              Normally, protoc searches the PATH <span class="keyword">for</span></span><br><span class="line">                              plugins, but you may specify additional</span><br><span class="line">                              executables not <span class="keyword">in</span> the path using this flag.</span><br><span class="line">                              Additionally, EXECUTABLE may be of the form</span><br><span class="line">                              NAME=PATH, <span class="keyword">in</span> <span class="built_in">which</span> <span class="keyword">case</span> the given plugin name</span><br><span class="line">                              is mapped to the given executable even <span class="keyword">if</span></span><br><span class="line">                              the executable<span class="string">'s own name differs.</span></span><br><span class="line"><span class="string">  --cpp_out=OUT_DIR           Generate C++ header and source.</span></span><br><span class="line"><span class="string">  --csharp_out=OUT_DIR        Generate C# source file.</span></span><br><span class="line"><span class="string">  --java_out=OUT_DIR          Generate Java source file.</span></span><br><span class="line"><span class="string">  --javanano_out=OUT_DIR      Generate Java Nano source file.</span></span><br><span class="line"><span class="string">  --js_out=OUT_DIR            Generate JavaScript source.</span></span><br><span class="line"><span class="string">  --objc_out=OUT_DIR          Generate Objective C header and source.</span></span><br><span class="line"><span class="string">  --php_out=OUT_DIR           Generate PHP source file.</span></span><br><span class="line"><span class="string">  --python_out=OUT_DIR        Generate Python source file.</span></span><br><span class="line"><span class="string">  --ruby_out=OUT_DIR          Generate Ruby source file.</span></span><br></pre></td></tr></table></figure>
-<p>从上述帮助文件中，我们可以看到 protoc 命令可以添加以下参数</p>
-<ul>
-<li>–cpp_out 导出 C++ 代码</li>
-<li>–csharp_out 导出 C#代码</li>
-<li>–java_out 导出 Java 代码</li>
-<li>–javanano_out 导出 Javanano 代码</li>
-<li>–js_out 导出 JavaScript 代码</li>
-<li>–objc_out 导出 ObjectC 代码</li>
-<li>–php_out 导出 PHP 代码</li>
-<li>–python_out 导出 Python 代码</li>
-<li>–ruby_out 导出 Ruby 代码</li>
-</ul>
-<p>举例：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">protoc \</span><br><span class="line">--proto_path=IMPORT_PATH \</span><br><span class="line">--cpp_out=DST_DIR \</span><br><span class="line">--java_out=DST_DIR \</span><br><span class="line">--python_out=DST_DIR \</span><br><span class="line">IMPORT_PATH/file.proto</span><br></pre></td></tr></table></figure>
-<h4 id="Protoc-命令的-plugin-参数"><a href="#Protoc-命令的-plugin-参数" class="headerlink" title="Protoc 命令的 plugin 参数"></a>Protoc 命令的 plugin 参数</h4><p>除了可以导出上述代码之外，我们还可以使用 plugin 参数加载第三方插件，导出其他任何我们想要的代码。例如：Swagger JSON Schema。</p>
-<p>举例：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Install protoc plugin:protoc-gen-swagger</span></span><br><span class="line">go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger</span><br><span class="line"></span><br><span class="line"><span class="comment"># Export swagger json schema</span></span><br><span class="line">protoc \</span><br><span class="line">--plugin=protoc-gen-swagger=`<span class="built_in">which</span> protoc-gen-swagger`</span><br><span class="line">--proto_path=IMPORT_PATH \</span><br><span class="line">--swagger_out=DST_DIR \</span><br><span class="line">IMPORT_PATH/file.proto</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/28/微服务框架技术栈之Protocol Buffer/" data-id="ck9xwwdbo000ux0f524kfq6br" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Protocol-Buffer/">Protocol Buffer</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gRPC/">gRPC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/微服务/">微服务</a></li></ul>
 
     </footer>
   </div>
@@ -805,7 +737,7 @@ casbin 实际比这个简单的例子要强大得多，你可以用声明的方�
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Envoy-grpc-restful/">Envoy grpc restful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-NSQ/">GO Grpc NSQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-tracing/">GO Grpc tracing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-tracing-jaeger/">GO Grpc tracing jaeger</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-generate/">GO generate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-interceptor-JWT/">GO interceptor JWT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-json/">GO json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-权限管理/">GO 权限管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git-fork、pr/">Git fork、pr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kubernetes/">Kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Protocol-Buffer/">Protocol Buffer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gRPC/">gRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protoful/">protoful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务/">微服务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务-GRPC/">微服务 GRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/端口/">端口</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch-logstash/">Elasticsearch logstash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Envoy-grpc-restful/">Envoy grpc restful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-NSQ/">GO Grpc NSQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-tracing/">GO Grpc tracing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Grpc-tracing-jaeger/">GO Grpc tracing jaeger</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-Q-A/">GO Q&A</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-generate/">GO generate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-interceptor-JWT/">GO interceptor JWT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-json/">GO json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GO-权限管理/">GO 权限管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git-fork、pr/">Git fork、pr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kubernetes/">Kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Protocol-Buffer/">Protocol Buffer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gRPC/">gRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/istio/">istio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protoful/">protoful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务/">微服务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务-GRPC/">微服务 GRPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/端口/">端口</a></li></ul>
     </div>
   </div>
 
@@ -815,7 +747,7 @@ casbin 实际比这个简单的例子要强大得多，你可以用声明的方�
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Elasticsearch/" style="font-size: 10px;">Elasticsearch</a> <a href="/tags/Envoy-grpc-restful/" style="font-size: 10px;">Envoy grpc restful</a> <a href="/tags/GO-Grpc-NSQ/" style="font-size: 10px;">GO Grpc NSQ</a> <a href="/tags/GO-Grpc-tracing/" style="font-size: 10px;">GO Grpc tracing</a> <a href="/tags/GO-Grpc-tracing-jaeger/" style="font-size: 10px;">GO Grpc tracing jaeger</a> <a href="/tags/GO-generate/" style="font-size: 10px;">GO generate</a> <a href="/tags/GO-interceptor-JWT/" style="font-size: 10px;">GO interceptor JWT</a> <a href="/tags/GO-json/" style="font-size: 10px;">GO json</a> <a href="/tags/GO-权限管理/" style="font-size: 10px;">GO 权限管理</a> <a href="/tags/Git-fork、pr/" style="font-size: 10px;">Git fork、pr</a> <a href="/tags/Kubernetes/" style="font-size: 15px;">Kubernetes</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/tags/Protocol-Buffer/" style="font-size: 10px;">Protocol Buffer</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/Redux/" style="font-size: 10px;">Redux</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/gRPC/" style="font-size: 10px;">gRPC</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/protoful/" style="font-size: 10px;">protoful</a> <a href="/tags/微服务/" style="font-size: 20px;">微服务</a> <a href="/tags/微服务-GRPC/" style="font-size: 15px;">微服务 GRPC</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a>
+      <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Elasticsearch/" style="font-size: 10px;">Elasticsearch</a> <a href="/tags/Elasticsearch-logstash/" style="font-size: 10px;">Elasticsearch logstash</a> <a href="/tags/Envoy-grpc-restful/" style="font-size: 10px;">Envoy grpc restful</a> <a href="/tags/GO-Grpc-NSQ/" style="font-size: 10px;">GO Grpc NSQ</a> <a href="/tags/GO-Grpc-tracing/" style="font-size: 10px;">GO Grpc tracing</a> <a href="/tags/GO-Grpc-tracing-jaeger/" style="font-size: 10px;">GO Grpc tracing jaeger</a> <a href="/tags/GO-Q-A/" style="font-size: 10px;">GO Q&A</a> <a href="/tags/GO-generate/" style="font-size: 10px;">GO generate</a> <a href="/tags/GO-interceptor-JWT/" style="font-size: 10px;">GO interceptor JWT</a> <a href="/tags/GO-json/" style="font-size: 10px;">GO json</a> <a href="/tags/GO-权限管理/" style="font-size: 10px;">GO 权限管理</a> <a href="/tags/Git-fork、pr/" style="font-size: 10px;">Git fork、pr</a> <a href="/tags/Kubernetes/" style="font-size: 15px;">Kubernetes</a> <a href="/tags/MySQL/" style="font-size: 15px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/tags/Protocol-Buffer/" style="font-size: 10px;">Protocol Buffer</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/Redux/" style="font-size: 10px;">Redux</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/gRPC/" style="font-size: 10px;">gRPC</a> <a href="/tags/istio/" style="font-size: 10px;">istio</a> <a href="/tags/json/" style="font-size: 15px;">json</a> <a href="/tags/protoful/" style="font-size: 10px;">protoful</a> <a href="/tags/微服务/" style="font-size: 20px;">微服务</a> <a href="/tags/微服务-GRPC/" style="font-size: 15px;">微服务 GRPC</a> <a href="/tags/端口/" style="font-size: 10px;">端口</a>
     </div>
   </div>
 
@@ -824,7 +756,7 @@ casbin 实际比这个简单的例子要强大得多，你可以用声明的方�
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li></ul>
     </div>
   </div>
 
@@ -837,11 +769,15 @@ casbin 实际比这个简单的例子要强大得多，你可以用声明的方�
       <ul>
         
           <li>
-            <a href="/2020/05/08/docker_笔记/">docker 笔记</a>
+            <a href="/2021/04/28/mysql-practice/">MySQL 记录一些祖传SQL脚本</a>
           </li>
         
           <li>
             <a href="/2020/05/08/Nginx 基础/">Nginx 基础</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/08/docker_笔记/">docker 笔记</a>
           </li>
         
           <li>
@@ -850,10 +786,6 @@ casbin 实际比这个简单的例子要强大得多，你可以用声明的方�
         
           <li>
             <a href="/2019/04/25/Git fork、pr的开发模式/">Git fork、pr的开发模式</a>
-          </li>
-        
-          <li>
-            <a href="/2019/04/02/GO-json/">GO json的操作</a>
           </li>
         
       </ul>
@@ -868,7 +800,7 @@ casbin 实际比这个简单的例子要强大得多，你可以用声明的方�
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2020 Felix<br>
+      &copy; 2021 Felix<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
